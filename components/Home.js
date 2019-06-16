@@ -62,17 +62,13 @@ export default class Home extends Component<{}> {
               }}
               errorColor={constants.BRAND.red}
               fontSize={24}
-              label={'Enter a username...'}
+              label={'Enter first name...'}
               labelTextStyle={{
                 fontFamily: 'ProximaNova-Regular'
               }}
               onChange={this._onSearchTextChanged}
               textColor={constants.BRAND.navy}
               tintColor={constants.BRAND.navy}
-              titleFontSize={18}
-              titleTextStyle={{
-                fontFamily: 'ProximaNova-Regular'
-              }}
               value={this.state.searchString}
             />
           </View>
