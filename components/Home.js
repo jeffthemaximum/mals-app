@@ -3,7 +3,6 @@
 import React, { Component } from 'react'
 import {
   ActivityIndicator,
-  Button,
   Image,
   ScrollView,
   StyleSheet,
@@ -11,6 +10,9 @@ import {
   TextInput,
   View
 } from 'react-native'
+import Button from 'apsl-react-native-button'
+
+import constants from '../constants'
 
 export default class Home extends Component<{}> {
   constructor (props) {
@@ -33,7 +35,13 @@ export default class Home extends Component<{}> {
     return (
       <View style={styles.container}>
         <ScrollView>
-          <Image source={{ uri: 'https://meetalocalstranger.s3.amazonaws.com/images/friendly_encounter.png' }} style={styles.image} />
+          <Image
+            source={{
+              uri:
+                'https://meetalocalstranger.s3.amazonaws.com/images/friendly_encounter.png'
+            }}
+            style={styles.image}
+          />
           <Text style={styles.description}>
             <Text style={styles.bold}>Hello </Text>
             <Text>Stranger</Text>
@@ -46,25 +54,37 @@ export default class Home extends Component<{}> {
           />
           {spinner}
         </ScrollView>
-        <View style={styles.footer}>
-          <Button onPress={this._onSearchPressed} color='#48BBEC' title='Go' />
-        </View>
+        <Button
+          onPress={this._onSearchPressed}
+          style={styles.buttonStyles}
+          textStyle={styles.buttonText}
+        >
+          Let's go
+        </Button>
       </View>
     )
   }
 }
 
 const styles = StyleSheet.create({
+  buttonStyles: {
+    backgroundColor: constants.BRAND.navy
+  },
+  buttonText: {
+    color: constants.BRAND.white,
+    fontFamily: 'ProximaNova-Bold',
+    fontSize: 18
+  },
   bold: {
     fontFamily: 'ProximaNova-Bold'
   },
   description: {
-    color: '#404040',
+    color: constants.BRAND.navy,
     fontFamily: 'ProximaNova-Regular',
     fontSize: 36,
     marginBottom: 36,
     marginTop: 24,
-    textAlign: 'center',
+    textAlign: 'center'
   },
   container: {
     padding: 30,
