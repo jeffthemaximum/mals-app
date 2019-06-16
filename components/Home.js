@@ -11,6 +11,7 @@ import {
   View
 } from 'react-native'
 import Button from 'apsl-react-native-button'
+import { TextField } from 'react-native-material-textfield'
 
 import constants from '../constants'
 
@@ -34,7 +35,10 @@ export default class Home extends Component<{}> {
 
     return (
       <View style={styles.container}>
-        <ScrollView>
+        <ScrollView
+          style={styles.scrollView}
+          contentContainerStyle={styles.contentContainer}
+        >
           <Image
             source={{
               uri:
@@ -46,12 +50,32 @@ export default class Home extends Component<{}> {
             <Text style={styles.bold}>Hello </Text>
             <Text>Stranger</Text>
           </Text>
-          <TextInput
-            onChange={this._onSearchTextChanged}
-            placeholder='Search via name or postcode'
-            style={styles.searchInput}
-            value={this.state.searchString}
-          />
+          <View style={styles.inputContainer}>
+            <TextField
+              affixTextStyle={{
+                fontFamily: 'ProximaNova-Regular'
+              }}
+              baseColor={constants.BRAND.navy}
+              containerStyle={{
+                borderColor: constants.BRAND.navy,
+                margin: 0
+              }}
+              errorColor={constants.BRAND.red}
+              fontSize={24}
+              label={'Enter a username...'}
+              labelTextStyle={{
+                fontFamily: 'ProximaNova-Regular'
+              }}
+              onChange={this._onSearchTextChanged}
+              textColor={constants.BRAND.navy}
+              tintColor={constants.BRAND.navy}
+              titleFontSize={18}
+              titleTextStyle={{
+                fontFamily: 'ProximaNova-Regular'
+              }}
+              value={this.state.searchString}
+            />
+          </View>
           {spinner}
         </ScrollView>
         <Button
@@ -78,16 +102,24 @@ const styles = StyleSheet.create({
   bold: {
     fontFamily: 'ProximaNova-Bold'
   },
+  scrollView: {
+    width: '100%'
+  },
+  contentContainer: {
+    justifyContent: 'center',
+    alignItems: 'center'
+  },
   description: {
     color: constants.BRAND.navy,
     fontFamily: 'ProximaNova-Regular',
     fontSize: 36,
-    marginBottom: 36,
+    marginBottom: 48,
     marginTop: 24,
     textAlign: 'center'
   },
   container: {
     padding: 30,
+    justifyContent: 'center',
     alignItems: 'center',
     flexDirection: 'column',
     flex: 1
@@ -103,6 +135,9 @@ const styles = StyleSheet.create({
   image: {
     width: 300,
     height: 250
+  },
+  inputContainer: {
+    width: '100%'
   },
   searchInput: {
     height: 36,
