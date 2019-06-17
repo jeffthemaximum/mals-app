@@ -8,7 +8,8 @@ import users from '../ducks/users'
 import HomeComponent from '../components/Home'
 
 const {
-  actions: { getOrCreateUser }
+  actions: { getOrCreateUser },
+  selectors: { getUser: getUserSelector }
 } = users
 
 class Home extends Component<{}> {
@@ -19,13 +20,19 @@ class Home extends Component<{}> {
 
   render () {
     return (
-      <HomeComponent />
+      <HomeComponent {...this.props} />
     )
   }
 }
 
 const mapStateToProps = state => {
-  return {}
+  const user = getUserSelector(state)
+  const loading = !user
+
+  return {
+    loading,
+    user
+  }
 }
 
 const mapDispatchToProps = {

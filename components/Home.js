@@ -20,7 +20,8 @@ export default class Home extends Component<{}> {
     super(props)
 
     this.state = {
-      isLoading: false
+      isLoading: false,
+      name: ''
     }
   }
 
@@ -28,8 +29,14 @@ export default class Home extends Component<{}> {
     title: 'Meet a Local Stranger'
   }
 
+  _onNameChange = (event) => {
+    this.setState({ name: event.nativeEvent.text });
+  };
+
   render () {
-    const spinner = this.state.isLoading ? (
+    const { loading, user } = this.props
+
+    const spinner = loading ? (
       <ActivityIndicator size='large' />
     ) : null
 
@@ -66,10 +73,10 @@ export default class Home extends Component<{}> {
               labelTextStyle={{
                 fontFamily: 'ProximaNova-Regular'
               }}
-              onChange={this._onSearchTextChanged}
+              onChange={this._onNameChange}
               textColor={constants.BRAND.navy}
               tintColor={constants.BRAND.navy}
-              value={this.state.searchString}
+              value={this.state.name}
             />
           </View>
           {spinner}
