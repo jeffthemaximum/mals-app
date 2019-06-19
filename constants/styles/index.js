@@ -1,4 +1,4 @@
-import baseVariables from './baseVariables'
+import * as baseVariables from './baseVariables'
 
 export default {
   ...baseVariables

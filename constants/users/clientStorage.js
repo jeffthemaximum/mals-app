@@ -1,5 +1,1 @@
-const JWT = 'jwt'
-
-export default {
-  JWT
-}
+export const JWT = 'jwt'

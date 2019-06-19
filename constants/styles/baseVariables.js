@@ -1,4 +1,4 @@
-BRAND = {
+export const BRAND = {
   babyBlue: '#54CDFB',
   brown: '#4F2D3A',
   grey: '#516C91',
@@ -8,5 +8,3 @@ BRAND = {
   teal: '#1F9CA7',
   white: '#FFFFFF'
 }
-
-export default { BRAND }
