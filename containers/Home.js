@@ -8,14 +8,14 @@ import users from '../ducks/users'
 import HomeComponent from '../components/Home'
 
 const {
-  actions: { getOrCreateUser },
+  actions: { createUser },
   selectors: { getUser: getUserSelector }
 } = users
 
 class Home extends Component<{}> {
   componentDidMount () {
-    const { getOrCreateUser } = this.props
-    getOrCreateUser()
+    const { createUser } = this.props
+    createUser()
   }
 
   render () {
@@ -36,7 +36,7 @@ const mapStateToProps = state => {
 }
 
 const mapDispatchToProps = {
-  getOrCreateUser
+  createUser
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(Home)

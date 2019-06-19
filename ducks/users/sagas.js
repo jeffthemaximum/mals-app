@@ -1,24 +1,19 @@
 import { call, put, takeLatest } from 'redux-saga/effects'
 
-import * as clientStorageService from '../../services/clientStorage'
 import * as userActionTypes from './actionTypes'
 import * as userApi from './api'
 import constants from '../../constants'
 
-function * getOrCreateUser (action) {
-  const jwt = yield call(clientStorageService.get, constants.JWT)
-  console.log({ jwt })
-  const response = yield call(userApi.getOrCreateUser, jwt)
-  console.log({ response })
-  const { user } = response
+function * createUser (action) {
+  const user = yield call(userApi.createUser)
   if (user) {
-    yield put({ type: userActionTypes.GET_OR_CREATE_SUCCESS, user })
+    yield put({ type: userActionTypes.CREATE_SUCCESS, user })
   } else {
     const { error } = response
-    yield put({ type: userActionTypes.GET_OR_CREATE_ERROR, error })
+    yield put({ type: userActionTypes.CREATE_ERROR, error })
   }
 }
 
-const watchers = [takeLatest(userActionTypes.GET_OR_CREATE, getOrCreateUser)]
+const watchers = [takeLatest(userActionTypes.CREATE, createUser)]
 
-export { getOrCreateUser, watchers }
+export { createUser, watchers }

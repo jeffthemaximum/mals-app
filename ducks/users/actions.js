@@ -1,8 +1,7 @@
 import * as actionTypes from './actionTypes'
 
-export function getOrCreateUser (jwt) {
+export function createUser () {
   return {
-    type: actionTypes.GET_OR_CREATE,
-    jwt
+    type: actionTypes.CREATE
   }
 }

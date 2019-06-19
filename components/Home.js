@@ -12,6 +12,7 @@ import {
 } from 'react-native'
 import Button from 'apsl-react-native-button'
 import { TextField } from 'react-native-material-textfield'
+import lodashGet from 'lodash/get'
 
 import constants from '../constants'
 
@@ -21,7 +22,7 @@ export default class Home extends Component<{}> {
 
     this.state = {
       isLoading: false,
-      name: ''
+      name: null
     }
   }
 
@@ -35,6 +36,8 @@ export default class Home extends Component<{}> {
 
   render () {
     const { loading, user } = this.props
+
+    const name = this.state.name || lodashGet(user, 'name', '')
 
     const spinner = loading ? (
       <ActivityIndicator size='large' />
@@ -76,7 +79,7 @@ export default class Home extends Component<{}> {
               onChange={this._onNameChange}
               textColor={constants.BRAND.navy}
               tintColor={constants.BRAND.navy}
-              value={this.state.name}
+              value={name}
             />
           </View>
           {spinner}

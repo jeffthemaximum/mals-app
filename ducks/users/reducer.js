@@ -2,19 +2,19 @@ import * as actionTypes from './actionTypes'
 
 export default function users (state = {}, action) {
   switch (action.type) {
-    case actionTypes.GET_OR_CREATE:
+    case actionTypes.CREATE:
       return {
         ...state,
         loading: true
       }
-    case actionTypes.GET_OR_CREATE_ERROR:
+    case actionTypes.CREATE_ERROR:
       return {
         ...state,
         error: true,
         loading: false,
         user: null
       }
-    case actionTypes.GET_OR_CREATE_SUCCESS:
+    case actionTypes.CREATE_SUCCESS:
       return {
         ...state,
         error: false,
