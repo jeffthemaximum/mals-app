@@ -13,7 +13,7 @@ export async function createUser () {
 
   try {
     const response = await axios.request(requestConfig)
-    return response.data
+    return response
   } catch (e) {
     const errors = handleApiError(e)
     return { error: errors }

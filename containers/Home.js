@@ -9,13 +9,18 @@ import HomeComponent from '../components/Home'
 
 const {
   actions: { createUser },
-  selectors: { getUser: getUserSelector }
+  selectors: {
+    getUser: getUserSelector,
+    loading: loadingSelector
+  }
 } = users
 
 class Home extends Component<{}> {
   componentDidMount () {
-    const { createUser } = this.props
-    createUser()
+    const { createUser, user } = this.props
+    if (!user) {
+      createUser()
+    }
   }
 
   render () {
@@ -27,7 +32,7 @@ class Home extends Component<{}> {
 
 const mapStateToProps = state => {
   const user = getUserSelector(state)
-  const loading = !user
+  const loading = loadingSelector(state)
 
   return {
     loading,

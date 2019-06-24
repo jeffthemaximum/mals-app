@@ -21,7 +21,7 @@ export default class Home extends Component<{}> {
     super(props)
 
     this.state = {
-      isLoading: false,
+      errors: null,
       name: null
     }
   }
@@ -30,14 +30,43 @@ export default class Home extends Component<{}> {
     title: 'Meet a Local Stranger'
   }
 
+  componentDidUpdate (prevProps) {
+    if (!prevProps.user && this.props.user) {
+      this.setState({ name: lodashGet(this.props.user, 'name', '') })
+    }
+  }
+
+  _onFormSubmit = () => {
+    const { startChat } = this.props
+    const errors = this._validateName()
+    if (errors) {
+      this.setState({errors})
+    } else {
+      const { name } = this.state
+      startChat({name})
+    }
+  }
+
   _onNameChange = (event) => {
-    this.setState({ name: event.nativeEvent.text });
-  };
+    this.setState({
+      errors: null,
+      name: event.nativeEvent.text
+    });
+  }
+
+  _validateName = (name = this.state.name) => {
+    if (name.length === 0) {
+      return {
+        name: [
+          `can't be blank`
+        ]
+      }
+    }
+  }
 
   render () {
     const { loading, user } = this.props
-
-    const name = this.state.name || lodashGet(user, 'name', '')
+    const { errors, isFocused, name } = this.state
 
     const spinner = loading ? (
       <ActivityIndicator size='large' />
@@ -70,6 +99,7 @@ export default class Home extends Component<{}> {
                 borderColor: constants.BRAND.navy,
                 margin: 0
               }}
+              error={errors && errors.name && errors.name[0] && `Name ${errors.name[0]}`}
               errorColor={constants.BRAND.red}
               fontSize={24}
               label={'Enter first name...'}
@@ -79,13 +109,13 @@ export default class Home extends Component<{}> {
               onChange={this._onNameChange}
               textColor={constants.BRAND.navy}
               tintColor={constants.BRAND.navy}
-              value={name}
+              value={name || ''}
             />
           </View>
           {spinner}
         </ScrollView>
         <Button
-          onPress={this._onSearchPressed}
+          onPress={this._onFormSubmit}
           style={styles.buttonStyles}
           textStyle={styles.buttonText}
         >

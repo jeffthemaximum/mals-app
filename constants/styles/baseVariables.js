@@ -4,7 +4,7 @@ export const BRAND = {
   grey: '#516C91',
   navy: '#05256C',
   paleBlue: '#BBE1EE',
-  red: '#59C321',
+  red: '#F93C21',
   teal: '#1F9CA7',
   white: '#FFFFFF'
 }

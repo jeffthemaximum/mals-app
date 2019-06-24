@@ -6,13 +6,13 @@ import * as userApi from './api'
 import constants from '../../constants'
 
 function * createUser (action) {
-  const user = yield call(userApi.createUser)
+  const response = yield call(userApi.createUser)
+  const { data: user, error } = response
   if (user) {
     const { jwt } = user
     yield call(clientStorageService.set, constants.JWT, jwt)
     yield put({ type: userActionTypes.CREATE_SUCCESS, user })
   } else {
-    const { error } = response
     yield put({ type: userActionTypes.CREATE_ERROR, error })
   }
 }
