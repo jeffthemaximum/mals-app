@@ -37,13 +37,13 @@ export default class Home extends Component<{}> {
   }
 
   _onFormSubmit = () => {
-    const { startChat } = this.props
+    const { createChat } = this.props
     const errors = this._validateName()
     if (errors) {
       this.setState({errors})
     } else {
       const { name } = this.state
-      startChat({name})
+      createChat({name})
     }
   }
 
@@ -115,6 +115,7 @@ export default class Home extends Component<{}> {
           {spinner}
         </ScrollView>
         <Button
+          isLoading={loading}
           onPress={this._onFormSubmit}
           style={styles.buttonStyles}
           textStyle={styles.buttonText}
@@ -127,6 +128,7 @@ export default class Home extends Component<{}> {
 }
 
 const styles = StyleSheet.create({
+  container: constants.BASE_STYLES.container,
   buttonStyles: {
     backgroundColor: constants.BRAND.navy
   },
@@ -137,9 +139,6 @@ const styles = StyleSheet.create({
   },
   bold: {
     fontFamily: 'ProximaNova-Bold'
-  },
-  scrollView: {
-    width: '100%'
   },
   contentContainer: {
     justifyContent: 'center',
@@ -153,21 +152,15 @@ const styles = StyleSheet.create({
     marginTop: 24,
     textAlign: 'center'
   },
-  container: {
-    padding: 30,
-    justifyContent: 'center',
-    alignItems: 'center',
-    flexDirection: 'column',
-    flex: 1
-  },
-  footer: {
-    alignSelf: 'flex-end'
-  },
   flowRight: {
     flexDirection: 'row',
     alignItems: 'center',
     alignSelf: 'stretch'
   },
+  footer: {
+    alignSelf: 'flex-end'
+  },
+
   image: {
     width: 300,
     height: 250
@@ -175,14 +168,7 @@ const styles = StyleSheet.create({
   inputContainer: {
     width: '100%'
   },
-  searchInput: {
-    height: 36,
-    padding: 4,
-    marginRight: 5,
-    fontSize: 18,
-    borderWidth: 1,
-    borderColor: '#48BBEC',
-    borderRadius: 8,
-    color: '#48BBEC'
+  scrollView: {
+    width: '100%'
   }
 })

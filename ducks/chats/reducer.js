@@ -1,28 +1,25 @@
 import * as actionTypes from './actionTypes'
 
-export default function users (state = {}, action) {
-  switch (action.type) {
+export default function chats (state = {}, action) {
+  switch(action.type) {
     case actionTypes.CREATE:
-    case actionTypes.UPDATE:
       return {
         ...state,
         loading: true
       }
     case actionTypes.CREATE_ERROR:
-    case actionTypes.UPDATE_ERROR:
       return {
         ...state,
-        error: true,
-        loading: false,
-        user: null
+        chat: null,
+        error: action.error,
+        loading: false
       }
     case actionTypes.CREATE_SUCCESS:
-    case actionTypes.UPDATE_SUCCESS:
       return {
         ...state,
-        error: false,
-        loading: false,
-        user: action.user
+        chat: action.chat,
+        error: null,
+        loading: false
       }
     default:
       return state

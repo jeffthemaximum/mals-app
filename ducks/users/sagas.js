@@ -17,6 +17,20 @@ function * createUser (action) {
   }
 }
 
+function * updateUser (action) {
+  const { name } = action
+  const jwt = yield call(clientStorageService.get, constants.JWT)
+  const response = yield call(userApi.updateUser, jwt, { name })
+  const { data: user, error } = response
+  if (user) {
+    const { jwt } = user
+    yield call(clientStorageService.set, constants.JWT, jwt)
+    yield put({ type: userActionTypes.UPDATE_SUCCESS, user })
+  } else {
+    yield put({ type: userActionTypes.UPDATE_ERROR, error })
+  }
+}
+
 const watchers = [takeLatest(userActionTypes.CREATE, createUser)]
 
-export { createUser, watchers }
+export { createUser, updateUser, watchers }

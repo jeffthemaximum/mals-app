@@ -5,28 +5,12 @@ import { generateHeaders } from '../../services/requestHeaders'
 
 const API_HOST = process.env['MALS_API_HOST']
 
-export async function createUser () {
-  const requestConfig = {
-    method: 'post',
-    params: {},
-    url: `${API_HOST}/api/v1/users`
-  }
-
-  try {
-    const response = await axios.request(requestConfig)
-    return response
-  } catch (e) {
-    const errors = handleApiError(e)
-    return { error: errors }
-  }
-}
-
-export async function updateUser (jwt, data) {
+export async function createChat (jwt) {
   const requestConfig = {
     headers: generateHeaders({jwt}),
-    method: 'patch',
-    params: data,
-    url: `${API_HOST}/api/v1/users`
+    method: 'post',
+    params: {},
+    url: `${API_HOST}/api/v1/chats`
   }
 
   try {

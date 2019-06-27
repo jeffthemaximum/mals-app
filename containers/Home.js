@@ -3,6 +3,7 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 
+import chats from '../ducks/chats'
 import users from '../ducks/users'
 
 import HomeComponent from '../components/Home'
@@ -14,6 +15,10 @@ const {
     loading: loadingSelector
   }
 } = users
+
+const {
+  actions: { createChat }
+} = chats
 
 class Home extends Component<{}> {
   componentDidMount () {
@@ -31,8 +36,8 @@ class Home extends Component<{}> {
 }
 
 const mapStateToProps = state => {
-  const user = getUserSelector(state)
   const loading = loadingSelector(state)
+  const user = getUserSelector(state)
 
   return {
     loading,
@@ -41,6 +46,7 @@ const mapStateToProps = state => {
 }
 
 const mapDispatchToProps = {
+  createChat,
   createUser
 }
 
