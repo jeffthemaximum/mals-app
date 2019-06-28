@@ -12,15 +12,16 @@ const {
   actions: { createUser },
   selectors: {
     getUser: getUserSelector,
-    loading: loadingSelector
+    loading: userLoadingSelector
   }
 } = users
 
 const {
-  actions: { createChat }
+  actions: { createChat },
+  selectors: { loading: chatLoadingSelector }
 } = chats
 
-class Home extends Component<{}> {
+class Home extends Component {
   componentDidMount () {
     const { createUser, user } = this.props
     if (!user) {
@@ -36,7 +37,7 @@ class Home extends Component<{}> {
 }
 
 const mapStateToProps = state => {
-  const loading = loadingSelector(state)
+  const loading = userLoadingSelector(state) || chatLoadingSelector(state)
   const user = getUserSelector(state)
 
   return {

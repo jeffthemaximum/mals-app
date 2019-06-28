@@ -9,7 +9,7 @@ import {
 
 import constants from '../constants'
 
-export default class Chat extends Component<{}> {
+export default class Chat extends Component {
   render () {
     const {
       chat,

@@ -23,7 +23,7 @@ export async function createUser () {
 
 export async function updateUser (jwt, data) {
   const requestConfig = {
-    headers: generateHeaders({jwt}),
+    headers: generateHeaders({ jwt }),
     method: 'patch',
     params: data,
     url: `${API_HOST}/api/v1/users`

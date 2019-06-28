@@ -7,16 +7,43 @@ import {
   ScrollView,
   StyleSheet,
   Text,
-  TextInput,
   View
 } from 'react-native'
-import Button from 'apsl-react-native-button'
 import { TextField } from 'react-native-material-textfield'
+import Button from 'apsl-react-native-button'
 import lodashGet from 'lodash/get'
 
 import constants from '../constants'
 
-export default class Home extends Component<{}> {
+const NameInputField = ({ errors, name, onChange }) => {
+  return (
+    <View style={styles.inputContainer}>
+      <TextField
+        affixTextStyle={{
+          fontFamily: 'ProximaNova-Regular'
+        }}
+        baseColor={constants.BRAND.navy}
+        containerStyle={{
+          borderColor: constants.BRAND.navy,
+          margin: 0
+        }}
+        error={errors && errors.name && errors.name[0] && `Name ${errors.name[0]}`}
+        errorColor={constants.BRAND.red}
+        fontSize={24}
+        label={'Enter first name...'}
+        labelTextStyle={{
+          fontFamily: 'ProximaNova-Regular'
+        }}
+        onChange={onChange}
+        textColor={constants.BRAND.navy}
+        tintColor={constants.BRAND.navy}
+        value={name || ''}
+      />
+    </View>
+  )
+}
+
+export default class Home extends Component {
   constructor (props) {
     super(props)
 
@@ -40,10 +67,10 @@ export default class Home extends Component<{}> {
     const { createChat } = this.props
     const errors = this._validateName()
     if (errors) {
-      this.setState({errors})
+      this.setState({ errors })
     } else {
       const { name } = this.state
-      createChat({name})
+      createChat({ name })
     }
   }
 
@@ -51,7 +78,7 @@ export default class Home extends Component<{}> {
     this.setState({
       errors: null,
       name: event.nativeEvent.text
-    });
+    })
   }
 
   _validateName = (name = this.state.name) => {
@@ -65,8 +92,8 @@ export default class Home extends Component<{}> {
   }
 
   render () {
-    const { loading, user } = this.props
-    const { errors, isFocused, name } = this.state
+    const { loading } = this.props
+    const { errors, name } = this.state
 
     const spinner = loading ? (
       <ActivityIndicator size='large' />
@@ -89,29 +116,11 @@ export default class Home extends Component<{}> {
             <Text style={styles.bold}>Hello </Text>
             <Text>Stranger</Text>
           </Text>
-          <View style={styles.inputContainer}>
-            <TextField
-              affixTextStyle={{
-                fontFamily: 'ProximaNova-Regular'
-              }}
-              baseColor={constants.BRAND.navy}
-              containerStyle={{
-                borderColor: constants.BRAND.navy,
-                margin: 0
-              }}
-              error={errors && errors.name && errors.name[0] && `Name ${errors.name[0]}`}
-              errorColor={constants.BRAND.red}
-              fontSize={24}
-              label={'Enter first name...'}
-              labelTextStyle={{
-                fontFamily: 'ProximaNova-Regular'
-              }}
-              onChange={this._onNameChange}
-              textColor={constants.BRAND.navy}
-              tintColor={constants.BRAND.navy}
-              value={name || ''}
-            />
-          </View>
+          <NameInputField
+            errors={errors}
+            name={name}
+            onChange={this._onNameChange}
+          />
           {spinner}
         </ScrollView>
         <Button

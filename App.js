@@ -1,15 +1,7 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- *
- * @format
- * @flow
- */
-
 import React, { Component } from 'react'
 import { createStackNavigator, createAppContainer } from 'react-navigation'
 import { createStore, applyMiddleware } from 'redux'
-import { Provider, connect } from 'react-redux'
+import { Provider } from 'react-redux'
 import createSagaMiddleware from 'redux-saga'
 
 import Chat from './containers/Chat'
@@ -22,7 +14,7 @@ const sagaMiddleware = createSagaMiddleware()
 
 const MainNavigator = createStackNavigator({
   Home: { screen: Home },
-  Chat: { screen: Chat}
+  Chat: { screen: Chat }
 })
 
 const store = createStore(
@@ -37,13 +29,13 @@ const Navigation = createAppContainer(MainNavigator)
 sagaMiddleware.run(rootSaga)
 
 export default class App extends Component<{}> {
-  render() {
+  render () {
     return (
       <Provider store={store}>
         <Navigation ref={navigatorRef => {
-          NavigationService.setTopLevelNavigator(navigatorRef);
+          NavigationService.setTopLevelNavigator(navigatorRef)
         }}/>
       </Provider>
-    );
+    )
   }
 }

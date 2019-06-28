@@ -1,4 +1,4 @@
-export const generateHeaders = ({jwt}) => {
+export const generateHeaders = ({ jwt }) => {
   let headers = {}
 
   if (jwt) {

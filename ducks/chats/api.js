@@ -7,7 +7,7 @@ const API_HOST = process.env['MALS_API_HOST']
 
 export async function createChat (jwt) {
   const requestConfig = {
-    headers: generateHeaders({jwt}),
+    headers: generateHeaders({ jwt }),
     method: 'post',
     params: {},
     url: `${API_HOST}/api/v1/chats`

@@ -5,7 +5,7 @@ import * as userActionTypes from './actionTypes'
 import * as userApi from './api'
 import constants from '../../constants'
 
-function * createUser (action) {
+function * createUser () {
   const response = yield call(userApi.createUser)
   const { data: user, error } = response
   if (user) {

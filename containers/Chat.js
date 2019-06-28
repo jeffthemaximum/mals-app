@@ -21,7 +21,7 @@ const {
   selectors: { getUser: getUserSelector }
 } = users
 
-class Chat extends Component<{}> {
+class Chat extends Component {
   render () {
     return (
       <ChatComponent {...this.props} />

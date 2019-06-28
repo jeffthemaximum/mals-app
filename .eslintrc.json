@@ -1,0 +1,20 @@
+{
+  "parser": "babel-eslint",
+  "env": {
+    "browser": true,
+    "node": true,
+    "jest": true,
+    "commonjs": true
+  },
+  "plugins": [
+    "react"
+  ],
+  "extends": [
+    "standard",
+    "plugin:react/recommended"
+  ],
+  "rules": {
+    "react/no-unescaped-entities": "off",
+    "react/prop-types": "off"
+  }
+}

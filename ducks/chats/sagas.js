@@ -1,5 +1,4 @@
 import { call, fork, put, race, take, takeLatest } from 'redux-saga/effects'
-import { NavigationActions } from 'react-navigation';
 
 import * as chatActionTypes from './actionTypes'
 import * as chatApi from './api'
