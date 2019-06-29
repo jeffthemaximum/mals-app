@@ -9,7 +9,7 @@ import users from '../ducks/users'
 import HomeComponent from '../components/Home'
 
 const {
-  actions: { createUser },
+  actions: { createUser, updateUser },
   selectors: {
     getUser: getUserSelector,
     loading: userLoadingSelector
@@ -17,7 +17,6 @@ const {
 } = users
 
 const {
-  actions: { createChat },
   selectors: { loading: chatLoadingSelector }
 } = chats
 
@@ -47,8 +46,8 @@ const mapStateToProps = state => {
 }
 
 const mapDispatchToProps = {
-  createChat,
-  createUser
+  createUser,
+  updateUser
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(Home)

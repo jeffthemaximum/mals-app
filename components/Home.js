@@ -64,13 +64,15 @@ export default class Home extends Component {
   }
 
   _onFormSubmit = () => {
-    const { createChat } = this.props
+    const { updateUser } = this.props
+
     const errors = this._validateName()
+
     if (errors) {
       this.setState({ errors })
     } else {
       const { name } = this.state
-      createChat({ name })
+      updateUser({ name })
     }
   }
 

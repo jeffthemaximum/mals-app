@@ -4,6 +4,7 @@ import * as clientStorageService from '../../services/clientStorage'
 import * as userActionTypes from './actionTypes'
 import * as userApi from './api'
 import constants from '../../constants'
+import navigationService from '../../services/navigationService'
 
 function * createUser () {
   const response = yield call(userApi.createUser)
@@ -26,11 +27,15 @@ function * updateUser (action) {
     const { jwt } = user
     yield call(clientStorageService.set, constants.JWT, jwt)
     yield put({ type: userActionTypes.UPDATE_SUCCESS, user })
+    yield call(navigationService.navigate, 'Chat')
   } else {
     yield put({ type: userActionTypes.UPDATE_ERROR, error })
   }
 }
 
-const watchers = [takeLatest(userActionTypes.CREATE, createUser)]
+const watchers = [
+  takeLatest(userActionTypes.CREATE, createUser),
+  takeLatest(userActionTypes.UPDATE, updateUser)
+]
 
 export { createUser, updateUser, watchers }

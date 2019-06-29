@@ -5,3 +5,10 @@ export function createUser () {
     type: actionTypes.CREATE
   }
 }
+
+export function updateUser ({ name }) {
+  return {
+    type: actionTypes.UPDATE,
+    name
+  }
+}

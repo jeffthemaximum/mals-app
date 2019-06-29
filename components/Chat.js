@@ -13,11 +13,10 @@ export default class Chat extends Component {
   render () {
     const {
       chat,
-      error,
-      loading,
-      recipient,
       user
     } = this.props
+
+    console.log(chat)
 
     return (
       <View style={styles.container}>
@@ -25,9 +24,6 @@ export default class Chat extends Component {
           {
             JSON.stringify({
               chat,
-              error,
-              loading,
-              recipient,
               user
             })
           }

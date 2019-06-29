@@ -4,7 +4,6 @@ import * as chatActionTypes from './actionTypes'
 import * as chatApi from './api'
 import * as clientStorageService from '../../services/clientStorage'
 import constants from '../../constants'
-import navigationService from '../../services/navigationService'
 import users from '../users'
 
 function * createChat (action) {
@@ -22,7 +21,6 @@ function * createChat (action) {
     const { data: chat, error } = response
     if (chat) {
       yield put({ type: chatActionTypes.CREATE_SUCCESS, chat })
-      yield call(navigationService.navigate, 'Chat')
     } else {
       yield put({ type: chatActionTypes.CREATE_ERROR, error })
     }

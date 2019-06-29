@@ -2,14 +2,15 @@ import axios from 'axios'
 
 import { handleApiError } from '../../services/errorHandler'
 import { generateHeaders } from '../../services/requestHeaders'
+import constants from '../../constants'
 
-const API_HOST = process.env['MALS_API_HOST']
+const API_ROOT = constants.API_ROOT
 
 export async function createUser () {
   const requestConfig = {
     method: 'post',
     params: {},
-    url: `${API_HOST}/api/v1/users`
+    url: `${API_ROOT}/api/v1/users`
   }
 
   try {
@@ -26,7 +27,7 @@ export async function updateUser (jwt, data) {
     headers: generateHeaders({ jwt }),
     method: 'patch',
     params: data,
-    url: `${API_HOST}/api/v1/users`
+    url: `${API_ROOT}/api/v1/users`
   }
 
   try {

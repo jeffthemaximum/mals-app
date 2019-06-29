@@ -4,7 +4,9 @@ export const generateHeaders = ({ jwt }) => {
   if (jwt) {
     headers = {
       ...headers,
-      'Authorization': `Bearer ${jwt}`
+      'Accept': 'application/json',
+      'Authorization': `Bearer ${jwt}`,
+      'Content-Type': 'application/json'
     }
   }
 
