@@ -16,8 +16,6 @@ export default class Chat extends Component {
       user
     } = this.props
 
-    console.log(chat)
-
     return (
       <View style={styles.container}>
         <Text>

@@ -2,17 +2,18 @@
 
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { StyleSheet, View } from 'react-native'
-import { ActionCableConsumer, ActionCableProvider } from 'react-actioncable-provider'
 import ActionCable from 'action-cable-react-jwt'
 
 import * as clientStorage from '../services/clientStorage'
-import { generateHeaders } from '../services/requestHeaders'
+import chats from '../ducks/chats'
 import constants from '../constants'
 import users from '../ducks/users'
 
 import ChatComponent from '../components/Chat'
-import MessagesCable from '../components/MessageCable'
+
+const {
+  api: { createChat }
+} = chats
 
 const {
   selectors: { getUser: getUserSelector }
@@ -20,38 +21,78 @@ const {
 
 class Chat extends Component {
   state = {
+    cable: null,
     chat: null,
+    chatsCable: null,
     jwt: null,
-    loading: false
+    loading: false,
+    messagesCable: null
   }
 
   async componentDidMount () {
     const jwt = await clientStorage.get(constants.JWT)
     const cable = ActionCable.createConsumer(constants.API_WS_ROOT, jwt)
+    this.setState({ cable }, () => {
+      this._connectToChatsChannel()
+    })
+  }
 
-    this.setState({ cable, jwt })
+  async componentDidUpdate (prevProps, prevState) {
+    if (!prevState.chat && this.state.chat) {
+      this._connectToMessagesChannel()
+    }
+  }
+
+  _connectToChatsChannel = () => {
+    const { cable } = this.state
+    const { _createChat, _handleReceivedChat } = this
+    const chatsCable = cable.subscriptions.create(
+      { channel: 'ChatsChannel' },
+      {
+        connected (connectedData) {
+          _createChat()
+        },
+        received (receivedData) {
+          const { chat } = receivedData
+          _handleReceivedChat(chat)
+        }
+      }
+    )
+
+    this.setState({ cable, chatsCable })
+  }
+
+  _connectToMessagesChannel = () => {
+    const { cable, chat } = this.state
+    const { _handleReceivedMessage } = this
+    const messagesCable = cable.subscriptions.create(
+      {
+        channel: 'MessagesChannel',
+        chat: chat.id
+      },
+      {
+        received (receivedData) {
+          const { message } = receivedData
+          _handleReceivedMessage(message)
+        }
+      }
+    )
+
+    this.setState({ messagesCable })
   }
 
   _createChat = async () => {
     const { chat, loading } = this.state
-    const { user } = this.props
 
     if (!loading && !chat) {
       this.setState({ loading: true })
       const jwt = await clientStorage.get(constants.JWT)
-      fetch(`${constants.API_ROOT}/api/v1/chats`, {
-        method: 'POST',
-        headers: generateHeaders({ jwt }),
-        body: JSON.stringify({ user })
-      })
-        .then(() => this.setState({
-          loading: false
-        }))
+      await createChat(jwt)
+      this.setState({ loading: false })
     }
   }
 
-  _handleReceivedChat = response => {
-    const { chat } = response
+  _handleReceivedChat = chat => {
     this.setState({
       chat
     })
@@ -65,39 +106,12 @@ class Chat extends Component {
   }
 
   render () {
-    const { cable, chat, jwt } = this.state
+    const { chat } = this.state
     const { user } = this.props
 
-    return (
-      <View style={styles.container}>
-        { cable && jwt &&
-          <ActionCableProvider cable={cable}>
-            <View>
-              <ActionCableConsumer
-                channel={{ channel: 'ChatsChannel' }}
-                onConnected={this._createChat}
-                onReceived={(res) => this._handleReceivedChat(res)}
-              />
-              {chat && (
-                <View>
-                  <MessagesCable
-                    chat={chat}
-                    handleReceivedMessage={this._handleReceivedMessage}
-                  />
-                  <ChatComponent chat={chat} user={user} />
-                </View>
-              )}
-            </View>
-          </ActionCableProvider>
-        }
-      </View>
-    )
+    return <ChatComponent chat={chat} user={user} />
   }
 }
-
-const styles = StyleSheet.create({
-  container: constants.BASE_STYLES.container
-})
 
 const mapStateToProps = state => {
   const user = getUserSelector(state)
