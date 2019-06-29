@@ -21,3 +21,20 @@ export async function createChat (jwt) {
     return { error: errors }
   }
 }
+
+export async function sendMessage (jwt, messageData) {
+  const requestConfig = {
+    headers: generateHeaders({ jwt }),
+    method: 'post',
+    params: { ...messageData },
+    url: `${API_HOST}/api/v1/messages`
+  }
+
+  try {
+    const response = await axios.request(requestConfig)
+    return response
+  } catch (e) {
+    const errors = handleApiError(e)
+    return { error: errors }
+  }
+}

@@ -1,8 +1,9 @@
 'use strict'
 
-import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import ActionCable from 'action-cable-react-jwt'
+import React, { Component } from 'react'
+import snakeCaseKeys from 'snakecase-keys'
 
 import * as clientStorage from '../services/clientStorage'
 import chats from '../ducks/chats'
@@ -12,7 +13,7 @@ import users from '../ducks/users'
 import ChatComponent from '../components/Chat'
 
 const {
-  api: { createChat }
+  api: { createChat, sendMessage }
 } = chats
 
 const {
@@ -37,7 +38,7 @@ class Chat extends Component {
     })
   }
 
-  async componentDidUpdate (prevProps, prevState) {
+  componentDidUpdate (prevProps, prevState) {
     if (!prevState.chat && this.state.chat) {
       this._connectToMessagesChannel()
     }
@@ -98,18 +99,43 @@ class Chat extends Component {
     })
   }
 
-  _handleReceivedMessage = response => {
-    const { message } = response
+  _handleReceivedMessage = message => {
     const chat = { ...this.state.chat }
-    chat.messages = [...chat.messages, message]
+    chat.messages = [message, ...chat.messages]
     this.setState({ chat })
+  }
+
+  _handleSendMessage = async messages => {
+    const { chat } = this.state
+
+    const message = messages.sort(function compare (a, b) {
+      return b - a
+    })[0]
+
+    const jwt = await clientStorage.get(constants.JWT)
+
+    const {
+      _id: clientId,
+      text,
+      user: {
+        _id: userId
+      }
+    } = message
+
+    const messageData = snakeCaseKeys({
+      chatId: chat.id,
+      clientId,
+      text,
+      userId
+    })
+    await sendMessage(jwt, messageData)
   }
 
   render () {
     const { chat } = this.state
     const { user } = this.props
 
-    return <ChatComponent chat={chat} user={user} />
+    return <ChatComponent chat={chat} handleSendMessage={this._handleSendMessage} user={user} />
   }
 }
 

@@ -1,36 +1,24 @@
 'use strict'
 
 import React, { Component } from 'react'
-import {
-  StyleSheet,
-  Text,
-  View
-} from 'react-native'
-
-import constants from '../constants'
+import { GiftedChat } from 'react-native-gifted-chat'
 
 export default class Chat extends Component {
   render () {
     const {
       chat,
+      handleSendMessage,
       user
     } = this.props
 
+    const messages = chat ? chat.messages : []
+
     return (
-      <View style={styles.container}>
-        <Text>
-          {
-            JSON.stringify({
-              chat,
-              user
-            })
-          }
-        </Text>
-      </View>
+      <GiftedChat
+        messages={messages}
+        onSend={(messages) => handleSendMessage(messages)}
+        user={{ _id: user.id }}
+      />
     )
   }
 }
-
-const styles = StyleSheet.create({
-  container: constants.BASE_STYLES.container
-})
