@@ -21,6 +21,11 @@ const {
 } = users
 
 class Chat extends Component {
+  static navigationOptions = {
+    title: 'Meet a Local Stranger',
+    headerLeft: null
+  }
+
   state = {
     cable: null,
     chat: null,
@@ -42,6 +47,11 @@ class Chat extends Component {
     if (!prevState.chat && this.state.chat) {
       this._connectToMessagesChannel()
     }
+  }
+
+  componentWillUnmount () {
+    this.state.chatsCable.unsubscribe()
+    this.state.messagesCable.unsubscribe()
   }
 
   _connectToChatsChannel = () => {

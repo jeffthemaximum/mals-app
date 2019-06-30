@@ -13,11 +13,18 @@ export default class Chat extends Component {
 
     const messages = chat ? chat.messages : []
 
+    const userData = {
+      _id: user.id,
+      name: user.name
+    }
+
     return (
       <GiftedChat
         messages={messages}
         onSend={(messages) => handleSendMessage(messages)}
-        user={{ _id: user.id }}
+        renderAvatar={null}
+        renderUsernameOnMessage={true}
+        user={userData}
       />
     )
   }

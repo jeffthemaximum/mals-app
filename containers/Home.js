@@ -21,6 +21,10 @@ const {
 } = chats
 
 class Home extends Component {
+  static navigationOptions = {
+    title: 'Meet a Local Stranger'
+  }
+
   componentDidMount () {
     const { createUser, user } = this.props
     if (!user) {

@@ -53,10 +53,6 @@ export default class Home extends Component {
     }
   }
 
-  static navigationOptions = {
-    title: 'Meet a Local Stranger'
-  }
-
   componentDidUpdate (prevProps) {
     if (!prevProps.user && this.props.user) {
       this.setState({ name: lodashGet(this.props.user, 'name', '') })
