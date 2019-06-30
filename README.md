@@ -11,13 +11,18 @@ A chat app where you chat with a local stranger
 - avatar
 - [ ] random avatar for a user from https://getavataaars.com/
 - brand
-- [ ] text/colors match brand in chat
+- [X] text/colors match brand in chat
 - loading
 - [ ] sending messages disabled until user joins
 - [ ] loading lottie file is fun
 - [ ] loading has random chats from db show up
+- error
+- [ ] handle user create error
+- [ ] handle chat create error
+- [ ] handle message create error
+- [ ] handle getJWT error in sagas (make this its own saga)
 - redux
-- [ ] api call for chats and messages thru redux/sagas
+- [X] api call for chats and messages thru redux/sagas
 - stathat
 - [ ] client stats for redux events
 - [ ] server stats either like this https://blog.appoptics.com/monitoring-rails-get-hidden-metrics-rails-app/ or this https://guides.rubyonrails.org/active_support_instrumentation.html

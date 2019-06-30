@@ -9,12 +9,10 @@ import { renderSend } from './Send'
 export default class Chat extends Component {
   render () {
     const {
-      chat,
       handleSendMessage,
+      messages,
       user
     } = this.props
-
-    const messages = chat ? chat.messages : []
 
     const userData = {
       _id: user.id,

@@ -8,5 +8,5 @@ export function renderSend (props) {
     color: constants.BRAND.teal
   }
 
-  return <Send {...props} textStyle={textStyle}/>
+  return <Send {...props} textStyle={textStyle} />
 }

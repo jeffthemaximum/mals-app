@@ -9,13 +9,20 @@ import * as clientStorage from '../services/clientStorage'
 import * as messageSerializers from '../services/serializers/messages'
 import chats from '../ducks/chats'
 import constants from '../constants'
+import messages from '../ducks/messages'
 import users from '../ducks/users'
 
 import ChatComponent from '../components/Chat'
 
 const {
-  api: { createChat, sendMessage }
+  actions: { createChat, setChat },
+  selectors: { chat: chatSelector }
 } = chats
+
+const {
+  actions: { createMessage, setMessage, setMessages },
+  selectors: { messages: messagesSelector }
+} = messages
 
 const {
   selectors: { getUser: getUserSelector }
@@ -32,7 +39,6 @@ class Chat extends Component {
 
   state = {
     cable: null,
-    chat: null,
     chatsCable: null,
     jwt: null,
     loading: false,
@@ -47,8 +53,8 @@ class Chat extends Component {
     })
   }
 
-  componentDidUpdate (prevProps, prevState) {
-    if (!prevState.chat && this.state.chat) {
+  componentDidUpdate (prevProps) {
+    if (!prevProps.chat && this.props.chat) {
       this._connectToMessagesChannel()
     }
   }
@@ -59,13 +65,14 @@ class Chat extends Component {
   }
 
   _connectToChatsChannel = () => {
+    const { createChat } = this.props
     const { cable } = this.state
-    const { _createChat, _handleReceivedChat } = this
+    const { _handleReceivedChat } = this
     const chatsCable = cable.subscriptions.create(
       { channel: 'ChatsChannel' },
       {
         connected (connectedData) {
-          _createChat()
+          createChat()
         },
         received (receivedData) {
           const { chat } = receivedData
@@ -78,8 +85,10 @@ class Chat extends Component {
   }
 
   _connectToMessagesChannel = () => {
-    const { cable, chat } = this.state
+    const { chat } = this.props
+    const { cable } = this.state
     const { _handleReceivedMessage } = this
+
     const messagesCable = cable.subscriptions.create(
       {
         channel: 'MessagesChannel',
@@ -93,64 +102,66 @@ class Chat extends Component {
       }
     )
 
-    this.setState({ messagesCable })
-  }
-
-  _createChat = async () => {
-    const { chat, loading } = this.state
-
-    if (!loading && !chat) {
-      this.setState({ loading: true })
-      const jwt = await clientStorage.get(constants.JWT)
-      await createChat(jwt)
-      this.setState({ loading: false })
-    }
+    this.setState({ cable, messagesCable })
   }
 
   _handleReceivedChat = chat => {
+    const { setChat, setMessages } = this.props
+
     chat = chatSerializers.deserialize(chat)
-    this.setState({
-      chat
-    })
+    const messages = chat.messages
+    // delete chat.messages
+
+    setChat(chat)
+    setMessages(messages)
   }
 
   _handleReceivedMessage = message => {
-    message = messageSerializers.deserialize(message)
-    const chat = { ...this.state.chat }
-    chat.messages = [message, ...chat.messages]
-    this.setState({ chat })
+    const { setMessage } = this.props
+
+    const deserializedMessage = messageSerializers.deserialize(message)
+
+    setMessage(deserializedMessage)
   }
 
-  _handleSendMessage = async messages => {
-    const { chat } = this.state
+  _handleSendMessage = messages => {
+    const { chat, createMessage } = this.props
 
     const message = messages.sort(function compare (a, b) {
       return b - a
     })[0]
 
-    const jwt = await clientStorage.get(constants.JWT)
-
     const messageData = messageSerializers.serialize(message, chat)
-    await sendMessage(jwt, messageData)
+    createMessage(messageData)
   }
 
   render () {
-    const { chat } = this.state
-    const { user } = this.props
+    const { chat, messages, user } = this.props
 
-    return <ChatComponent chat={chat} handleSendMessage={this._handleSendMessage} user={user} />
+    return (
+      <ChatComponent
+        chat={chat}
+        handleSendMessage={this._handleSendMessage}
+        messages={messages}
+        user={user}
+      />
+    )
   }
 }
 
 const mapStateToProps = state => {
+  const chat = chatSelector(state)
+  const messages = messagesSelector(state)
   const user = getUserSelector(state)
 
   return {
+    chat,
+    messages,
     user
   }
 }
 
-const mapDispatchToProps = {}
+const mapDispatchToProps = { createChat, createMessage, setChat, setMessage, setMessages }
 
 export default connect(
   mapStateToProps,

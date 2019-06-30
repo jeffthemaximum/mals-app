@@ -1,6 +1,7 @@
 import * as actionTypes from './actionTypes'
 
 export default function chats (state = {}, action) {
+  console.log({ type: action.type })
   switch (action.type) {
     case actionTypes.CREATE:
       return {
@@ -15,6 +16,12 @@ export default function chats (state = {}, action) {
         loading: false
       }
     case actionTypes.CREATE_SUCCESS:
+      return {
+        ...state,
+        error: null,
+        loading: true // loading is true until we set chat
+      }
+    case actionTypes.SET:
       return {
         ...state,
         chat: action.chat,

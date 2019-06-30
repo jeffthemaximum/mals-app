@@ -1,8 +1,14 @@
 import * as actionTypes from './actionTypes'
 
-export function createChat ({ name }) {
+export function createChat () {
   return {
-    type: actionTypes.CREATE,
-    name
+    type: actionTypes.CREATE
+  }
+}
+
+export function setChat (chat) {
+  return {
+    type: actionTypes.SET,
+    chat
   }
 }

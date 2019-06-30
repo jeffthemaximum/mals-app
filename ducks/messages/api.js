@@ -6,12 +6,12 @@ import constants from '../../constants'
 
 const API_ROOT = constants.API_ROOT
 
-export async function createChat (jwt) {
+export async function createMessage (jwt, { message }) {
   const requestConfig = {
     headers: generateHeaders({ jwt }),
     method: 'post',
-    params: {},
-    url: `${API_ROOT}/api/v1/chats`
+    params: { ...message },
+    url: `${API_ROOT}/api/v1/messages`
   }
 
   try {
