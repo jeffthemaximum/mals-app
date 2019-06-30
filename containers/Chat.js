@@ -3,9 +3,10 @@
 import { connect } from 'react-redux'
 import ActionCable from 'action-cable-react-jwt'
 import React, { Component } from 'react'
-import snakeCaseKeys from 'snakecase-keys'
 
+import * as chatSerializers from '../services/serializers/chats'
 import * as clientStorage from '../services/clientStorage'
+import * as messageSerializers from '../services/serializers/messages'
 import chats from '../ducks/chats'
 import constants from '../constants'
 import users from '../ducks/users'
@@ -23,7 +24,10 @@ const {
 class Chat extends Component {
   static navigationOptions = {
     title: 'Meet a Local Stranger',
-    headerLeft: null
+    headerLeft: null,
+    headerTitleStyle: {
+      fontFamily: 'ProximaNova-Regular'
+    }
   }
 
   state = {
@@ -104,12 +108,14 @@ class Chat extends Component {
   }
 
   _handleReceivedChat = chat => {
+    chat = chatSerializers.deserialize(chat)
     this.setState({
       chat
     })
   }
 
   _handleReceivedMessage = message => {
+    message = messageSerializers.deserialize(message)
     const chat = { ...this.state.chat }
     chat.messages = [message, ...chat.messages]
     this.setState({ chat })
@@ -124,20 +130,7 @@ class Chat extends Component {
 
     const jwt = await clientStorage.get(constants.JWT)
 
-    const {
-      _id: clientId,
-      text,
-      user: {
-        _id: userId
-      }
-    } = message
-
-    const messageData = snakeCaseKeys({
-      chatId: chat.id,
-      clientId,
-      text,
-      userId
-    })
+    const messageData = messageSerializers.serialize(message, chat)
     await sendMessage(jwt, messageData)
   }
 

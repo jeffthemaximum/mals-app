@@ -7,11 +7,13 @@ A chat app where you chat with a local stranger
 - [ ] Message received logic with iOS style `received` below message
 - [ ] `user is typing` logic with text just above footer
 - [ ] when user 1 leaves chat, alert user 2 with `user has left` red text just above footer
+- [ ] show time in the text bubble for sent/received
 - avatar
 - [ ] random avatar for a user from https://getavataaars.com/
 - brand
 - [ ] text/colors match brand in chat
 - loading
+- [ ] sending messages disabled until user joins
 - [ ] loading lottie file is fun
 - [ ] loading has random chats from db show up
 - redux

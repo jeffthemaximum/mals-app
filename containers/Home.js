@@ -22,7 +22,10 @@ const {
 
 class Home extends Component {
   static navigationOptions = {
-    title: 'Meet a Local Stranger'
+    title: 'Meet a Local Stranger',
+    headerTitleStyle: {
+      fontFamily: 'ProximaNova-Regular'
+    }
   }
 
   componentDidMount () {
