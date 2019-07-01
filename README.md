@@ -3,7 +3,7 @@ A chat app where you chat with a local stranger
 
 # TODO
 - presence
-- [ ] Message sent logic with `sent` below message
+- [X] Message sent logic
 - [ ] Message received logic with iOS style `received` below message
 - [ ] `user is typing` logic with text just above footer
 - [ ] when user 1 leaves chat, alert user 2 with `user has left` red text just above footer

@@ -20,7 +20,7 @@ const {
 } = chats
 
 const {
-  actions: { createMessage, setMessage, setMessages },
+  actions: { createMessage, setMessage, setMessages, updateMessage },
   selectors: { messages: messagesSelector }
 } = messages
 
@@ -110,26 +110,30 @@ class Chat extends Component {
 
     chat = chatSerializers.deserialize(chat)
     const messages = chat.messages
-    // delete chat.messages
+    delete chat.messages
 
     setChat(chat)
     setMessages(messages)
   }
 
   _handleReceivedMessage = message => {
-    const { setMessage } = this.props
+    const { setMessage, updateMessage, user } = this.props
 
     const deserializedMessage = messageSerializers.deserialize(message)
+    const isOwnMessage = deserializedMessage.user.id === user.id
 
-    setMessage(deserializedMessage)
+    if (isOwnMessage) {
+      updateMessage(deserializedMessage)
+    } else {
+      setMessage(deserializedMessage)
+    }
   }
 
   _handleSendMessage = messages => {
-    const { chat, createMessage } = this.props
+    const { chat, createMessage, setMessage } = this.props
 
-    const message = messages.sort(function compare (a, b) {
-      return b - a
-    })[0]
+    const message = messages[messages.length - 1]
+    setMessage(message)
 
     const messageData = messageSerializers.serialize(message, chat)
     createMessage(messageData)
@@ -161,7 +165,14 @@ const mapStateToProps = state => {
   }
 }
 
-const mapDispatchToProps = { createChat, createMessage, setChat, setMessage, setMessages }
+const mapDispatchToProps = {
+  createChat,
+  createMessage,
+  setChat,
+  setMessage,
+  setMessages,
+  updateMessage
+}
 
 export default connect(
   mapStateToProps,

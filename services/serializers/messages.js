@@ -2,10 +2,13 @@ import camelcaseKeys from 'camelcase-keys'
 import snakeCaseKeys from 'snakecase-keys'
 
 export const deserialize = (message) => {
+  const id = message.id
   message = { ...camelcaseKeys(message, { deep: true }) }
   message.createdAt = new Date(message.createdAt)
   message.user._id = message.user.id
   message._id = message.id
+  message.id = id
+  message.sent = message.sentAt
   return message
 }
 

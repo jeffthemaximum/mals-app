@@ -20,3 +20,11 @@ export function setMessages (messages) {
     messages
   }
 }
+
+export function updateMessage (message, data) {
+  return {
+    type: actionTypes.UPDATE_MESSAGE,
+    message,
+    data
+  }
+}

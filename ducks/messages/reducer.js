@@ -20,7 +20,7 @@ export default function messages (state = { messages: [] }, action) {
         error: false,
         loading: true
       }
-    case actionTypes.SET_MESSAGE:
+    case actionTypes.SET_MESSAGE: {
       const messages = [action.message, ...state.messages]
       return {
         ...state,
@@ -28,6 +28,7 @@ export default function messages (state = { messages: [] }, action) {
         loading: false,
         messages
       }
+    }
     case actionTypes.SET_MESSAGES:
       return {
         ...state,
@@ -35,6 +36,15 @@ export default function messages (state = { messages: [] }, action) {
         loading: false,
         messages: action.messages
       }
+    case actionTypes.UPDATE_MESSAGE: {
+      const messages = [...state.messages]
+      const messageIndex = messages.findIndex(message => message._id === action.message._id)
+      messages[messageIndex] = action.message
+      return {
+        ...state,
+        messages
+      }
+    }
     default:
       return state
   }
