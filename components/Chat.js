@@ -3,6 +3,7 @@
 import React, { Component } from 'react'
 import { GiftedChat } from 'react-native-gifted-chat'
 
+import { renderAvatar } from './Avatar'
 import { renderBubble } from './Bubble'
 import { renderSend } from './Send'
 
@@ -16,7 +17,8 @@ export default class Chat extends Component {
 
     const userData = {
       _id: user.id,
-      name: user.name
+      name: user.name,
+      avatar: user.avatar
     }
 
     const textStyle = {
@@ -27,10 +29,11 @@ export default class Chat extends Component {
       <GiftedChat
         messages={messages}
         onSend={(messages) => handleSendMessage(messages)}
-        renderAvatar={null}
+        renderAvatar={renderAvatar}
         renderBubble={renderBubble}
         renderSend={renderSend}
         renderUsernameOnMessage={true}
+        showUserAvatar={true}
         textStyle={textStyle}
         user={userData}
       />
