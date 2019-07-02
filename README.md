@@ -4,12 +4,12 @@ A chat app where you chat with a local stranger
 # TODO
 - presence
 - [X] Message sent logic
-- [ ] Message received logic with iOS style `received` below message
+- [X] Message received logic
 - [ ] `user is typing` logic with text just above footer
 - [ ] when user 1 leaves chat, alert user 2 with `user has left` red text just above footer
 - [ ] show time in the text bubble for sent/received
 - avatar
-- [ ] random avatar for a user from https://getavataaars.com/
+- [X] random avatar for a user from https://getavataaars.com/
 - brand
 - [X] text/colors match brand in chat
 - loading

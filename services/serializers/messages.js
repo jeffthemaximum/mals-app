@@ -9,23 +9,21 @@ export const deserialize = (message) => {
   message._id = message.id
   message.id = id
   message.sent = message.sentAt
+  message.received = message.deliveredAt
   return message
 }
 
-export const serialize = (message, chat) => {
+export const serialize = (message, chat, data = {}) => {
   message = { ...message }
   const {
     _id: clientId,
-    text,
-    user: {
-      _id: userId
-    }
+    text
   } = message
 
   return snakeCaseKeys({
     chatId: chat.id,
     clientId,
     text,
-    userId
+    ...data
   })
 }

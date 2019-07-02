@@ -7,6 +7,13 @@ export function createMessage (message) {
   }
 }
 
+export function readMessage (messageId) {
+  return {
+    type: actionTypes.READ,
+    messageId
+  }
+}
+
 export function setMessage (message) {
   return {
     type: actionTypes.SET_MESSAGE,

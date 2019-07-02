@@ -16,6 +16,21 @@ function * createMessage (action) {
   }
 }
 
-const watchers = [takeLatest(messageActionTypes.CREATE, createMessage)]
+function * readMessage (action) {
+  const jwt = yield call(clientStorageService.get, constants.JWT)
+  const { messageId } = action
+  const response = yield call(messageApi.readMessage, jwt, { messageId })
+  const { error } = response
+  if (error) {
+    yield put({ type: messageActionTypes.READ_ERROR, error })
+  } else {
+    yield put({ type: messageActionTypes.READ_SUCCESS })
+  }
+}
+
+const watchers = [
+  takeLatest(messageActionTypes.CREATE, createMessage),
+  takeLatest(messageActionTypes.READ, readMessage)
+]
 
 export { createMessage, watchers }

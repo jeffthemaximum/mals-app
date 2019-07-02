@@ -1,7 +1,6 @@
 import * as actionTypes from './actionTypes'
 
 export default function chats (state = {}, action) {
-  console.log({ type: action.type })
   switch (action.type) {
     case actionTypes.CREATE:
       return {

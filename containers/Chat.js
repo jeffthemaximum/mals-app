@@ -20,7 +20,13 @@ const {
 } = chats
 
 const {
-  actions: { createMessage, setMessage, setMessages, updateMessage },
+  actions: {
+    createMessage,
+    readMessage,
+    setMessage,
+    setMessages,
+    updateMessage
+  },
   selectors: { messages: messagesSelector }
 } = messages
 
@@ -65,14 +71,21 @@ class Chat extends Component {
   }
 
   _connectToChatsChannel = () => {
-    const { createChat } = this.props
     const { cable } = this.state
     const { _handleReceivedChat } = this
+
+    const handleConnected = () => {
+      const { chat, createChat } = this.props
+      if (!chat) {
+        createChat()
+      }
+    }
+
     const chatsCable = cable.subscriptions.create(
       { channel: 'ChatsChannel' },
       {
         connected (connectedData) {
-          createChat()
+          handleConnected()
         },
         received (receivedData) {
           const { chat } = receivedData
@@ -117,7 +130,7 @@ class Chat extends Component {
   }
 
   _handleReceivedMessage = message => {
-    const { setMessage, updateMessage, user } = this.props
+    const { readMessage, setMessage, updateMessage, user } = this.props
 
     const deserializedMessage = messageSerializers.deserialize(message)
     const isOwnMessage = deserializedMessage.user.id === user.id
@@ -125,7 +138,10 @@ class Chat extends Component {
     if (isOwnMessage) {
       updateMessage(deserializedMessage)
     } else {
-      setMessage(deserializedMessage)
+      if (!deserializedMessage.received) {
+        readMessage(message.id)
+        setMessage(deserializedMessage)
+      }
     }
   }
 
@@ -144,7 +160,6 @@ class Chat extends Component {
 
     return (
       <ChatComponent
-        chat={chat}
         handleSendMessage={this._handleSendMessage}
         messages={messages}
         user={user}
@@ -168,6 +183,7 @@ const mapStateToProps = state => {
 const mapDispatchToProps = {
   createChat,
   createMessage,
+  readMessage,
   setChat,
   setMessage,
   setMessages,

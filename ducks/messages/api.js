@@ -1,4 +1,5 @@
 import axios from 'axios'
+import moment from 'moment'
 
 import { handleApiError } from '../../services/errorHandler'
 import { generateHeaders } from '../../services/requestHeaders'
@@ -12,6 +13,26 @@ export async function createMessage (jwt, { message }) {
     method: 'post',
     params: { ...message },
     url: `${API_ROOT}/api/v1/messages`
+  }
+
+  try {
+    const response = await axios.request(requestConfig)
+    return response
+  } catch (e) {
+    const errors = handleApiError(e)
+    return { error: errors }
+  }
+}
+
+export async function readMessage (jwt, { messageId }) {
+  const params = {
+    delivered_at: moment.utc().toISOString()
+  }
+  const requestConfig = {
+    headers: generateHeaders({ jwt }),
+    method: 'patch',
+    params,
+    url: `${API_ROOT}/api/v1/messages/${messageId}`
   }
 
   try {
