@@ -5,13 +5,16 @@ import { GiftedChat } from 'react-native-gifted-chat'
 
 import { renderAvatar } from './Avatar'
 import { renderBubble } from './Bubble'
+import { renderFooter } from './Footer'
 import { renderSend } from './Send'
 
 export default class Chat extends Component {
   render () {
     const {
+      detectTyping,
       handleSendMessage,
       messages,
+      notifications,
       user
     } = this.props
 
@@ -27,10 +30,17 @@ export default class Chat extends Component {
 
     return (
       <GiftedChat
+        listViewProps={{
+          notifications
+          // renderFooter
+        }}
         messages={messages}
+        notifications={notifications}
+        onInputTextChanged={detectTyping}
         onSend={(messages) => handleSendMessage(messages)}
         renderAvatar={renderAvatar}
         renderBubble={renderBubble}
+        renderFooter={renderFooter}
         renderSend={renderSend}
         renderUsernameOnMessage={true}
         showUserAvatar={true}

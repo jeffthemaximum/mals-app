@@ -2,14 +2,17 @@
 
 import { connect } from 'react-redux'
 import ActionCable from 'action-cable-react-jwt'
+import lodashDebounce from 'lodash/debounce'
 import React, { Component } from 'react'
 
 import * as chatSerializers from '../services/serializers/chats'
 import * as clientStorage from '../services/clientStorage'
 import * as messageSerializers from '../services/serializers/messages'
+import * as notificationSerializers from '../services/serializers/notifications'
 import chats from '../ducks/chats'
 import constants from '../constants'
 import messages from '../ducks/messages'
+import notifications from '../ducks/notifications'
 import users from '../ducks/users'
 
 import ChatComponent from '../components/Chat'
@@ -31,6 +34,11 @@ const {
 } = messages
 
 const {
+  actions: { createNotification, setNotification },
+  selectors: { typing: typingNotificationSelector }
+} = notifications
+
+const {
   selectors: { getUser: getUserSelector }
 } = users
 
@@ -48,7 +56,8 @@ class Chat extends Component {
     chatsCable: null,
     jwt: null,
     loading: false,
-    messagesCable: null
+    messagesCable: null,
+    notificationsCable: null
   }
 
   async componentDidMount () {
@@ -61,13 +70,40 @@ class Chat extends Component {
 
   componentDidUpdate (prevProps) {
     if (!prevProps.chat && this.props.chat) {
+      const { chat, createNotification, user } = this.props
+
       this._connectToMessagesChannel()
+      this._connectToNotificationsChannel()
+
+      const handleStartTyping = () => {
+        const notification = notificationSerializers.serialize({
+          chatId: chat.id,
+          notificationType: constants.NOTIFICATION_TYPES.typing,
+          userId: user.id
+        })
+        createNotification(notification)
+      }
+      this.startTyping = lodashDebounce(handleStartTyping, 500, {
+        leading: true,
+        trailing: false
+      })
+
+      const handleStopTyping = () => {
+        const notification = notificationSerializers.serialize({
+          chatId: chat.id,
+          notificationType: constants.NOTIFICATION_TYPES.stopTyping,
+          userId: user.id
+        })
+        createNotification(notification)
+      }
+      this.stopTyping = lodashDebounce(handleStopTyping, 500)
     }
   }
 
   componentWillUnmount () {
     this.state.chatsCable.unsubscribe()
     this.state.messagesCable.unsubscribe()
+    this.state.notificationsCable.unsubscribe()
   }
 
   _connectToChatsChannel = () => {
@@ -98,9 +134,11 @@ class Chat extends Component {
   }
 
   _connectToMessagesChannel = () => {
-    const { chat } = this.props
-    const { cable } = this.state
-    const { _handleReceivedMessage } = this
+    const {
+      _handleReceivedMessage,
+      props: { chat },
+      state: { cable }
+    } = this
 
     const messagesCable = cable.subscriptions.create(
       {
@@ -116,6 +154,35 @@ class Chat extends Component {
     )
 
     this.setState({ cable, messagesCable })
+  }
+
+  _connectToNotificationsChannel = () => {
+    const {
+      _handleReceivedNotification,
+      props: { chat },
+      state: { cable }
+    } = this
+
+    const notificationsCable = cable.subscriptions.create(
+      {
+        channel: 'NotificationsChannel',
+        chat: chat.id
+      },
+      {
+        received (receivedData) {
+          _handleReceivedNotification(receivedData)
+        }
+      }
+    )
+
+    this.setState({ cable, notificationsCable })
+  }
+
+  _detectTyping = text => {
+    if (text !== '') {
+      this._startTyping()
+      this._stopTyping()
+    }
   }
 
   _handleReceivedChat = chat => {
@@ -145,6 +212,16 @@ class Chat extends Component {
     }
   }
 
+  _handleReceivedNotification = receivedData => {
+    const { notification } = receivedData
+    const { setNotification, user } = this.props
+
+    const deserializedNotification = notificationSerializers.deserialize(
+      notification
+    )
+    setNotification(deserializedNotification, user)
+  }
+
   _handleSendMessage = messages => {
     const { chat, createMessage, setMessage } = this.props
 
@@ -155,13 +232,23 @@ class Chat extends Component {
     createMessage(messageData)
   }
 
+  _startTyping = () => {
+    this.startTyping()
+  }
+
+  _stopTyping = () => {
+    this.stopTyping()
+  }
+
   render () {
-    const { chat, messages, user } = this.props
+    const { messages, notifications, user } = this.props
 
     return (
       <ChatComponent
+        detectTyping={this._detectTyping}
         handleSendMessage={this._handleSendMessage}
         messages={messages}
+        notifications={notifications}
         user={user}
       />
     )
@@ -171,11 +258,15 @@ class Chat extends Component {
 const mapStateToProps = state => {
   const chat = chatSelector(state)
   const messages = messagesSelector(state)
+  const notifications = {
+    typing: typingNotificationSelector(state)
+  }
   const user = getUserSelector(state)
 
   return {
     chat,
     messages,
+    notifications,
     user
   }
 }
@@ -183,10 +274,12 @@ const mapStateToProps = state => {
 const mapDispatchToProps = {
   createChat,
   createMessage,
+  createNotification,
   readMessage,
   setChat,
   setMessage,
   setMessages,
+  setNotification,
   updateMessage
 }
 
