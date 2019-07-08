@@ -6,11 +6,11 @@ A chat app where you chat with a local stranger
 - [X] Message sent logic
 - [X] Message received logic
 - [X] `user is typing` logic with text just above footer
-- [ ] when user 1 leaves chat, alert user 2 with `user has left` red text just above footer (see: https://medium.com/@a.carreras.c/using-action-cable-for-private-messaging-presence-indicators-on-react-rails-app-526b3e34c14d)
+- [X] when user 1 leaves chat, alert user 2 with `user has left` red text just above footer (see: https://medium.com/@a.carreras.c/using-action-cable-for-private-messaging-presence-indicators-on-react-rails-app-526b3e34c14d)
 - ~~show time in the text bubble for sent/received~~
 - avatar
 - [X] random avatar for a user from https://getavataaars.com/
-- [ ] optimize avatar to download and precache svg file on rails server, save that to db.
+- [X] optimize avatar to download and precache svg file on rails server, save that to db.
 - brand
 - [X] text/colors match brand in chat
 - loading

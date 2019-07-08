@@ -20,8 +20,9 @@ export default class Chat extends Component {
 
     const userData = {
       _id: user.id,
-      name: user.name,
-      avatar: user.avatar
+      avatarFile: user.avatar_file,
+      avatarUrl: user.avatar_url,
+      name: user.name
     }
 
     const textStyle = {
