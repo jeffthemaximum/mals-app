@@ -1,6 +1,6 @@
 import lodashGet from 'lodash/get'
 import React from 'react'
-import { Text } from 'react-native'
+import { StyleSheet, Text, View } from 'react-native'
 
 export function renderFooter (props) {
   const {
@@ -10,10 +10,25 @@ export function renderFooter (props) {
   console.log({ notifications, props })
 
   const typistName = lodashGet(notifications, 'typing.actor.name')
-
+  let text = ' '
   if (typistName) {
-    return <Text>{`${typistName} is typing`}</Text>
-  } else {
-    return <Text>{` `}</Text>
+    text = `${typistName} is typing...`
   }
+
+  return (
+    <View style={styles.container}>
+      <Text style={styles.text}>{text}</Text>
+    </View>
+  )
 }
+
+const styles = StyleSheet.create({
+  container: {
+    marginLeft: 8,
+    paddingBottom: 4
+  },
+  text: {
+    color: '#aaa',
+    fontSize: 12
+  }
+})

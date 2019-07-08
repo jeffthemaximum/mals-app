@@ -83,7 +83,7 @@ class Chat extends Component {
         })
         createNotification(notification)
       }
-      this.startTyping = lodashDebounce(handleStartTyping, 500, {
+      this.startTyping = lodashDebounce(handleStartTyping, 10000, {
         leading: true,
         trailing: false
       })
@@ -96,7 +96,7 @@ class Chat extends Component {
         })
         createNotification(notification)
       }
-      this.stopTyping = lodashDebounce(handleStopTyping, 500)
+      this.stopTyping = lodashDebounce(handleStopTyping, 10000)
     }
   }
 
@@ -223,7 +223,16 @@ class Chat extends Component {
   }
 
   _handleSendMessage = messages => {
-    const { chat, createMessage, setMessage } = this.props
+    const { chat, createMessage, createNotification, setMessage, user } = this.props
+
+    this.startTyping.cancel()
+    this.stopTyping.cancel()
+    const notification = notificationSerializers.serialize({
+      chatId: chat.id,
+      notificationType: constants.NOTIFICATION_TYPES.stopTyping,
+      userId: user.id
+    })
+    createNotification(notification)
 
     const message = messages[messages.length - 1]
     setMessage(message)

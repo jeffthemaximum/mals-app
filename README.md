@@ -5,7 +5,7 @@ A chat app where you chat with a local stranger
 - presence
 - [X] Message sent logic
 - [X] Message received logic
-- [ ] `user is typing` logic with text just above footer
+- [X] `user is typing` logic with text just above footer
 - [ ] when user 1 leaves chat, alert user 2 with `user has left` red text just above footer (see: https://medium.com/@a.carreras.c/using-action-cable-for-private-messaging-presence-indicators-on-react-rails-app-526b3e34c14d)
 - ~~show time in the text bubble for sent/received~~
 - avatar
