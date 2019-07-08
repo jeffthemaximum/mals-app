@@ -2,6 +2,8 @@ import lodashGet from 'lodash/get'
 import React from 'react'
 import { StyleSheet, Text, View } from 'react-native'
 
+import constants from '../constants'
+
 export function renderFooter (props) {
   const {
     notifications
@@ -10,14 +12,20 @@ export function renderFooter (props) {
   console.log({ notifications, props })
 
   const typistName = lodashGet(notifications, 'typing.actor.name')
+  const unsubscribedName = lodashGet(notifications, 'unsubscribed.actor.name')
+
   let text = ' '
-  if (typistName) {
+  let style = styles.text
+  if (unsubscribedName) {
+    text = `${unsubscribedName} left.`
+    style = styles.textRed
+  } else if (typistName) {
     text = `${typistName} is typing...`
   }
 
   return (
     <View style={styles.container}>
-      <Text style={styles.text}>{text}</Text>
+      <Text style={style}>{text}</Text>
     </View>
   )
 }
@@ -29,6 +37,10 @@ const styles = StyleSheet.create({
   },
   text: {
     color: '#aaa',
+    fontSize: 12
+  },
+  textRed: {
+    color: constants.BRAND.red,
     fontSize: 12
   }
 })

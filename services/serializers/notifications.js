@@ -1,7 +1,10 @@
 import snakeCaseKeys from 'snakecase-keys'
 
 export const deserialize = notification => {
-  const { notification_type: notificationType, user: actor } = notification
+  const {
+    notification_type: notificationType,
+    user: actor
+  } = notification
 
   return {
     actor,

@@ -32,18 +32,17 @@ export default class Chat extends Component {
       <GiftedChat
         listViewProps={{
           notifications
-          // renderFooter
         }}
         messages={messages}
         notifications={notifications}
         onInputTextChanged={detectTyping}
-        onSend={(messages) => handleSendMessage(messages)}
+        onSend={messages => handleSendMessage(messages)}
         renderAvatar={renderAvatar}
         renderBubble={renderBubble}
         renderFooter={renderFooter}
         renderSend={renderSend}
-        renderUsernameOnMessage={true}
-        showUserAvatar={true}
+        renderUsernameOnMessage
+        showUserAvatar
         textStyle={textStyle}
         user={userData}
       />

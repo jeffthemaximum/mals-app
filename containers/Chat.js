@@ -35,7 +35,10 @@ const {
 
 const {
   actions: { createNotification, setNotification },
-  selectors: { typing: typingNotificationSelector }
+  selectors: {
+    typing: typingNotificationSelector,
+    unsubscribeData: unsubscribeDataSelector
+  }
 } = notifications
 
 const {
@@ -182,6 +185,23 @@ class Chat extends Component {
     if (text !== '') {
       this._startTyping()
       this._stopTyping()
+    } else if (text === '') {
+      this._forceStopTypingNotification()
+    }
+  }
+
+  _forceStopTypingNotification = () => {
+    const { chat, createNotification, user } = this.props
+
+    if (chat) {
+      this.startTyping && this.startTyping.cancel()
+      this.stopTyping && this.stopTyping.cancel()
+      const notification = notificationSerializers.serialize({
+        chatId: chat.id,
+        notificationType: constants.NOTIFICATION_TYPES.stopTyping,
+        userId: user.id
+      })
+      createNotification(notification)
     }
   }
 
@@ -219,20 +239,18 @@ class Chat extends Component {
     const deserializedNotification = notificationSerializers.deserialize(
       notification
     )
+
     setNotification(deserializedNotification, user)
   }
 
   _handleSendMessage = messages => {
-    const { chat, createMessage, createNotification, setMessage, user } = this.props
+    const {
+      chat,
+      createMessage,
+      setMessage
+    } = this.props
 
-    this.startTyping.cancel()
-    this.stopTyping.cancel()
-    const notification = notificationSerializers.serialize({
-      chatId: chat.id,
-      notificationType: constants.NOTIFICATION_TYPES.stopTyping,
-      userId: user.id
-    })
-    createNotification(notification)
+    this._forceStopTypingNotification()
 
     const message = messages[messages.length - 1]
     setMessage(message)
@@ -268,7 +286,8 @@ const mapStateToProps = state => {
   const chat = chatSelector(state)
   const messages = messagesSelector(state)
   const notifications = {
-    typing: typingNotificationSelector(state)
+    typing: typingNotificationSelector(state),
+    unsubscribed: unsubscribeDataSelector(state)
   }
   const user = getUserSelector(state)
 

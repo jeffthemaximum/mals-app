@@ -7,6 +7,8 @@ const isStopTypingNotification = notification =>
   notification.notificationType === constants.NOTIFICATION_TYPES.stopTyping
 const isTypingNotification = notification =>
   notification.notificationType === constants.NOTIFICATION_TYPES.typing
+const isUnsubscribeNotification = notification =>
+  notification.notificationType === constants.NOTIFICATION_TYPES.unsubscribe
 
 export default function notifications (state = {}, action) {
   switch (action.type) {
@@ -27,6 +29,11 @@ export default function notifications (state = {}, action) {
         return {
           ...state,
           typingData: null
+        }
+      } else if (isUnsubscribeNotification(notification)) {
+        return {
+          ...state,
+          unsubscribeData: notification
         }
       } else {
         return state
