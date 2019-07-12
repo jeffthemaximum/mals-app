@@ -108,11 +108,7 @@ class Waiting extends Component {
   }
 
   render () {
-    const { randomMessage } = this.props
-
-    console.log({ randomMessage })
-
-    return <WaitingComponent randomMessage={randomMessage} {...this.state} />
+    return <WaitingComponent randomMessage={this.props.randomMessage} {...this.state} />
   }
 }
 

@@ -9,8 +9,6 @@ export function renderFooter (props) {
     notifications
   } = props
 
-  console.log({ notifications, props })
-
   const typistName = lodashGet(notifications, 'typing.actor.name')
   const unsubscribedName = lodashGet(notifications, 'unsubscribed.actor.name')
 
