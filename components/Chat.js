@@ -7,6 +7,7 @@ import { renderAvatar } from './Avatar'
 import { renderBubble } from './Bubble'
 import { renderFooter } from './Footer'
 import { renderSend } from './Send'
+import Waiting from '../containers/Waiting'
 
 export default class Chat extends Component {
   render () {
@@ -15,6 +16,7 @@ export default class Chat extends Component {
       handleSendMessage,
       messages,
       notifications,
+      recipient,
       user
     } = this.props
 
@@ -29,24 +31,28 @@ export default class Chat extends Component {
       fontFamily: 'ProximaNova-Regular'
     }
 
-    return (
-      <GiftedChat
-        listViewProps={{
-          notifications
-        }}
-        messages={messages}
-        notifications={notifications}
-        onInputTextChanged={detectTyping}
-        onSend={messages => handleSendMessage(messages)}
-        renderAvatar={renderAvatar}
-        renderBubble={renderBubble}
-        renderFooter={renderFooter}
-        renderSend={renderSend}
-        renderUsernameOnMessage
-        showUserAvatar
-        textStyle={textStyle}
-        user={userData}
-      />
-    )
+    if (recipient) {
+      return (
+        <GiftedChat
+          listViewProps={{
+            notifications
+          }}
+          messages={messages}
+          notifications={notifications}
+          onInputTextChanged={detectTyping}
+          onSend={messages => handleSendMessage(messages)}
+          renderAvatar={renderAvatar}
+          renderBubble={renderBubble}
+          renderFooter={renderFooter}
+          renderSend={renderSend}
+          renderUsernameOnMessage
+          showUserAvatar
+          textStyle={textStyle}
+          user={userData}
+        />
+      )
+    } else {
+      return <Waiting />
+    }
   }
 }

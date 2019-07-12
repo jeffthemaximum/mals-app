@@ -141,11 +141,11 @@ const styles = StyleSheet.create({
   },
   buttonText: {
     color: constants.BRAND.white,
-    fontFamily: 'ProximaNova-Bold',
+    fontFamily: constants.BASE_STYLES.fonts.boldFontFamily,
     fontSize: 18
   },
   bold: {
-    fontFamily: 'ProximaNova-Bold'
+    fontFamily: constants.BASE_STYLES.fonts.boldFontFamily
   },
   contentContainer: {
     justifyContent: 'center',
@@ -153,7 +153,7 @@ const styles = StyleSheet.create({
   },
   description: {
     color: constants.BRAND.navy,
-    fontFamily: 'ProximaNova-Regular',
+    fontFamily: constants.BASE_STYLES.fonts.regularFontFamily,
     fontSize: 36,
     marginBottom: 48,
     marginTop: 24,

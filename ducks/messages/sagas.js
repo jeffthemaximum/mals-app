@@ -16,6 +16,17 @@ function * createMessage (action) {
   }
 }
 
+function * getRandomMessage () {
+  const jwt = yield call(clientStorageService.get, constants.JWT)
+  const response = yield call(messageApi.getRandomMessage, jwt)
+  const { data: message, error } = response
+  if (error) {
+    yield put({ type: messageActionTypes.GET_RANDOM_ERROR, error })
+  } else {
+    yield put({ type: messageActionTypes.GET_RANDOM_SUCCESS, message })
+  }
+}
+
 function * readMessage (action) {
   const jwt = yield call(clientStorageService.get, constants.JWT)
   const { messageId } = action
@@ -30,6 +41,7 @@ function * readMessage (action) {
 
 const watchers = [
   takeLatest(messageActionTypes.CREATE, createMessage),
+  takeLatest(messageActionTypes.GET_RANDOM, getRandomMessage),
   takeLatest(messageActionTypes.READ, readMessage)
 ]
 

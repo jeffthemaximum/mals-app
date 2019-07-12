@@ -14,9 +14,9 @@ A chat app where you chat with a local stranger
 - brand
 - [X] text/colors match brand in chat
 - loading
-- [ ] sending messages disabled until user joins
-- [ ] loading lottie file is fun
-- [ ] loading has random chats from db show up
+- [X] sending messages disabled until user joins
+- [X] loading lottie file is fun (uses https://www.humaaans.com/)
+- [X] loading has random chats from db show up
 - error
 - [ ] handle user create error
 - [ ] handle chat create error

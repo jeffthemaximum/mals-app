@@ -24,6 +24,22 @@ export async function createMessage (jwt, { message }) {
   }
 }
 
+export async function getRandomMessage (jwt) {
+  const requestConfig = {
+    headers: generateHeaders({ jwt }),
+    method: 'get',
+    url: `${API_ROOT}/api/v1/messages?random=true`
+  }
+
+  try {
+    const response = await axios.request(requestConfig)
+    return response
+  } catch (e) {
+    const errors = handleApiError(e)
+    return { error: errors }
+  }
+}
+
 export async function readMessage (jwt, { messageId }) {
   const params = {
     delivered_at: moment.utc().toISOString()

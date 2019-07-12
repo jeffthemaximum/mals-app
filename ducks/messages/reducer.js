@@ -20,6 +20,11 @@ export default function messages (state = { messages: [] }, action) {
         error: false,
         loading: true
       }
+    case actionTypes.GET_RANDOM_SUCCESS:
+      return {
+        ...state,
+        randomMessage: action.message
+      }
     case actionTypes.SET_MESSAGE: {
       const messages = [action.message, ...state.messages]
       return {

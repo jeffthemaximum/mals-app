@@ -19,7 +19,10 @@ import ChatComponent from '../components/Chat'
 
 const {
   actions: { createChat, setChat },
-  selectors: { chat: chatSelector }
+  selectors: {
+    chat: chatSelector,
+    recipient: recipientSelector
+  }
 } = chats
 
 const {
@@ -268,7 +271,7 @@ class Chat extends Component {
   }
 
   render () {
-    const { messages, notifications, user } = this.props
+    const { messages, notifications, recipient, user } = this.props
 
     return (
       <ChatComponent
@@ -276,6 +279,7 @@ class Chat extends Component {
         handleSendMessage={this._handleSendMessage}
         messages={messages}
         notifications={notifications}
+        recipient={recipient}
         user={user}
       />
     )
@@ -289,12 +293,14 @@ const mapStateToProps = state => {
     typing: typingNotificationSelector(state),
     unsubscribed: unsubscribeDataSelector(state)
   }
+  const recipient = recipientSelector(state)
   const user = getUserSelector(state)
 
   return {
     chat,
     messages,
     notifications,
+    recipient,
     user
   }
 }

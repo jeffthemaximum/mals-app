@@ -7,6 +7,12 @@ export function createMessage (message) {
   }
 }
 
+export function getRandomMessage () {
+  return {
+    type: actionTypes.GET_RANDOM
+  }
+}
+
 export function readMessage (messageId) {
   return {
     type: actionTypes.READ,

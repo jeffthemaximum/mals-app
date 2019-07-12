@@ -5,5 +5,9 @@ export const BASE_STYLES = {
     alignItems: 'center',
     flexDirection: 'column',
     flex: 1
+  },
+  fonts: {
+    boldFontFamily: 'ProximaNova-Bold',
+    regularFontFamily: 'ProximaNova-Regular'
   }
 }
