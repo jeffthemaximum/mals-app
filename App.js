@@ -4,6 +4,7 @@ import { createStore, applyMiddleware } from 'redux'
 import { Provider } from 'react-redux'
 import createSagaMiddleware from 'redux-saga'
 
+import { statsMiddleware } from './services/reduxMiddleware/statsMiddleware'
 import Chat from './containers/Chat'
 import Home from './containers/Home'
 import NavigationService from './services/navigationService'
@@ -20,6 +21,7 @@ const MainNavigator = createStackNavigator({
 const store = createStore(
   reducers,
   applyMiddleware(
+    statsMiddleware,
     sagaMiddleware
   )
 )
