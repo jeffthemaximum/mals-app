@@ -25,8 +25,8 @@ A chat app where you chat with a local stranger
 - redux
     - [X] api call for chats and messages thru redux/sagas
 - stathat
-    - [ ] client stats for redux events
-    - [ ] server stats either like this https://blog.appoptics.com/monitoring-rails-get-hidden-metrics-rails-app/ or this https://guides.rubyonrails.org/active_support_instrumentation.html
+    - [X] client stats for redux events
+    - [X] server stats either like this https://blog.appoptics.com/monitoring-rails-get-hidden-metrics-rails-app/ or this https://guides.rubyonrails.org/active_support_instrumentation.html
 - nav
     - [ ] custom nav to match branding
     - [ ] hamburger menu

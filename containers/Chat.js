@@ -16,13 +16,11 @@ import notifications from '../ducks/notifications'
 import users from '../ducks/users'
 
 import ChatComponent from '../components/Chat'
+import Header from '../containers/Header'
 
 const {
   actions: { createChat, setChat },
-  selectors: {
-    chat: chatSelector,
-    recipient: recipientSelector
-  }
+  selectors: { chat: chatSelector, recipient: recipientSelector }
 } = chats
 
 const {
@@ -49,13 +47,15 @@ const {
 } = users
 
 class Chat extends Component {
-  static navigationOptions = {
+  static navigationOptions = ({ navigation }) => ({
     title: 'Meet a Local Stranger',
-    headerLeft: null,
+    headerLeft: ({ tintColor }) => (
+      <Header navigation={navigation} tintColor={tintColor} />
+    ),
     headerTitleStyle: {
       fontFamily: 'ProximaNova-Regular'
     }
-  }
+  })
 
   state = {
     cable: null,
@@ -247,11 +247,7 @@ class Chat extends Component {
   }
 
   _handleSendMessage = messages => {
-    const {
-      chat,
-      createMessage,
-      setMessage
-    } = this.props
+    const { chat, createMessage, setMessage } = this.props
 
     this._forceStopTypingNotification()
 

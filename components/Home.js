@@ -167,7 +167,6 @@ const styles = StyleSheet.create({
   footer: {
     alignSelf: 'flex-end'
   },
-
   image: {
     width: 300,
     height: 250

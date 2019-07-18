@@ -1,5 +1,9 @@
 import React, { Component } from 'react'
-import { createStackNavigator, createAppContainer } from 'react-navigation'
+import {
+  createAppContainer,
+  createDrawerNavigator,
+  createStackNavigator
+} from 'react-navigation'
 import { createStore, applyMiddleware } from 'redux'
 import { Provider } from 'react-redux'
 import createSagaMiddleware from 'redux-saga'
@@ -13,17 +17,30 @@ import rootSaga from './ducks/sagas'
 
 const sagaMiddleware = createSagaMiddleware()
 
-const MainNavigator = createStackNavigator({
-  Home: { screen: Home },
-  Chat: { screen: Chat }
+const homeStackScreen = createStackNavigator({
+  Home: {
+    screen: Home
+  }
+})
+
+const chatStackScreen = createStackNavigator({
+  Chat: {
+    screen: Chat
+  }
+})
+
+const MainNavigator = createDrawerNavigator({
+  Home: {
+    screen: homeStackScreen
+  },
+  Chat: {
+    screen: chatStackScreen
+  }
 })
 
 const store = createStore(
   reducers,
-  applyMiddleware(
-    statsMiddleware,
-    sagaMiddleware
-  )
+  applyMiddleware(statsMiddleware, sagaMiddleware)
 )
 
 const Navigation = createAppContainer(MainNavigator)
@@ -34,9 +51,11 @@ export default class App extends Component<{}> {
   render () {
     return (
       <Provider store={store}>
-        <Navigation ref={navigatorRef => {
-          NavigationService.setTopLevelNavigator(navigatorRef)
-        }}/>
+        <Navigation
+          ref={navigatorRef => {
+            NavigationService.setTopLevelNavigator(navigatorRef)
+          }}
+        />
       </Provider>
     )
   }
