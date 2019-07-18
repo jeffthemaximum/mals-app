@@ -22,6 +22,7 @@
     "react-native-gesture-handler": "^1.3.0",
     "react-native-gifted-chat": "^0.9.11",
     "react-native-material-textfield": "^0.12.0",
+    "react-native-side-menu": "^1.1.3",
     "react-native-svg": "^9.5.1",
     "react-native-svg-uri": "^1.2.3",
     "react-navigation": "^3.11.0",

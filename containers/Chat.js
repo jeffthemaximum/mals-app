@@ -4,6 +4,7 @@ import { connect } from 'react-redux'
 import ActionCable from 'action-cable-react-jwt'
 import lodashDebounce from 'lodash/debounce'
 import React, { Component } from 'react'
+import SideMenu from 'react-native-side-menu'
 
 import * as chatSerializers from '../services/serializers/chats'
 import * as clientStorage from '../services/clientStorage'
@@ -11,11 +12,14 @@ import * as messageSerializers from '../services/serializers/messages'
 import * as notificationSerializers from '../services/serializers/notifications'
 import chats from '../ducks/chats'
 import constants from '../constants'
+import menu from '../ducks/menu'
 import messages from '../ducks/messages'
 import notifications from '../ducks/notifications'
 import users from '../ducks/users'
 
 import ChatComponent from '../components/Chat'
+import Header from '../containers/Header'
+import Menu from '../containers/Menu'
 
 const {
   actions: { createChat, setChat },
@@ -24,6 +28,11 @@ const {
     recipient: recipientSelector
   }
 } = chats
+
+const {
+  actions: { toggleMenu },
+  selectors: { isOpen: menuIsOpenSelector }
+} = menu
 
 const {
   actions: {
@@ -49,13 +58,14 @@ const {
 } = users
 
 class Chat extends Component {
-  static navigationOptions = {
+  static navigationOptions = ({ navigation }) => ({
     title: 'Meet a Local Stranger',
-    headerLeft: null,
+    headerLeft: <Header navigation={navigation} />,
     headerTitleStyle: {
       fontFamily: 'ProximaNova-Regular'
-    }
-  }
+    },
+    gesturesEnabled: false
+  })
 
   state = {
     cable: null,
@@ -271,23 +281,31 @@ class Chat extends Component {
   }
 
   render () {
-    const { messages, notifications, recipient, user } = this.props
+    const { menuIsOpen, messages, notifications, recipient, toggleMenu, user } = this.props
+    const menu = <Menu onItemSelected={toggleMenu} />
 
     return (
-      <ChatComponent
-        detectTyping={this._detectTyping}
-        handleSendMessage={this._handleSendMessage}
-        messages={messages}
-        notifications={notifications}
-        recipient={recipient}
-        user={user}
-      />
+      <SideMenu
+        menu={menu}
+        isOpen={menuIsOpen}
+        onChange={toggleMenu}
+      >
+        <ChatComponent
+          detectTyping={this._detectTyping}
+          handleSendMessage={this._handleSendMessage}
+          messages={messages}
+          notifications={notifications}
+          recipient={recipient}
+          user={user}
+        />
+      </SideMenu>
     )
   }
 }
 
 const mapStateToProps = state => {
   const chat = chatSelector(state)
+  const menuIsOpen = menuIsOpenSelector(state)
   const messages = messagesSelector(state)
   const notifications = {
     typing: typingNotificationSelector(state),
@@ -298,6 +316,7 @@ const mapStateToProps = state => {
 
   return {
     chat,
+    menuIsOpen,
     messages,
     notifications,
     recipient,
@@ -314,6 +333,7 @@ const mapDispatchToProps = {
   setMessage,
   setMessages,
   setNotification,
+  toggleMenu,
   updateMessage
 }
 
