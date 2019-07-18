@@ -30,11 +30,16 @@ const chatStackScreen = createStackNavigator({
 })
 
 const MainNavigator = createDrawerNavigator({
-  Home: {
+  Quit: {
     screen: homeStackScreen
   },
   Chat: {
-    screen: chatStackScreen
+    screen: chatStackScreen,
+    navigationOptions: ({ navigation }) => {
+      return {
+        drawerLabel: () => null
+      }
+    }
   }
 })
 
