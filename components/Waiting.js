@@ -8,6 +8,7 @@ import moment from 'moment'
 import * as messageSerializers from '../services/serializers/messages'
 import { renderAvatar } from './Avatar'
 import constants from '../constants'
+import HorizontalRule from './HoritizonalRule'
 
 function renderTime ({ position, currentMessage, timeFormat }, context) {
   const containerStyle = {
@@ -77,12 +78,6 @@ const HumaaanWrapper = ({
   </View>
 )
 
-const LineWrapper = () => (
-  <View style={styles.lineContainer}>
-    <View style={styles.lineStyle} />
-  </View>
-)
-
 const TopWrapper = ({ serializedRandomMessage }) => (
   <View style={styles.topContainer}>
     <Text style={styles.headerText}>Waiting for a friend...</Text>
@@ -137,7 +132,7 @@ export default class Waiting extends Component {
     return (
       <View style={styles.container}>
         <TopWrapper serializedRandomMessage={serializedRandomMessage} />
-        <LineWrapper />
+        <HorizontalRule />
         <HumaaanWrapper {...this.props} />
       </View>
     )
@@ -166,16 +161,6 @@ const styles = StyleSheet.create({
   },
   humaaanContainer: {
     flexBasis: '60%'
-  },
-  lineContainer: {
-    flexDirection: 'row',
-    marginBottom: 24
-  },
-  lineStyle: {
-    borderWidth: 1,
-    borderColor: constants.BRAND.navy,
-    margin: 10,
-    flex: 1
   },
   messageContainer: {
     flexDirection: 'row',

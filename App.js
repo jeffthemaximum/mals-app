@@ -11,6 +11,7 @@ import createSagaMiddleware from 'redux-saga'
 import { statsMiddleware } from './services/reduxMiddleware/statsMiddleware'
 import Chat from './containers/Chat'
 import Home from './containers/Home'
+import NavigationDrawer from './containers/NavigationDrawer'
 import NavigationService from './services/navigationService'
 import reducers from './ducks/reducers'
 import rootSaga from './ducks/sagas'
@@ -29,19 +30,26 @@ const chatStackScreen = createStackNavigator({
   }
 })
 
-const MainNavigator = createDrawerNavigator({
-  Quit: {
-    screen: homeStackScreen
-  },
-  Chat: {
-    screen: chatStackScreen,
-    navigationOptions: ({ navigation }) => {
-      return {
-        drawerLabel: () => null
+const MainNavigator = createDrawerNavigator(
+  {
+    Quit: {
+      screen: homeStackScreen
+    },
+    Chat: {
+      screen: chatStackScreen,
+      navigationOptions: ({ navigation }) => {
+        return {
+          drawerLabel: () => null
+        }
       }
     }
+  },
+  {
+    contentComponent: function contentComponent (props) {
+      return <NavigationDrawer {...props} />
+    }
   }
-})
+)
 
 const store = createStore(
   reducers,

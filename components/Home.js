@@ -10,9 +10,9 @@ import {
   View
 } from 'react-native'
 import { TextField } from 'react-native-material-textfield'
-import Button from 'apsl-react-native-button'
 import lodashGet from 'lodash/get'
 
+import Button from './Button'
 import constants from '../constants'
 
 const NameInputField = ({ errors, name, onChange }) => {
@@ -27,7 +27,9 @@ const NameInputField = ({ errors, name, onChange }) => {
           borderColor: constants.BRAND.navy,
           margin: 0
         }}
-        error={errors && errors.name && errors.name[0] && `Name ${errors.name[0]}`}
+        error={
+          errors && errors.name && errors.name[0] && `Name ${errors.name[0]}`
+        }
         errorColor={constants.BRAND.red}
         fontSize={24}
         label={'Enter first name...'}
@@ -72,7 +74,7 @@ export default class Home extends Component {
     }
   }
 
-  _onNameChange = (event) => {
+  _onNameChange = event => {
     this.setState({
       errors: null,
       name: event.nativeEvent.text
@@ -82,9 +84,7 @@ export default class Home extends Component {
   _validateName = (name = this.state.name) => {
     if (name.length === 0) {
       return {
-        name: [
-          `can't be blank`
-        ]
+        name: [`can't be blank`]
       }
     }
   }
@@ -93,9 +93,7 @@ export default class Home extends Component {
     const { loading } = this.props
     const { errors, name } = this.state
 
-    const spinner = loading ? (
-      <ActivityIndicator size='large' />
-    ) : null
+    const spinner = loading ? <ActivityIndicator size='large' /> : null
 
     return (
       <View style={styles.container}>
@@ -123,12 +121,9 @@ export default class Home extends Component {
         </ScrollView>
         <Button
           isLoading={loading}
-          onPress={this._onFormSubmit}
-          style={styles.buttonStyles}
-          textStyle={styles.buttonText}
-        >
-          Let's go
-        </Button>
+          handlePress={this._onFormSubmit}
+          text={`Let's go`}
+        />
       </View>
     )
   }
