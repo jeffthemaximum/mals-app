@@ -14,3 +14,9 @@ export function setNotification (notification, user) {
     user
   }
 }
+
+export function unsetNotifications () {
+  return {
+    type: actionTypes.UNSET
+  }
+}

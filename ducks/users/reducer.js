@@ -24,6 +24,12 @@ export default function users (state = {}, action) {
         loading: false,
         user: action.user
       }
+    case actionTypes.UNSET:
+      return {
+        error: false,
+        loading: false,
+        user: null
+      }
     default:
       return state
   }

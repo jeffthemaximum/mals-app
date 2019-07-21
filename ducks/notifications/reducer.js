@@ -38,6 +38,8 @@ export default function notifications (state = {}, action) {
       } else {
         return state
       }
+    case actionTypes.UNSET:
+      return {}
     default:
       return state
   }

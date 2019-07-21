@@ -8,10 +8,17 @@ import NavigationDrawerComponent from '../components/NavigationDrawer'
 
 class NavigationDrawer extends Component {
   handleLeave = () => {
+    const { navigation } = this.props
+
     Alert.alert(
       'Leave chat',
       'Are you sure? You can never get back to this chat if you leave.',
-      [{ text: 'YES', onPress: () => console.log('hi') }]
+      [{
+        text: 'Yep',
+        onPress: () => {
+          navigation.navigate('Home')
+        }
+      }]
     )
   }
 

@@ -6,3 +6,5 @@ export const UPDATE_ERROR = 'users/UPDATE_ERROR'
 
 export const CREATE_SUCCESS = 'users/CREATE_SUCCESS'
 export const UPDATE_SUCCESS = 'users/UPDATE_SUCCESS'
+
+export const UNSET = 'users/UNSET'

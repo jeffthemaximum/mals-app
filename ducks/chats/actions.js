@@ -12,3 +12,9 @@ export function setChat (chat) {
     chat
   }
 }
+
+export function unsetChat () {
+  return {
+    type: actionTypes.UNSET
+  }
+}

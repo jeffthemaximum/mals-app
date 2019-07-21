@@ -27,6 +27,12 @@ export default function chats (state = {}, action) {
         error: null,
         loading: false
       }
+    case actionTypes.UNSET:
+      return {
+        chat: null,
+        error: false,
+        loading: false
+      }
     default:
       return state
   }

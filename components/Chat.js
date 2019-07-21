@@ -20,11 +20,14 @@ export default class Chat extends Component {
       user
     } = this.props
 
-    const userData = {
-      _id: user.id,
-      avatarFile: user.avatar_file,
-      avatarUrl: user.avatar_url,
-      name: user.name
+    let userData = {}
+    if (user) {
+      userData = {
+        _id: user.id,
+        avatarFile: user.avatar_file,
+        avatarUrl: user.avatar_url,
+        name: user.name
+      }
     }
 
     const textStyle = {

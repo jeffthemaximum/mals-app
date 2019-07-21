@@ -6,6 +6,12 @@ export function createUser () {
   }
 }
 
+export function unsetUser () {
+  return {
+    type: actionTypes.UNSET
+  }
+}
+
 export function updateUser ({ name }) {
   return {
     type: actionTypes.UPDATE,

@@ -28,11 +28,13 @@ A chat app where you chat with a local stranger
     - [X] client stats for redux events
     - [X] server stats either like this https://blog.appoptics.com/monitoring-rails-get-hidden-metrics-rails-app/ or this https://guides.rubyonrails.org/active_support_instrumentation.html
 - nav
-    - [ ] custom nav to match branding
-    - [ ] hamburger menu
-    - [ ] menu has exit button to take to home screen
+    - [X] custom nav to match branding
+    - [X] hamburger menu
+    - [X] menu has exit button to take to home screen
     - [ ] menu has report button to send message, message received on server, stathat
 - longer term
     - [ ] if user waits more than n seconds, alert me, I join chat
 - local
     - [ ] get location on client, send to server, get nearest chat to location on server. Alternately, get location via IP on server. Alternately, have user enter zip in client.
+- bugs
+    - [ ] typing/presence notifications don't show until after first message. should show before it.

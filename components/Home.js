@@ -11,6 +11,7 @@ import {
 } from 'react-native'
 import { TextField } from 'react-native-material-textfield'
 import lodashGet from 'lodash/get'
+import { NavigationEvents } from 'react-navigation'
 
 import Button from './Button'
 import constants from '../constants'
@@ -56,9 +57,19 @@ export default class Home extends Component {
   }
 
   componentDidUpdate (prevProps) {
-    if (!prevProps.user && this.props.user) {
+    if (
+      (!prevProps.user && this.props.user) ||
+      lodashGet(prevProps.user, 'id') !== lodashGet(this.props.user, 'id')
+    ) {
       this.setState({ name: lodashGet(this.props.user, 'name', '') })
     }
+  }
+
+  _handleBlur = () => {
+    this.setState({
+      errors: null,
+      name: null
+    })
   }
 
   _onFormSubmit = () => {
@@ -97,6 +108,7 @@ export default class Home extends Component {
 
     return (
       <View style={styles.container}>
+        <NavigationEvents onDidBlur={payload => this._handleBlur()} />
         <ScrollView
           style={styles.scrollView}
           contentContainerStyle={styles.contentContainer}

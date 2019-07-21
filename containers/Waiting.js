@@ -1,7 +1,9 @@
 'use strict'
 
 import React, { Component } from 'react'
+import { compose } from 'redux'
 import { connect } from 'react-redux'
+import { withNavigation } from 'react-navigation'
 import lodashGet from 'lodash/get'
 
 import * as humaaans from '../components/humaaans'
@@ -20,62 +22,35 @@ const brandWithoutWhite = Object.values(constants.BRAND).filter(
 
 const randomItem = items => items[Math.floor(Math.random() * items.length)]
 
-const SKIN = [
-  '#8D5524',
-  '#C68642',
-  '#E0AC69',
-  '#F1C27D',
-  '#FFDBAC',
-  '#260701',
-  '#3D0C02',
-  '#843722',
-  '#AF6E51',
-  '#C69076'
-]
-
-const HAIR = [
-  '#090806',
-  '#2C222B',
-  '#71635A',
-  '#B7A69E',
-  '#D6C4C2',
-  '#CABFB1',
-  '#DCD0BA',
-  '#FFF5E1',
-  '#E6CEA8',
-  '#E5C8A8',
-  '#DEBC99',
-  '#B89778',
-  '#A56B46',
-  '#B55239',
-  '#8D4A43',
-  '#91553D',
-  '#533D32',
-  '#3B3024',
-  '#554838',
-  '#4E433F',
-  '#504444',
-  '#6A4E42',
-  '#A7856A',
-  '#977961'
-]
-
 class Waiting extends Component {
   state = {
     coatColor: randomItem(brandWithoutWhite),
-    hairColor: randomItem(HAIR),
+    hairColor: randomItem(constants.HUMAAANS_HAIR_COLOR),
     hatColor: randomItem(brandWithoutWhite),
     HumaaanComponent: humaaans[randomItem(Object.keys(humaaans))],
+    intervalId: null,
     pantColor: randomItem(brandWithoutWhite),
     shirtColor: randomItem(brandWithoutWhite),
     shoeColor: randomItem(brandWithoutWhite),
-    skinColor: randomItem(SKIN)
+    skinColor: randomItem(constants.HUMAAANS_SKIN_COLOR)
   }
 
   componentDidMount () {
-    const { getRandomMessage } = this.props
-    getRandomMessage()
-    this.interval = setInterval(getRandomMessage, 3000)
+    const handleFocus = this.handleFocus
+    this.didFocusSubscription = this.props.navigation.addListener(
+      'didFocus',
+      payload => {
+        handleFocus()
+      }
+    )
+
+    const handleBlur = this.handleBlur
+    this.didBlurSubscription = this.props.navigation.addListener(
+      'didBlur',
+      payload => {
+        handleBlur()
+      }
+    )
   }
 
   componentDidUpdate (prevProps) {
@@ -89,21 +64,40 @@ class Waiting extends Component {
   }
 
   componentWillUnmount () {
-    if (this.interval) {
-      clearInterval(this.interval)
+    this.handleBlur()
+  }
+
+  handleBlur = () => {
+    const { intervalId } = this.state
+
+    if (intervalId) {
+      clearInterval(intervalId)
+      this.setState({ intervalId: null })
+    }
+  }
+
+  handleFocus = () => {
+    let { intervalId } = this.state
+
+    if (!intervalId) {
+      const { getRandomMessage } = this.props
+
+      getRandomMessage()
+      intervalId = setInterval(getRandomMessage, 3000)
+      this.setState({ intervalId })
     }
   }
 
   resetHumaaanStyle = () => {
     this.setState({
       coatColor: randomItem(brandWithoutWhite),
-      hairColor: randomItem(HAIR),
+      hairColor: randomItem(constants.HUMAAANS_HAIR_COLOR),
       hatColor: randomItem(brandWithoutWhite),
       HumaaanComponent: humaaans[randomItem(Object.keys(humaaans))],
       pantColor: randomItem(brandWithoutWhite),
       shirtColor: randomItem(brandWithoutWhite),
       shoeColor: randomItem(brandWithoutWhite),
-      skinColor: randomItem(SKIN)
+      skinColor: randomItem(constants.HUMAAANS_SKIN_COLOR)
     })
   }
 
@@ -124,7 +118,9 @@ const mapDispatchToProps = {
   getRandomMessage
 }
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(Waiting)
+const enhance = compose(
+  withNavigation,
+  connect(mapStateToProps, mapDispatchToProps)
+)
+
+export default enhance(Waiting)

@@ -29,10 +29,20 @@ class Home extends Component {
   }
 
   componentDidMount () {
+    const handleFocus = this.handleFocus
+    this.didFocusSubscription = this.props.navigation.addListener(
+      'didFocus',
+      payload => {
+        console.log('focus', payload)
+        handleFocus()
+      }
+    )
+  }
+
+  handleFocus = () => {
     const { createUser, user } = this.props
-    if (!user) {
-      createUser()
-    }
+    console.log({ user })
+    createUser()
   }
 
   render () {

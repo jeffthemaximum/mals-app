@@ -19,7 +19,7 @@ import ChatComponent from '../components/Chat'
 import Header from '../containers/Header'
 
 const {
-  actions: { createChat, setChat },
+  actions: { createChat, setChat, unsetChat },
   selectors: { chat: chatSelector, recipient: recipientSelector }
 } = chats
 
@@ -35,7 +35,7 @@ const {
 } = messages
 
 const {
-  actions: { createNotification, setNotification },
+  actions: { createNotification, setNotification, unsetNotifications },
   selectors: {
     typing: typingNotificationSelector,
     unsubscribeData: unsubscribeDataSelector
@@ -43,6 +43,7 @@ const {
 } = notifications
 
 const {
+  actions: { unsetUser },
   selectors: { getUser: getUserSelector }
 } = users
 
@@ -67,11 +68,21 @@ class Chat extends Component {
   }
 
   async componentDidMount () {
-    const jwt = await clientStorage.get(constants.JWT)
-    const cable = ActionCable.createConsumer(constants.API_WS_ROOT, jwt)
-    this.setState({ cable }, () => {
-      this._connectToChatsChannel()
-    })
+    const handleFocus = this._handleFocus
+    this.didFocusSubscription = this.props.navigation.addListener(
+      'didFocus',
+      payload => {
+        handleFocus()
+      }
+    )
+
+    const handleBlur = this._handleBlur
+    this.didBlurSubscription = this.props.navigation.addListener(
+      'didBlur',
+      payload => {
+        handleBlur()
+      }
+    )
   }
 
   componentDidUpdate (prevProps) {
@@ -107,9 +118,9 @@ class Chat extends Component {
   }
 
   componentWillUnmount () {
-    this.state.chatsCable.unsubscribe()
-    this.state.messagesCable.unsubscribe()
-    this.state.notificationsCable.unsubscribe()
+    this._handleBlur()
+    this.didBlurSubscription && this.didBlurSubscription.remove()
+    this.didFocusSubscription && this.didFocusSubscription.remove()
   }
 
   _connectToChatsChannel = () => {
@@ -206,6 +217,27 @@ class Chat extends Component {
       })
       createNotification(notification)
     }
+  }
+
+  _handleBlur = () => {
+    const { unsetChat, unsetNotifications, unsetUser } = this.props
+
+    this.startTyping && this.startTyping.cancel()
+    this.state.chatsCable && this.state.chatsCable.unsubscribe()
+    this.state.messagesCable && this.state.messagesCable.unsubscribe()
+    this.state.notificationsCable && this.state.notificationsCable.unsubscribe()
+    this.stopTyping && this.stopTyping.cancel()
+    unsetChat()
+    unsetNotifications()
+    unsetUser()
+  }
+
+  _handleFocus = async () => {
+    const jwt = await clientStorage.get(constants.JWT)
+    const cable = ActionCable.createConsumer(constants.API_WS_ROOT, jwt)
+    this.setState({ cable }, () => {
+      this._connectToChatsChannel()
+    })
   }
 
   _handleReceivedChat = chat => {
@@ -310,6 +342,9 @@ const mapDispatchToProps = {
   setMessage,
   setMessages,
   setNotification,
+  unsetChat,
+  unsetNotifications,
+  unsetUser,
   updateMessage
 }
 
