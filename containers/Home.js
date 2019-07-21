@@ -2,23 +2,27 @@
 
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
+import lodashGet from 'lodash/get'
 
+import * as statService from '../services/statService'
 import chats from '../ducks/chats'
+import location from '../ducks/location'
 import users from '../ducks/users'
 
 import HomeComponent from '../components/Home'
 
 const {
-  actions: { createUser, updateUser },
-  selectors: {
-    getUser: getUserSelector,
-    loading: userLoadingSelector
-  }
-} = users
-
-const {
   selectors: { loading: chatLoadingSelector }
 } = chats
+
+const {
+  actions: { setLocationError, setLocation }
+} = location
+
+const {
+  actions: { createUser, updateUser },
+  selectors: { getUser: getUserSelector, loading: userLoadingSelector }
+} = users
 
 class Home extends Component {
   static navigationOptions = {
@@ -33,22 +37,35 @@ class Home extends Component {
     this.didFocusSubscription = this.props.navigation.addListener(
       'didFocus',
       payload => {
-        console.log('focus', payload)
         handleFocus()
       }
     )
   }
 
+  getLocation = () => {
+    const { setLocation, setLocationError } = this.props
+
+    navigator.geolocation.getCurrentPosition(
+      position => {
+        setLocation(position)
+      },
+      error => {
+        const errorCode = lodashGet(error, 'code')
+        statService.log(`Home/getLocation/error/${errorCode}`, { count: 1 })
+        setLocationError(error)
+      }
+    )
+  }
+
   handleFocus = () => {
-    const { createUser, user } = this.props
-    console.log({ user })
+    const { createUser } = this.props
+
     createUser()
+    this.getLocation()
   }
 
   render () {
-    return (
-      <HomeComponent {...this.props} />
-    )
+    return <HomeComponent {...this.props} />
   }
 }
 
@@ -64,7 +81,12 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = {
   createUser,
+  setLocation,
+  setLocationError,
   updateUser
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(Home)
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(Home)
