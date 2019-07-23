@@ -6,8 +6,9 @@ import * as userApi from './api'
 import constants from '../../constants'
 import navigationService from '../../services/navigationService'
 
-function * createUser () {
-  const response = yield call(userApi.createUser)
+function * createUser (action) {
+  const { location } = action
+  const response = yield call(userApi.createUser, { location })
   const { data: user, error } = response
   if (user) {
     const { jwt } = user

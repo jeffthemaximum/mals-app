@@ -65,6 +65,8 @@ class Waiting extends Component {
 
   componentWillUnmount () {
     this.handleBlur()
+    this.didBlurSubscription && this.didBlurSubscription.remove()
+    this.didFocusSubscription && this.didFocusSubscription.remove()
   }
 
   handleBlur = () => {

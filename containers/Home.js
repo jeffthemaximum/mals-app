@@ -4,6 +4,7 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import lodashGet from 'lodash/get'
 
+import * as locationSerializer from '../services/serializers/location'
 import * as statService from '../services/statService'
 import chats from '../ducks/chats'
 import location from '../ducks/location'
@@ -42,25 +43,28 @@ class Home extends Component {
     )
   }
 
+  componentWillUnmount () {
+    this.didFocusSubscription && this.didFocusSubscription.remove()
+  }
+
   getLocation = () => {
-    const { setLocation, setLocationError } = this.props
+    const { createUser, setLocation, setLocationError } = this.props
 
     navigator.geolocation.getCurrentPosition(
       position => {
         setLocation(position)
+        createUser({ location: locationSerializer.serialize(position) })
       },
       error => {
         const errorCode = lodashGet(error, 'code')
         statService.log(`Home/getLocation/error/${errorCode}`, { count: 1 })
         setLocationError(error)
+        createUser({})
       }
     )
   }
 
   handleFocus = () => {
-    const { createUser } = this.props
-
-    createUser()
     this.getLocation()
   }
 

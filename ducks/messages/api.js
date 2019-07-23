@@ -11,7 +11,7 @@ export async function createMessage (jwt, { message }) {
   const requestConfig = {
     headers: generateHeaders({ jwt }),
     method: 'post',
-    params: { ...message },
+    data: { ...message },
     url: `${API_ROOT}/api/v1/messages`
   }
 

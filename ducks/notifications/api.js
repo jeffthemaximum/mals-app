@@ -10,7 +10,7 @@ export async function createNotification (jwt, { notification }) {
   const requestConfig = {
     headers: generateHeaders({ jwt }),
     method: 'post',
-    params: { ...notification },
+    data: { ...notification },
     url: `${API_ROOT}/api/v1/notifications`
   }
 

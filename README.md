@@ -36,6 +36,8 @@ A chat app where you chat with a local stranger
     - [ ] if user waits more than n seconds, alert me, I join chat
     - [ ] store device ID when creating users on backend
 - local
-    - [ ] get location on client, send to server, get nearest chat to location on server. Alternately, get location via IP on server. Alternately, have user enter zip in client.
+    - [X] get location on client, send to server, get nearest chat to location on server. Alternately, get location via IP on server.
 - bugs
     - [ ] typing/presence notifications don't show until after first message. should show before it.
+- testing
+    - [ ] E2E https://github.com/wix/Detox

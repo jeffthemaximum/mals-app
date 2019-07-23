@@ -10,7 +10,7 @@ export async function createChat (jwt) {
   const requestConfig = {
     headers: generateHeaders({ jwt }),
     method: 'post',
-    params: {},
+    data: {},
     url: `${API_ROOT}/api/v1/chats`
   }
 

@@ -6,10 +6,11 @@ import constants from '../../constants'
 
 const API_ROOT = constants.API_ROOT
 
-export async function createUser () {
+export async function createUser ({ location }) {
   const requestConfig = {
+    headers: generateHeaders({}),
     method: 'post',
-    params: {},
+    data: location,
     url: `${API_ROOT}/api/v1/users`
   }
 
@@ -26,7 +27,7 @@ export async function updateUser (jwt, data) {
   const requestConfig = {
     headers: generateHeaders({ jwt }),
     method: 'patch',
-    params: data,
+    data: data,
     url: `${API_ROOT}/api/v1/users`
   }
 
