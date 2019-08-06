@@ -1,4 +1,18 @@
 import * as actionTypes from './actionTypes'
+import lodashGet from 'lodash/get'
+
+const isDuplicateInitialAdminMessage = (messages, message) => {
+  const isInitialAdminMessage = (message) => (
+    lodashGet(message, 'user.isAdmin') === true &&
+    lodashGet(message, 'text') &&
+    lodashGet(message, 'text').startsWith('You\'re chatting with a user who\'s')
+  )
+
+  return (
+    isInitialAdminMessage(message) &&
+    messages.find(message => isInitialAdminMessage(message))
+  )
+}
 
 export default function messages (state = { messages: [] }, action) {
   switch (action.type) {
@@ -26,7 +40,12 @@ export default function messages (state = { messages: [] }, action) {
         randomMessage: action.message
       }
     case actionTypes.SET_MESSAGE: {
-      const messages = [action.message, ...state.messages]
+      let messages = [ ...state.messages ]
+
+      if (!isDuplicateInitialAdminMessage(messages, action.message)) {
+        messages = [action.message, ...messages]
+      }
+
       return {
         ...state,
         error: false,
