@@ -38,6 +38,12 @@ A chat app where you chat with a local stranger
 - local
     - [X] get location on client, send to server, get nearest chat to location on server. Alternately, get location via IP on server.
 - bugs
-    - [ ] typing/presence notifications don't show until after first message. should show before it.
+    - [X] typing/presence notifications don't show until after first message. should show before it.
+    - [X] server stat queue shouldnt be interval / should be when it hits an amount
+    - [X] delete JoinChatJob of chat thats deleted
 - testing
     - [ ] E2E https://github.com/wix/Detox
+- dist
+    - [ ] splash screen
+    - [ ] icon
+    - [ ] build with "production" secrets
