@@ -4,6 +4,8 @@ import React, { Component } from 'react'
 import {
   ActivityIndicator,
   Image,
+  KeyboardAvoidingView,
+  Platform,
   ScrollView,
   StyleSheet,
   Text,
@@ -104,14 +106,20 @@ export default class Home extends Component {
     const { loading } = this.props
     const { errors, name } = this.state
 
+    const keyboardVerticalOffset = Platform.OS === 'ios' ? 60 : 0
     const spinner = loading ? <ActivityIndicator size='large' /> : null
 
     return (
-      <View style={styles.container}>
+      <KeyboardAvoidingView
+        behavior='position'
+        enabled
+        keyboardVerticalOffset={keyboardVerticalOffset}
+        style={styles.container}
+      >
         <NavigationEvents onDidBlur={payload => this._handleBlur()} />
         <ScrollView
-          style={styles.scrollView}
           contentContainerStyle={styles.contentContainer}
+          style={styles.scrollView}
         >
           <Image
             source={{
@@ -132,11 +140,11 @@ export default class Home extends Component {
           {spinner}
         </ScrollView>
         <Button
-          isLoading={loading}
           handlePress={this._onFormSubmit}
+          isLoading={loading}
           text={`Let's go`}
         />
-      </View>
+      </KeyboardAvoidingView>
     )
   }
 }

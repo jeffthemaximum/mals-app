@@ -33,7 +33,7 @@ A chat app where you chat with a local stranger
     - [X] menu has exit button to take to home screen
     - [ ] menu has report button to send message, message received on server, stathat
 - longer term
-    - [ ] if user waits more than n seconds, alert me, I join chat
+    - [X] if user waits more than n seconds, alert me, I join chat
     - [ ] store device ID when creating users on backend
 - local
     - [X] get location on client, send to server, get nearest chat to location on server. Alternately, get location via IP on server.
@@ -41,6 +41,7 @@ A chat app where you chat with a local stranger
     - [X] typing/presence notifications don't show until after first message. should show before it.
     - [X] server stat queue shouldnt be interval / should be when it hits an amount
     - [X] delete JoinChatJob of chat thats deleted
+    - [X] keyboard hides input on Home
 - testing
     - [ ] E2E https://github.com/wix/Detox
 - dist
