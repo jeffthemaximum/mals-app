@@ -19,6 +19,20 @@ import Button from './Button'
 import constants from '../constants'
 
 const NameInputField = ({ errors, name, onChange }) => {
+  const errorString = () => {
+    console.log({ errors })
+    const nameError = lodashGet(errors, 'name.0')
+    const defaultError = lodashGet(errors, 'default.0')
+
+    if (nameError) {
+      return `Name ${errors.name[0]}`
+    } else if (defaultError) {
+      return defaultError
+    } else {
+      return null
+    }
+  }
+
   return (
     <View style={styles.inputContainer}>
       <TextField
@@ -30,9 +44,7 @@ const NameInputField = ({ errors, name, onChange }) => {
           borderColor: constants.BRAND.navy,
           margin: 0
         }}
-        error={
-          errors && errors.name && errors.name[0] && `Name ${errors.name[0]}`
-        }
+        error={errorString()}
         errorColor={constants.BRAND.red}
         fontSize={24}
         label={'Enter first name...'}
@@ -64,6 +76,11 @@ export default class Home extends Component {
       lodashGet(prevProps.user, 'id') !== lodashGet(this.props.user, 'id')
     ) {
       this.setState({ name: lodashGet(this.props.user, 'name', '') })
+    }
+
+    console.log({ error: this.props.error })
+    if (!prevProps.error && this.props.error) {
+      this.setState({ errors: this.props.error })
     }
   }
 

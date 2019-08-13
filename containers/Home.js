@@ -22,7 +22,11 @@ const {
 
 const {
   actions: { createUser, updateUser },
-  selectors: { getUser: getUserSelector, loading: userLoadingSelector }
+  selectors: {
+    error: errorSelector,
+    getUser: getUserSelector,
+    loading: userLoadingSelector
+  }
 } = users
 
 class Home extends Component {
@@ -74,10 +78,12 @@ class Home extends Component {
 }
 
 const mapStateToProps = state => {
+  const error = errorSelector(state)
   const loading = userLoadingSelector(state) || chatLoadingSelector(state)
   const user = getUserSelector(state)
 
   return {
+    error,
     loading,
     user
   }

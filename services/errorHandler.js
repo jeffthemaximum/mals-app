@@ -6,7 +6,7 @@ const DEFAULT_ERROR = 'Sorry, something went wrong. Please try again.'
 export function handleApiError (error) {
   let errors = lodashGet(error, 'response.data.errors')
 
-  if (!lodashIsPlainObject(error)) {
+  if (!lodashIsPlainObject(errors)) {
     errors = { default: [DEFAULT_ERROR] }
   }
 

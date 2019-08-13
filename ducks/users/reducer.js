@@ -6,13 +6,15 @@ export default function users (state = {}, action) {
     case actionTypes.UPDATE:
       return {
         ...state,
+        error: false,
         loading: true
       }
     case actionTypes.CREATE_ERROR:
     case actionTypes.UPDATE_ERROR:
+      const { error } = action
       return {
         ...state,
-        error: true,
+        error: error,
         loading: false,
         user: null
       }
