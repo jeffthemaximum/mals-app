@@ -35,7 +35,8 @@ A chat app where you chat with a local stranger
     - [ ] menu has report button to send message, message received on server, stathat
 - longer term
     - [X] if user waits more than n seconds, alert me, I join chat
-    - [ ] store device ID when creating users on backend
+    - [X] store device ID when creating users on backend
+    - [ ] Optional password added for user account in edit profile.
 - local
     - [X] get location on client, send to server, get nearest chat to location on server. Alternately, get location via IP on server.
 - bugs
@@ -47,5 +48,10 @@ A chat app where you chat with a local stranger
     - [ ] E2E https://github.com/wix/Detox
 - dist
     - [ ] splash screen
-    - [ ] icon
+    - [X] icon
     - [ ] build with "production" secrets
+- apple feedback
+    - [ ] EULA acceptance on first app open on device
+    - [ ] users create accounts anc can sign back into accounts. No password needed from device.
+    - [ ] edit profile functionality to update name, get new random avatar.
+    - [ ] users can deny a chat request.
