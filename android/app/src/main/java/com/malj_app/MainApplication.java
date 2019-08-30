@@ -3,6 +3,8 @@ package com.malj_app;
 import android.app.Application;
 
 import com.facebook.react.ReactApplication;
+import com.react.rnspinkit.RNSpinkitPackage;
+import com.react.rnspinkit.RNSpinkitPackage;
 import com.learnium.RNDeviceInfo.RNDeviceInfo;
 import com.horcrux.svg.SvgPackage;
 import com.reactnativecommunity.asyncstorage.AsyncStoragePackage;
@@ -27,6 +29,8 @@ public class MainApplication extends Application implements ReactApplication {
     protected List<ReactPackage> getPackages() {
       return Arrays.<ReactPackage>asList(
           new MainReactPackage(),
+            new RNSpinkitPackage(),
+            new RNSpinkitPackage(),
             new RNDeviceInfo(),
             new SvgPackage(),
             new AsyncStoragePackage(),

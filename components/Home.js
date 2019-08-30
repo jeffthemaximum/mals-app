@@ -2,7 +2,6 @@
 
 import React, { Component } from 'react'
 import {
-  ActivityIndicator,
   Image,
   KeyboardAvoidingView,
   Platform,
@@ -17,6 +16,7 @@ import { NavigationEvents } from 'react-navigation'
 
 import Button from './Button'
 import constants from '../constants'
+import LoadingSpinner from './LoadingSpinner'
 
 const NameInputField = ({ errors, name, onChange }) => {
   const errorString = () => {
@@ -124,7 +124,6 @@ export default class Home extends Component {
     const { errors, name } = this.state
 
     const keyboardVerticalOffset = Platform.OS === 'ios' ? 60 : 0
-    const spinner = loading ? <ActivityIndicator size='large' /> : null
 
     return (
       <KeyboardAvoidingView
@@ -149,12 +148,15 @@ export default class Home extends Component {
             <Text style={styles.bold}>Hello </Text>
             <Text>Stranger</Text>
           </Text>
-          <NameInputField
-            errors={errors}
-            name={name}
-            onChange={this._onNameChange}
-          />
-          {spinner}
+          {!loading ? (
+            <NameInputField
+              errors={errors}
+              name={name}
+              onChange={this._onNameChange}
+            />
+          ) : (
+            <LoadingSpinner />
+          )}
         </ScrollView>
         <Button
           handlePress={this._onFormSubmit}

@@ -4,6 +4,7 @@ import React from 'react'
 import { Image, StyleSheet, View } from 'react-native'
 
 import constants from '../constants'
+import LoadingSpinner from './LoadingSpinner'
 
 const Splash = () => {
   return (
@@ -15,6 +16,7 @@ const Splash = () => {
         }}
         style={styles.image}
       />
+      <LoadingSpinner />
     </View>
   )
 }

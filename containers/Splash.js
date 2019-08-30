@@ -81,7 +81,7 @@ class Splash extends Component {
   moveOn = () => {
     const { navigation } = this.props
 
-    navigation.navigate('Home')
+    navigation.replace('Home')
   }
 
   render () {
