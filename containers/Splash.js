@@ -11,7 +11,7 @@ import devices from '../ducks/devices'
 import SplashComponent from '../components/Splash'
 
 const {
-  actions: { createDevice, setDevice },
+  actions: { createDevice },
   selectors: {
     device: deviceSelector,
     error: errorSelector,
@@ -31,19 +31,21 @@ class Splash extends Component {
       }
     )
 
-    const { createDevice, setDevice } = this.props
+    const { createDevice } = this.props
 
     let storedDeviceUniqueId = await clientStorage.get(
       constants.DEVICE_UNIQUE_ID
     )
 
+    let deviceInfo
     if (storedDeviceUniqueId) {
-      setDevice({ uniqueId: storedDeviceUniqueId })
+      deviceInfo = { uniqueId: storedDeviceUniqueId }
     } else {
-      const deviceInfo = deviceInfoService.getInfo()
-      const serializedData = deviceSerializers.serialize(deviceInfo)
-      createDevice(serializedData)
+      deviceInfo = deviceInfoService.getInfo()
     }
+
+    const serializedData = deviceSerializers.serialize(deviceInfo)
+    createDevice(serializedData)
   }
 
   componentDidUpdate (prevProps) {
@@ -100,8 +102,7 @@ const mapStateToProps = state => {
 }
 
 const mapDispatchToProps = {
-  createDevice,
-  setDevice
+  createDevice
 }
 
 export default connect(

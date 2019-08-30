@@ -21,11 +21,6 @@ export default function device (state = {}, action) {
         error: null,
         loading: true
       }
-    case actionTypes.SET:
-      return {
-        ...state,
-        device: action.device
-      }
     default:
       return state
   }

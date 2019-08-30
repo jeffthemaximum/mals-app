@@ -30,10 +30,3 @@ export function createDevice (data) {
     data
   }
 }
-
-export function setDevice (device) {
-  return {
-    type: actionTypes.SET,
-    device
-  }
-}
