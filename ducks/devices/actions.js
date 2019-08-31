@@ -30,3 +30,11 @@ export function createDevice (data) {
     data
   }
 }
+
+export function updateDevice (deviceUniqueId, data) {
+  return {
+    type: actionTypes.UPDATE,
+    data,
+    deviceUniqueId
+  }
+}

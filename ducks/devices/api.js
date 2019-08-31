@@ -22,3 +22,20 @@ export async function createDevice (data) {
     return { error: errors }
   }
 }
+
+export async function updateDevice (deviceUniqueId, data) {
+  const requestConfig = {
+    headers: generateHeaders({}),
+    method: 'patch',
+    data,
+    url: `${API_ROOT}/api/v1/devices/${deviceUniqueId}`
+  }
+
+  try {
+    const response = await axios.request(requestConfig)
+    return response
+  } catch (e) {
+    const errors = handleApiError(e)
+    return { error: errors }
+  }
+}

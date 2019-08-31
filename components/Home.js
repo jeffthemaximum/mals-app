@@ -16,11 +16,11 @@ import { NavigationEvents } from 'react-navigation'
 
 import Button from './Button'
 import constants from '../constants'
+import EulaModal from './EulaModal'
 import LoadingSpinner from './LoadingSpinner'
 
 const NameInputField = ({ errors, name, onChange }) => {
   const errorString = () => {
-    console.log({ errors })
     const nameError = lodashGet(errors, 'name.0')
     const defaultError = lodashGet(errors, 'default.0')
 
@@ -78,7 +78,6 @@ export default class Home extends Component {
       this.setState({ name: lodashGet(this.props.user, 'name', '') })
     }
 
-    console.log({ error: this.props.error })
     if (!prevProps.error && this.props.error) {
       this.setState({ errors: this.props.error })
     }
@@ -120,7 +119,7 @@ export default class Home extends Component {
   }
 
   render () {
-    const { loading } = this.props
+    const { eulaModalVisibile, deviceLoading, handleAcceptEula, loading } = this.props
     const { errors, name } = this.state
 
     const keyboardVerticalOffset = Platform.OS === 'ios' ? 60 : 0
@@ -132,6 +131,11 @@ export default class Home extends Component {
         keyboardVerticalOffset={keyboardVerticalOffset}
         style={styles.container}
       >
+        <EulaModal
+          loading={deviceLoading}
+          isVisible={eulaModalVisibile}
+          handlePress={handleAcceptEula}
+        />
         <NavigationEvents onDidBlur={payload => this._handleBlur()} />
         <ScrollView
           contentContainerStyle={styles.contentContainer}

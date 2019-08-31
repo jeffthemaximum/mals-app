@@ -7,8 +7,6 @@ export default class Header extends Component {
   render () {
     const { handlePress } = this.props
 
-    console.log({ handlePress })
-
     return (
       <TouchableOpacity onPress={handlePress} style={styles.container}>
         <Image
