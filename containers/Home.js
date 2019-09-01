@@ -1,8 +1,10 @@
 'use strict'
 
-import React, { Component } from 'react'
+import { compose } from 'redux'
 import { connect } from 'react-redux'
+import hoistNonReactStatics from 'hoist-non-react-statics'
 import lodashGet from 'lodash/get'
+import React, { Component } from 'react'
 
 import * as deviceSerializer from '../services/serializers/devices'
 import * as locationSerializer from '../services/serializers/location'
@@ -11,6 +13,7 @@ import chats from '../ducks/chats'
 import devices from '../ducks/devices'
 import location from '../ducks/location'
 import users from '../ducks/users'
+import withDevice from './withDevice'
 
 import HomeComponent from '../components/Home'
 
@@ -68,15 +71,6 @@ class Home extends Component {
     }
   }
 
-  componentDidUpdate (prevProps) {
-    const { hasAcceptedEula } = this.props
-    const { eulaModalVisibile } = this.state
-
-    if (hasAcceptedEula && eulaModalVisibile) {
-      this.setState({ eulaModalVisibile: false })
-    }
-  }
-
   componentWillUnmount () {
     this.didFocusSubscription && this.didFocusSubscription.remove()
   }
@@ -104,6 +98,7 @@ class Home extends Component {
     const serializedData = deviceSerializer.serialize({ hasAcceptedEula: true })
 
     updateDevice(deviceUniqueId, serializedData)
+    this.setState({ eulaModalVisibile: false })
   }
 
   handleFocus = () => {
@@ -149,7 +144,12 @@ const mapDispatchToProps = {
   updateUser
 }
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(Home)
+const enhance = compose(
+  withDevice,
+  connect(
+    mapStateToProps,
+    mapDispatchToProps
+  )
+)
+
+export default hoistNonReactStatics(enhance(Home), Home)

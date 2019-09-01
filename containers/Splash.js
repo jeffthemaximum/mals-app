@@ -1,23 +1,12 @@
 'use strict'
 
-import React, { Component } from 'react'
+import { compose } from 'redux'
 import { connect } from 'react-redux'
+import hoistNonReactStatics from 'hoist-non-react-statics'
+import React, { Component } from 'react'
 
-import * as clientStorage from '../services/clientStorage'
-import * as deviceInfoService from '../services/deviceInfoService'
-import * as deviceSerializers from '../services/serializers/devices'
-import constants from '../constants'
-import devices from '../ducks/devices'
 import SplashComponent from '../components/Splash'
-
-const {
-  actions: { createDevice },
-  selectors: {
-    device: deviceSelector,
-    error: errorSelector,
-    loading: loadingSelector
-  }
-} = devices
+import withDevice from './withDevice'
 
 class Splash extends Component {
   state = { intervalId: null }
@@ -31,21 +20,12 @@ class Splash extends Component {
       }
     )
 
-    const { createDevice } = this.props
+    const { intervalId } = this.state
 
-    let storedDeviceUniqueId = await clientStorage.get(
-      constants.DEVICE_UNIQUE_ID
-    )
-
-    let deviceInfo
-    if (storedDeviceUniqueId) {
-      deviceInfo = { uniqueId: storedDeviceUniqueId }
-    } else {
-      deviceInfo = deviceInfoService.getInfo()
+    if (!intervalId) {
+      const intervalId = setInterval(this.moveOn, 5000)
+      this.setState({ intervalId })
     }
-
-    const serializedData = deviceSerializers.serialize(deviceInfo)
-    createDevice(serializedData)
   }
 
   componentDidUpdate (prevProps) {
@@ -57,7 +37,6 @@ class Splash extends Component {
   componentWillUnmount () {
     this.handleBlur()
     this.didBlurSubscription && this.didBlurSubscription.remove()
-    this.didFocusSubscription && this.didFocusSubscription.remove()
   }
 
   handleBlur = () => {
@@ -66,15 +45,6 @@ class Splash extends Component {
     if (intervalId) {
       clearInterval(intervalId)
       this.setState({ intervalId: null })
-    }
-  }
-
-  handleFocus = () => {
-    let { intervalId } = this.state
-
-    if (!intervalId) {
-      const intervalId = setInterval(this.moveOn, 5000)
-      this.setState({ intervalId })
     }
   }
 
@@ -90,22 +60,17 @@ class Splash extends Component {
 }
 
 const mapStateToProps = state => {
-  const device = deviceSelector(state)
-  const error = errorSelector(state)
-  const loading = loadingSelector(state)
-
-  return {
-    device,
-    error,
-    loading
-  }
+  return {}
 }
 
-const mapDispatchToProps = {
-  createDevice
-}
+const mapDispatchToProps = {}
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(Splash)
+const enhance = compose(
+  withDevice,
+  connect(
+    mapStateToProps,
+    mapDispatchToProps
+  )
+)
+
+export default hoistNonReactStatics(enhance(Splash), Splash)

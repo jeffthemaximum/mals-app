@@ -1,7 +1,9 @@
 'use strict'
 
+import { compose } from 'redux'
 import { connect } from 'react-redux'
 import ActionCable from 'action-cable-react-jwt'
+import hoistNonReactStatics from 'hoist-non-react-statics'
 import lodashDebounce from 'lodash/debounce'
 import React, { Component } from 'react'
 
@@ -14,6 +16,7 @@ import constants from '../constants'
 import messages from '../ducks/messages'
 import notifications from '../ducks/notifications'
 import users from '../ducks/users'
+import withDevice from './withDevice'
 
 import ChatComponent from '../components/Chat'
 import Header from '../containers/Header'
@@ -348,7 +351,12 @@ const mapDispatchToProps = {
   updateMessage
 }
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(Chat)
+const enhance = compose(
+  withDevice,
+  connect(
+    mapStateToProps,
+    mapDispatchToProps
+  )
+)
+
+export default hoistNonReactStatics(enhance(Chat), Chat)

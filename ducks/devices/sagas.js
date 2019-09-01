@@ -25,7 +25,6 @@ function * updateDevice (action) {
   const { data: device, error } = response
   if (device) {
     const deserializedDevice = deviceSerializers.deserialize(device)
-    yield call(clientStorageService.set, constants.DEVICE_HAS_ACCEPTED_EULA, deserializedDevice.hasAcceptedEula)
     yield put({ type: deviceActionTypes.UPDATE_SUCCESS, device: deserializedDevice })
   } else {
     yield put({ type: deviceActionTypes.UPDATE_ERROR, error })
