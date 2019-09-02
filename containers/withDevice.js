@@ -14,7 +14,9 @@ const {
   actions: { createDevice },
   selectors: {
     device: deviceSelector,
+    deviceUniqueId: deviceUniqueIdSelector,
     error: errorSelector,
+    hasAcceptedEula: hasAcceptedEulaSelector,
     loading: loadingSelector
   }
 } = devices
@@ -55,11 +57,15 @@ function withDevice (WrappedComponent) {
     const device = deviceSelector(state)
     const deviceError = errorSelector(state)
     const deviceLoading = loadingSelector(state)
+    const deviceUniqueId = deviceUniqueIdSelector(state)
+    const hasAcceptedEula = hasAcceptedEulaSelector(state)
 
     return {
       device,
       deviceError,
-      deviceLoading
+      deviceLoading,
+      deviceUniqueId,
+      hasAcceptedEula
     }
   }
 

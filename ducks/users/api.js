@@ -6,11 +6,11 @@ import constants from '../../constants'
 
 const API_ROOT = constants.API_ROOT
 
-export async function createUser ({ location }) {
+export async function createUser (data) {
   const requestConfig = {
     headers: generateHeaders({}),
     method: 'post',
-    data: location,
+    data,
     url: `${API_ROOT}/api/v1/users`
   }
 

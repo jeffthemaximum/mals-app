@@ -1,9 +1,9 @@
 import * as actionTypes from './actionTypes'
 
-export function createUser ({ location }) {
+export function createUser (data) {
   return {
     type: actionTypes.CREATE,
-    location
+    data
   }
 }
 

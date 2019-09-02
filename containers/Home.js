@@ -22,12 +22,7 @@ const {
 } = chats
 
 const {
-  actions: { updateDevice },
-  selectors: {
-    deviceUniqueId: deviceUniqueIdSelector,
-    hasAcceptedEula: hasAcceptedEulaSelector,
-    loading: deviceLoadingSelector
-  }
+  actions: { updateDevice }
 } = devices
 
 const {
@@ -76,18 +71,23 @@ class Home extends Component {
   }
 
   getLocation = () => {
-    const { createUser, setLocation, setLocationError } = this.props
+    const { createUser, deviceUniqueId, setLocation, setLocationError } = this.props
+
+    const device = deviceSerializer.serialize({ deviceUniqueId })
 
     navigator.geolocation.getCurrentPosition(
       position => {
         setLocation(position)
-        createUser({ location: locationSerializer.serialize(position) })
+        createUser({
+          ...device,
+          ...locationSerializer.serialize(position)
+        })
       },
       error => {
         const errorCode = lodashGet(error, 'code')
         statService.log(`Home/getLocation/error/${errorCode}`, { count: 1 })
         setLocationError(error)
-        createUser({})
+        createUser(device)
       }
     )
   }
@@ -119,18 +119,12 @@ class Home extends Component {
 }
 
 const mapStateToProps = state => {
-  const deviceLoading = deviceLoadingSelector(state)
-  const deviceUniqueId = deviceUniqueIdSelector(state)
   const error = errorSelector(state)
-  const hasAcceptedEula = hasAcceptedEulaSelector(state)
   const loading = userLoadingSelector(state) || chatLoadingSelector(state)
   const user = getUserSelector(state)
 
   return {
-    deviceLoading,
-    deviceUniqueId,
     error,
-    hasAcceptedEula,
     loading,
     user
   }
