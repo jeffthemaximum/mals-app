@@ -10,6 +10,7 @@ import createSagaMiddleware from 'redux-saga'
 
 import { statsMiddleware } from './services/reduxMiddleware/statsMiddleware'
 import Chat from './containers/Chat'
+import constants from './constants'
 import Home from './containers/Home'
 import Splash from './containers/Splash'
 import NavigationDrawer from './containers/NavigationDrawer'
@@ -21,30 +22,30 @@ const sagaMiddleware = createSagaMiddleware()
 
 const homeStackScreen = createStackNavigator(
   {
-    Splash: {
+    [constants.NAVIGATION_NAMES.splash]: {
       screen: Splash
     },
-    Home: {
+    [constants.NAVIGATION_NAMES.home]: {
       screen: Home
     }
   },
   {
-    initialRouteName: 'Splash'
+    initialRouteName: constants.NAVIGATION_NAMES.splash
   }
 )
 
 const chatStackScreen = createStackNavigator({
-  Chat: {
+  [constants.NAVIGATION_NAMES.chat]: {
     screen: Chat
   }
 })
 
 const MainNavigator = createDrawerNavigator(
   {
-    Quit: {
+    [constants.NAVIGATION_NAMES.quit]: {
       screen: homeStackScreen
     },
-    Chat: {
+    [constants.NAVIGATION_NAMES.chat]: {
       screen: chatStackScreen,
       navigationOptions: ({ navigation }) => {
         return {

@@ -7,7 +7,38 @@ import { renderAvatar } from './Avatar'
 import { renderBubble } from './Bubble'
 import { renderFooter } from './Footer'
 import { renderSend } from './Send'
+import constants from '../constants'
 import Waiting from '../containers/Waiting'
+import withNavigationName from '../containers/withNavigationName'
+
+let GiftedChatComponent = ({
+  detectTyping,
+  handleSendMessage,
+  messages,
+  notifications,
+  textStyle,
+  userData
+}) => (
+  <GiftedChat
+    listViewProps={{
+      notifications
+    }}
+    messages={messages}
+    notifications={notifications}
+    onInputTextChanged={detectTyping}
+    onSend={messages => handleSendMessage(messages)}
+    renderAvatar={renderAvatar}
+    renderBubble={renderBubble}
+    renderFooter={renderFooter}
+    renderSend={renderSend}
+    renderUsernameOnMessage
+    showUserAvatar
+    textStyle={textStyle}
+    user={userData}
+  />
+)
+
+GiftedChatComponent = withNavigationName(constants.NAVIGATION_NAMES.chat)(GiftedChatComponent)
 
 export default class Chat extends Component {
   render () {
@@ -36,22 +67,13 @@ export default class Chat extends Component {
 
     if (recipient) {
       return (
-        <GiftedChat
-          listViewProps={{
-            notifications
-          }}
+        <GiftedChatComponent
+          detectTyping={detectTyping}
+          handleSendMessage={handleSendMessage}
           messages={messages}
           notifications={notifications}
-          onInputTextChanged={detectTyping}
-          onSend={messages => handleSendMessage(messages)}
-          renderAvatar={renderAvatar}
-          renderBubble={renderBubble}
-          renderFooter={renderFooter}
-          renderSend={renderSend}
-          renderUsernameOnMessage
-          showUserAvatar
           textStyle={textStyle}
-          user={userData}
+          userData={userData}
         />
       )
     } else {

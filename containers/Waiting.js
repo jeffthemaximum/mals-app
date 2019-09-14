@@ -10,6 +10,7 @@ import * as humaaans from '../components/humaaans'
 import constants from '../constants'
 import messages from '../ducks/messages'
 import WaitingComponent from '../components/Waiting'
+import withNavigationName from './withNavigationName'
 
 const {
   actions: { getRandomMessage },
@@ -121,6 +122,7 @@ const mapDispatchToProps = {
 }
 
 const enhance = compose(
+  withNavigationName(constants.NAVIGATION_NAMES.waiting),
   withNavigation,
   connect(mapStateToProps, mapDispatchToProps)
 )

@@ -8,3 +8,5 @@ export const BRAND = {
   teal: '#1F9CA7',
   white: '#FFFFFF'
 }
+
+export const DEFAULT_AVATAR = 'https://meetalocalstranger.s3.amazonaws.com/images/logo.png'

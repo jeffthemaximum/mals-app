@@ -3,9 +3,9 @@ import { StyleSheet, View } from 'react-native'
 
 import constants from '../constants'
 
-const HorizontalRule = () => (
+const HorizontalRule = ({ lineStyle = {} }) => (
   <View style={styles.lineContainer}>
-    <View style={styles.lineStyle} />
+    <View style={[styles.lineStyle, lineStyle]} />
   </View>
 )
 
@@ -17,7 +17,6 @@ const styles = StyleSheet.create({
   lineStyle: {
     borderWidth: 1,
     borderColor: constants.BRAND.navy,
-    margin: 10,
     flex: 1
   }
 })

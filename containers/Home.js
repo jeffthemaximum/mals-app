@@ -10,10 +10,12 @@ import * as deviceSerializer from '../services/serializers/devices'
 import * as locationSerializer from '../services/serializers/location'
 import * as statService from '../services/statService'
 import chats from '../ducks/chats'
+import constants from '../constants'
 import devices from '../ducks/devices'
 import location from '../ducks/location'
 import users from '../ducks/users'
 import withDevice from './withDevice'
+import withNavigationName from './withNavigationName'
 
 import HomeComponent from '../components/Home'
 
@@ -140,6 +142,7 @@ const mapDispatchToProps = {
 
 const enhance = compose(
   withDevice,
+  withNavigationName(constants.NAVIGATION_NAMES.home),
   connect(
     mapStateToProps,
     mapDispatchToProps

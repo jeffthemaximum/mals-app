@@ -132,7 +132,7 @@ export default class Waiting extends Component {
     return (
       <View style={styles.container}>
         <TopWrapper serializedRandomMessage={serializedRandomMessage} />
-        <HorizontalRule />
+        <HorizontalRule lineStyle={{ margin: 10 }} />
         <HumaaanWrapper {...this.props} />
       </View>
     )

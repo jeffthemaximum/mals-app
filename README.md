@@ -51,7 +51,7 @@ A chat app where you chat with a local stranger
     - [X] icon
     - [ ] build with "production" secrets
 - apple feedback
-    - [ ] EULA acceptance on first app open on device
+    - [X] EULA acceptance on first app open on device
     - [ ] users create accounts anc can sign back into accounts. No password needed from device.
     - [ ] edit profile functionality to update name, get new random avatar.
     - [ ] users can deny a chat request.

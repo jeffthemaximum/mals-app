@@ -11,15 +11,14 @@ import * as chatSerializers from '../services/serializers/chats'
 import * as clientStorage from '../services/clientStorage'
 import * as messageSerializers from '../services/serializers/messages'
 import * as notificationSerializers from '../services/serializers/notifications'
+import ChatComponent from '../components/Chat'
 import chats from '../ducks/chats'
 import constants from '../constants'
+import Header from '../containers/Header'
 import messages from '../ducks/messages'
 import notifications from '../ducks/notifications'
 import users from '../ducks/users'
 import withDevice from './withDevice'
-
-import ChatComponent from '../components/Chat'
-import Header from '../containers/Header'
 
 const {
   actions: { createChat, setChat, unsetChat },

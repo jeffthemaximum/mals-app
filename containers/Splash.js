@@ -5,8 +5,10 @@ import { connect } from 'react-redux'
 import hoistNonReactStatics from 'hoist-non-react-statics'
 import React, { Component } from 'react'
 
+import constants from '../constants'
 import SplashComponent from '../components/Splash'
 import withDevice from './withDevice'
+import withNavigationName from './withNavigationName'
 
 class Splash extends Component {
   state = { intervalId: null }
@@ -51,7 +53,7 @@ class Splash extends Component {
   moveOn = () => {
     const { navigation } = this.props
 
-    navigation.replace('Home')
+    navigation.replace(constants.NAVIGATION_NAMES.home)
   }
 
   render () {
@@ -66,6 +68,7 @@ const mapStateToProps = state => {
 const mapDispatchToProps = {}
 
 const enhance = compose(
+  withNavigationName(constants.NAVIGATION_NAMES.splash),
   withDevice,
   connect(
     mapStateToProps,

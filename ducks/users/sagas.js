@@ -28,7 +28,7 @@ function * updateUser (action) {
     const { jwt } = user
     yield call(clientStorageService.set, constants.JWT, jwt)
     yield put({ type: userActionTypes.UPDATE_SUCCESS, user })
-    yield call(navigationService.navigate, 'Chat')
+    yield call(navigationService.navigate, constants.NAVIGATION_NAMES.chat)
   } else {
     yield put({ type: userActionTypes.UPDATE_ERROR, error })
   }
