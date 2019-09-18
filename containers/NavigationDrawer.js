@@ -21,6 +21,10 @@ const {
 } = users
 
 class NavigationDrawer extends Component {
+  state = {
+    reportChatModalIsVisible: false
+  }
+
   handleLeave = () => {
     const { navigation } = this.props
 
@@ -29,6 +33,9 @@ class NavigationDrawer extends Component {
       'Are you sure? You can never get back to this chat if you leave.',
       [
         {
+          text: 'Cancel'
+        },
+        {
           text: 'Yep',
           onPress: () => {
             navigation.navigate(constants.NAVIGATION_NAMES.home)
@@ -36,6 +43,10 @@ class NavigationDrawer extends Component {
         }
       ]
     )
+  }
+
+  handleReportChatCta = () => {
+    this.toggleModal()
   }
 
   shouldRenderLeaveChat = () => {
@@ -52,19 +63,25 @@ class NavigationDrawer extends Component {
   shouldRenderReportCta = () => {
     const { navigationName } = this.props
 
-    const routesWhereReportingIsActive = [
-      constants.NAVIGATION_NAMES.chat
-    ]
-
-    console.log({ navigationName })
+    const routesWhereReportingIsActive = [constants.NAVIGATION_NAMES.chat]
 
     return routesWhereReportingIsActive.includes(navigationName)
   }
 
+  toggleModal = () => {
+    const { reportChatModalIsVisible } = this.state
+
+    this.setState({ reportChatModalIsVisible: !reportChatModalIsVisible })
+  }
+
   render () {
+    const { reportChatModalIsVisible } = this.state
+
     return (
       <NavigationDrawerComponent
         handleLeave={this.handleLeave}
+        handleReportChatCta={this.handleReportChatCta}
+        reportChatModalIsVisible={reportChatModalIsVisible}
         shouldRenderLeaveChat={this.shouldRenderLeaveChat()}
         shouldRenderReportCta={this.shouldRenderReportCta()}
         {...this.props}

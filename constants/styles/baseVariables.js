@@ -1,5 +1,6 @@
 export const BRAND = {
   babyBlue: '#54CDFB',
+  black: '#000000',
   brown: '#4F2D3A',
   grey: '#516C91',
   navy: '#05256C',

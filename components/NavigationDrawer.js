@@ -8,8 +8,8 @@ import React, { Component } from 'react'
 
 import { renderAvatar } from './Avatar'
 import constants from '../constants'
-import HorizonalRule from './HoritizonalRule'
 import NavigationDrawerCta from './NavigationDrawerCta'
+import ReportChatModal from '../containers/ReportChatModal'
 
 export default class NavigationDrawer extends Component {
   avatarProps = () => {
@@ -38,15 +38,16 @@ export default class NavigationDrawer extends Component {
   }
 
   renderLeaveChat = () => {
-    const { shouldRenderLeaveChat } = this.props
+    const { handleLeave, shouldRenderLeaveChat } = this.props
 
     const LeaveChatCta = () => (
       <View>
         <NavigationDrawerCta
+          handleClick={handleLeave}
           iconUri={
-            'https://meetalocalstranger.s3.amazonaws.com/images/closeCircleRed.png'
+            'https://meetalocalstranger.s3.amazonaws.com/images/closeCircleNavy.png'
           }
-          text={'Report user'}
+          text={'Leave chat'}
         />
       </View>
     )
@@ -59,13 +60,14 @@ export default class NavigationDrawer extends Component {
   }
 
   renderReportCta = () => {
-    const { shouldRenderReportCta } = this.props
+    const { handleReportChatCta, shouldRenderReportCta } = this.props
 
     const ReportCta = () => (
       <View>
         <NavigationDrawerCta
+          handleClick={handleReportChatCta}
           iconUri={
-            'https://meetalocalstranger.s3.amazonaws.com/images/closeCircleRed.png'
+            'https://meetalocalstranger.s3.amazonaws.com/images/bellNavy.png'
           }
           text={'Report user'}
         />
@@ -86,38 +88,28 @@ export default class NavigationDrawer extends Component {
   }
 
   render () {
+    const { handleReportChatCta, reportChatModalIsVisible } = this.props
+
     return (
       <View style={styles.container}>
         <SafeAreaView forceInset={{ top: 'always', horizontal: 'never' }}>
           {renderAvatar(this.avatarProps())}
           <Text style={styles.name}>{this.userName()}</Text>
           <Text style={styles.createdAt}>User since {this.memberSince()}</Text>
-          {/* <Image
-            source={{
-              uri:
-                'https://meetalocalstranger.s3.amazonaws.com/images/friendly_encounter.png'
-            }}
-            style={styles.image}
-          /> */}
-          <HorizonalRule />
-          {/* <Button
-            buttonStyles={{
-              backgroundColor: constants.BRAND.red,
-              borderColor: constants.BRAND.red,
-              marginLeft: 8,
-              marginRight: 8
-            }}
-            handlePress={handleLeave}
-            text={`Leave chat`}
-          /> */}
-          {this.renderReportCta()}
           {this.renderLeaveChat()}
+          {this.renderReportCta()}
           <View>
             <View>
               <Image />
             </View>
           </View>
         </SafeAreaView>
+        {reportChatModalIsVisible && (
+          <ReportChatModal
+            handleReportChatCta={handleReportChatCta}
+            isVisible
+          />
+        )}
       </View>
     )
   }
@@ -133,7 +125,7 @@ const styles = StyleSheet.create({
     color: constants.BRAND.grey,
     fontFamily: constants.BASE_STYLES.fonts.regularFontFamily,
     fontSize: 16,
-    marginBottom: 12,
+    marginBottom: 48,
     marginTop: 12
   },
   image: {

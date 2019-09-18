@@ -13,7 +13,7 @@ const {
 } = navigation
 
 function withNavigationName (componentName) {
-  return (WrappedComponent) => {
+  return WrappedComponent => {
     class WrapperComponent extends Component {
       componentDidMount () {
         // TODO this can likely be removed once Chat container is reworked
@@ -27,20 +27,20 @@ function withNavigationName (componentName) {
           }
         )
 
-        const handleBlur = this.handleBlur
-        this.didBlurSubscription = this.props.navigation.addListener(
-          'didBlur',
-          payload => {
-            handleBlur()
-          }
-        )
+        // const handleBlur = this.handleBlur
+        // this.didBlurSubscription = this.props.navigation.addListener(
+        //   'didBlur',
+        //   payload => {
+        //     handleBlur()
+        //   }
+        // )
       }
 
-      handleBlur = () => {
-        const { unsetName } = this.props
+      // handleBlur = () => {
+      //   const { unsetName } = this.props
 
-        unsetName()
-      }
+      //   unsetName()
+      // }
 
       handleFocus = () => {
         const { navigationName, setName } = this.props
@@ -51,15 +51,13 @@ function withNavigationName (componentName) {
       }
 
       componentWillUnmount () {
-        this.handleBlur()
-        this.didBlurSubscription && this.didBlurSubscription.remove()
+        // this.handleBlur()
+        // this.didBlurSubscription && this.didBlurSubscription.remove()
         this.didFocusSubscription && this.didFocusSubscription.remove()
       }
 
       render () {
-        return (
-          <WrappedComponent {...this.props} />
-        )
+        return <WrappedComponent {...this.props} />
       }
     }
 
@@ -78,7 +76,10 @@ function withNavigationName (componentName) {
 
     const enhance = compose(
       withNavigation,
-      connect(mapStateToProps, mapDispatchToProps)
+      connect(
+        mapStateToProps,
+        mapDispatchToProps
+      )
     )
 
     return enhance(WrapperComponent)

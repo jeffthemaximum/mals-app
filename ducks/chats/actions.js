@@ -6,6 +6,20 @@ export function createChat () {
   }
 }
 
+export function reportChat (chatId, content) {
+  return {
+    type: actionTypes.REPORT,
+    chatId,
+    content
+  }
+}
+
+export function resetReportChat () {
+  return {
+    type: actionTypes.RESET_REPORT
+  }
+}
+
 export function setChat (chat) {
   return {
     type: actionTypes.SET,

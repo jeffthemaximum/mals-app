@@ -16,6 +16,21 @@ function * createChat (action) {
   }
 }
 
-const watchers = [takeLatest(chatActionTypes.CREATE, createChat)]
+function * reportChat (action) {
+  const { chatId, content } = action
+  const jwt = yield call(clientStorageService.get, constants.JWT)
+  const response = yield call(chatApi.reportChat, jwt, { chatId, content })
+  const { error } = response
+  if (error) {
+    yield put({ type: chatActionTypes.REPORT_ERROR, error })
+  } else {
+    yield put({ type: chatActionTypes.REPORT_SUCCESS })
+  }
+}
+
+const watchers = [
+  takeLatest(chatActionTypes.CREATE, createChat),
+  takeLatest(chatActionTypes.REPORT, reportChat)
+]
 
 export { createChat, watchers }

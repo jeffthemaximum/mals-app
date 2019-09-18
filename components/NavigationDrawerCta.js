@@ -1,31 +1,29 @@
 'use strict'
 
-import { Image, StyleSheet, Text, View } from 'react-native'
+import { Image, StyleSheet, Text, TouchableOpacity } from 'react-native'
 import React from 'react'
 
-const NavigationDrawerCta = ({
-  iconUri,
-  text
-}) => (
-  <View style={styles.cta}>
-    <Image
-      source={{ uri: iconUri }}
-      style={styles.icon}
-    />
+const NavigationDrawerCta = ({ handleClick, iconUri, text }) => (
+  <TouchableOpacity onPress={handleClick} style={styles.cta}>
+    <Image source={{ uri: iconUri }} style={styles.icon} />
     <Text style={styles.text}>{text}</Text>
-  </View>
+  </TouchableOpacity>
 )
 
 const styles = StyleSheet.create({
   cta: {
     display: 'flex',
-    flexDirection: 'row'
+    flexDirection: 'row',
+    height: 24,
+    marginBottom: 30
   },
   icon: {
-    height: 20,
-    width: 20
+    height: 24,
+    resizeMode: 'cover',
+    width: 24
   },
   text: {
+    fontSize: 20,
     paddingLeft: 16
   }
 })
