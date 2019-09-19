@@ -32,7 +32,7 @@ A chat app where you chat with a local stranger
     - [X] custom nav to match branding
     - [X] hamburger menu
     - [X] menu has exit button to take to home screen
-    - [ ] menu has report button to send message, message received on server, stathat
+    - [X] menu has report button to send message, message received on server, stathat
 - longer term
     - [X] if user waits more than n seconds, alert me, I join chat
     - [X] store device ID when creating users on backend

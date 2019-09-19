@@ -64,7 +64,11 @@ class ReportChatModal extends Component {
   }
 
   handleBackdropPress = () => {
-    this.toggleModal()
+    const { reportLoading } = this.props
+
+    if (!reportLoading) {
+      this.toggleModal()
+    }
   }
 
   handleSubmit = content => {
