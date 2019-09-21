@@ -37,6 +37,7 @@ A chat app where you chat with a local stranger
     - [X] if user waits more than n seconds, alert me, I join chat
     - [X] store device ID when creating users on backend
     - [ ] Optional password added for user account in edit profile.
+    - [ ] wrap App.js with LocationUpdate component that updates user location every n seconds
 - local
     - [X] get location on client, send to server, get nearest chat to location on server. Alternately, get location via IP on server.
 - bugs

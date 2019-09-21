@@ -17,8 +17,7 @@ import constants from '../constants'
 import Header from '../containers/Header'
 import messages from '../ducks/messages'
 import notifications from '../ducks/notifications'
-import users from '../ducks/users'
-import withDevice from './withDevice'
+import withUser from './withUser'
 
 const {
   actions: { createChat, setChat, unsetChat },
@@ -43,11 +42,6 @@ const {
     unsubscribeData: unsubscribeDataSelector
   }
 } = notifications
-
-const {
-  actions: { unsetUser },
-  selectors: { getUser: getUserSelector }
-} = users
 
 class Chat extends Component {
   static navigationOptions = ({ navigation }) => ({
@@ -222,7 +216,7 @@ class Chat extends Component {
   }
 
   _handleBlur = () => {
-    const { unsetChat, unsetNotifications, unsetUser } = this.props
+    const { unsetChat, unsetNotifications } = this.props
 
     this.startTyping && this.startTyping.cancel()
     this.state.chatsCable && this.state.chatsCable.unsubscribe()
@@ -231,7 +225,6 @@ class Chat extends Component {
     this.stopTyping && this.stopTyping.cancel()
     unsetChat()
     unsetNotifications()
-    unsetUser()
   }
 
   _handleFocus = async () => {
@@ -324,14 +317,12 @@ const mapStateToProps = state => {
     unsubscribed: unsubscribeDataSelector(state)
   }
   const recipient = recipientSelector(state)
-  const user = getUserSelector(state)
 
   return {
     chat,
     messages,
     notifications,
-    recipient,
-    user
+    recipient
   }
 }
 
@@ -346,12 +337,11 @@ const mapDispatchToProps = {
   setNotification,
   unsetChat,
   unsetNotifications,
-  unsetUser,
   updateMessage
 }
 
 const enhance = compose(
-  withDevice,
+  withUser,
   connect(
     mapStateToProps,
     mapDispatchToProps

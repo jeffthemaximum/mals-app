@@ -70,30 +70,40 @@ export default class Home extends Component {
     }
   }
 
-  componentDidUpdate (prevProps) {
-    if (
-      (!prevProps.user && this.props.user) ||
-      lodashGet(prevProps.user, 'id') !== lodashGet(this.props.user, 'id')
-    ) {
-      this.setState({ name: lodashGet(this.props.user, 'name', '') })
-    }
+  componentDidMount () {
+    const handleFocus = this.handleFocus
+    handleFocus()
+    this.didFocusSubscription = this.props.navigation.addListener(
+      'didFocus',
+      payload => {
+        handleFocus()
+      }
+    )
+  }
 
+  componentDidUpdate (prevProps) {
     if (!prevProps.error && this.props.error) {
       this.setState({ errors: this.props.error })
     }
   }
 
-  _handleBlur = () => {
+  handleBlur = () => {
     this.setState({
       errors: null,
       name: null
     })
   }
 
-  _onFormSubmit = () => {
+  handleFocus = () => {
+    const { user } = this.props
+
+    this.setState({ name: lodashGet(user, 'name', '') })
+  }
+
+  onFormSubmit = () => {
     const { updateUser } = this.props
 
-    const errors = this._validateName()
+    const errors = this.validateName()
 
     if (errors) {
       this.setState({ errors })
@@ -103,14 +113,14 @@ export default class Home extends Component {
     }
   }
 
-  _onNameChange = event => {
+  onNameChange = event => {
     this.setState({
       errors: null,
       name: event.nativeEvent.text
     })
   }
 
-  _validateName = (name = this.state.name) => {
+  validateName = (name = this.state.name) => {
     if (name.length === 0) {
       return {
         name: [`can't be blank`]
@@ -136,7 +146,7 @@ export default class Home extends Component {
           isVisible={eulaModalVisibile}
           handlePress={handleAcceptEula}
         />
-        <NavigationEvents onDidBlur={payload => this._handleBlur()} />
+        <NavigationEvents onDidBlur={payload => this.handleBlur()} />
         <ScrollView
           contentContainerStyle={styles.contentContainer}
           style={styles.scrollView}
@@ -156,14 +166,14 @@ export default class Home extends Component {
             <NameInputField
               errors={errors}
               name={name}
-              onChange={this._onNameChange}
+              onChange={this.onNameChange}
             />
           ) : (
             <LoadingSpinner />
           )}
         </ScrollView>
         <Button
-          handlePress={this._onFormSubmit}
+          handlePress={this.onFormSubmit}
           isLoading={loading}
           text={`Let's go`}
         />

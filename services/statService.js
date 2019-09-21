@@ -1,7 +1,7 @@
 import constants from '../constants'
 import StatHat from './statHatService'
 
-const statHat = new StatHat(constants.STAHAT_API_KEY, { loggerEnabled: true })
+const statHat = new StatHat(constants.STAHAT_API_KEY, { loggerEnabled: false })
 statHat.initiate()
 
 export const log = (statName, data) => {

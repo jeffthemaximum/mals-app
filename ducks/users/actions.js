@@ -1,15 +1,16 @@
 import * as actionTypes from './actionTypes'
 
-export function createUser (data) {
+export function getOrCreateUser (data) {
   return {
-    type: actionTypes.CREATE,
+    type: actionTypes.GET_OR_CREATE,
     data
   }
 }
 
-export function unsetUser () {
+export function setupUser (data) {
   return {
-    type: actionTypes.UNSET
+    type: actionTypes.SETUP,
+    data
   }
 }
 

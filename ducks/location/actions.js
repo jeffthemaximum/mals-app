@@ -6,10 +6,3 @@ export function setLocation (location) {
     location
   }
 }
-
-export function setLocationError (error) {
-  return {
-    type: actionTypes.ERROR,
-    error
-  }
-}

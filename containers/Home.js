@@ -3,18 +3,15 @@
 import { compose } from 'redux'
 import { connect } from 'react-redux'
 import hoistNonReactStatics from 'hoist-non-react-statics'
-import lodashGet from 'lodash/get'
 import React, { Component } from 'react'
 
 import * as deviceSerializer from '../services/serializers/devices'
-import * as locationSerializer from '../services/serializers/location'
-import * as statService from '../services/statService'
 import chats from '../ducks/chats'
 import constants from '../constants'
 import devices from '../ducks/devices'
 import location from '../ducks/location'
 import users from '../ducks/users'
-import withDevice from './withDevice'
+import withUser from './withUser'
 import withNavigationName from './withNavigationName'
 
 import HomeComponent from '../components/Home'
@@ -32,10 +29,9 @@ const {
 } = location
 
 const {
-  actions: { createUser, updateUser },
+  actions: { getOrCreateUser, updateUser },
   selectors: {
     error: errorSelector,
-    getUser: getUserSelector,
     loading: userLoadingSelector
   }
 } = users
@@ -55,43 +51,9 @@ class Home extends Component {
   componentDidMount () {
     const { deviceUniqueId, hasAcceptedEula } = this.props
 
-    const handleFocus = this.handleFocus
-    this.didFocusSubscription = this.props.navigation.addListener(
-      'didFocus',
-      payload => {
-        handleFocus()
-      }
-    )
-
     if (deviceUniqueId && !hasAcceptedEula) {
       this.setState({ eulaModalVisibile: true })
     }
-  }
-
-  componentWillUnmount () {
-    this.didFocusSubscription && this.didFocusSubscription.remove()
-  }
-
-  getLocation = () => {
-    const { createUser, deviceUniqueId, setLocation, setLocationError } = this.props
-
-    const device = deviceSerializer.serialize({ deviceUniqueId })
-
-    navigator.geolocation.getCurrentPosition(
-      position => {
-        setLocation(position)
-        createUser({
-          ...device,
-          ...locationSerializer.serialize(position)
-        })
-      },
-      error => {
-        const errorCode = lodashGet(error, 'code')
-        statService.log(`Home/getLocation/error/${errorCode}`, { count: 1 })
-        setLocationError(error)
-        createUser(device)
-      }
-    )
   }
 
   handleAcceptEula = () => {
@@ -101,10 +63,6 @@ class Home extends Component {
 
     updateDevice(deviceUniqueId, serializedData)
     this.setState({ eulaModalVisibile: false })
-  }
-
-  handleFocus = () => {
-    this.getLocation()
   }
 
   render () {
@@ -123,17 +81,15 @@ class Home extends Component {
 const mapStateToProps = state => {
   const error = errorSelector(state)
   const loading = userLoadingSelector(state) || chatLoadingSelector(state)
-  const user = getUserSelector(state)
 
   return {
     error,
-    loading,
-    user
+    loading
   }
 }
 
 const mapDispatchToProps = {
-  createUser,
+  getOrCreateUser,
   setLocation,
   setLocationError,
   updateDevice,
@@ -141,7 +97,7 @@ const mapDispatchToProps = {
 }
 
 const enhance = compose(
-  withDevice,
+  withUser,
   withNavigationName(constants.NAVIGATION_NAMES.home),
   connect(
     mapStateToProps,

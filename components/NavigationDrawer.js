@@ -83,8 +83,12 @@ export default class NavigationDrawer extends Component {
 
   userName = () => {
     const { user } = this.props
+    let name = lodashGet(user, 'name')
+    if (name && name.length > 12) {
+      name = `${name.substring(0, 12)}...`
+    }
 
-    return lodashGet(user, 'name')
+    return name
   }
 
   render () {

@@ -9,16 +9,12 @@ import React, { Component } from 'react'
 import chats from '../ducks/chats'
 import constants from '../constants'
 import NavigationDrawerComponent from '../components/NavigationDrawer'
-import users from '../ducks/users'
 import withNavigationName from './withNavigationName'
+import withUser from './withUser'
 
 const {
   selectors: { chat: chatSelector }
 } = chats
-
-const {
-  selectors: { getUser }
-} = users
 
 class NavigationDrawer extends Component {
   state = {
@@ -92,11 +88,9 @@ class NavigationDrawer extends Component {
 
 const mapStateToProps = state => {
   const chat = chatSelector(state)
-  const user = getUser(state)
 
   return {
-    chat,
-    user
+    chat
   }
 }
 
@@ -104,6 +98,7 @@ const mapDispatchToProps = {}
 
 const enhance = compose(
   withNavigationName(),
+  withUser,
   connect(
     mapStateToProps,
     mapDispatchToProps
