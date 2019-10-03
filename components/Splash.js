@@ -24,7 +24,7 @@ const Splash = () => {
 const styles = StyleSheet.create({
   container: constants.BASE_STYLES.container,
   image: {
-    width: 300,
+    width: '80%',
     height: 250
   }
 })

@@ -35,7 +35,7 @@ export async function fetchUser (jwt) {
     return response
   } catch (e) {
     const errors = handleApiError(e)
-    return { error: errors }
+    return { error: errors, status: e.response.status }
   }
 }
 

@@ -34,7 +34,10 @@ const chatStackScreen = createStackNavigator({
 const MainNavigator = createDrawerNavigator(
   {
     [constants.NAVIGATION_NAMES.quit]: {
-      screen: homeStackScreen
+      screen: homeStackScreen,
+      navigationOptions: ({ navigation }) => ({
+        drawerLockMode: 'locked-closed'
+      })
     },
     [constants.NAVIGATION_NAMES.chat]: {
       screen: chatStackScreen,

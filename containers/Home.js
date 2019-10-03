@@ -29,7 +29,7 @@ const {
 } = location
 
 const {
-  actions: { getOrCreateUser, updateUser },
+  actions: { updateUser },
   selectors: {
     error: errorSelector,
     loading: userLoadingSelector
@@ -89,7 +89,6 @@ const mapStateToProps = state => {
 }
 
 const mapDispatchToProps = {
-  getOrCreateUser,
   setLocation,
   setLocationError,
   updateDevice,

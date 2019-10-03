@@ -12,7 +12,6 @@ const ChatRequestModal = ({ chatDistance, denyRequest, handlePress, isVisible, r
     <View style={styles.container}>
       <Modal
         isVisible={isVisible}
-        onBackdropPress={denyRequest}
       >
         <View style={styles.content}>
           <Text style={styles.header}>New chat</Text>

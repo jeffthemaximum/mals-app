@@ -102,11 +102,6 @@ export default class NavigationDrawer extends Component {
           <Text style={styles.createdAt}>User since {this.memberSince()}</Text>
           {this.renderLeaveChat()}
           {this.renderReportCta()}
-          <View>
-            <View>
-              <Image />
-            </View>
-          </View>
         </SafeAreaView>
         {reportChatModalIsVisible && (
           <ReportChatModal

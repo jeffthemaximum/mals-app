@@ -45,13 +45,13 @@ function * createUser (action) {
 function * fetchUser (action) {
   const { jwt } = action
   const response = yield call(userApi.fetchUser, jwt)
-  const { data: user, error } = response
+  const { data: user, error, status } = response
   if (user) {
     const { jwt } = user
     yield call(clientStorageService.set, constants.JWT, jwt)
     yield put({ type: userActionTypes.FETCH_SUCCESS, user })
   } else {
-    yield put({ type: userActionTypes.FETCH_ERROR, error })
+    yield put({ type: userActionTypes.FETCH_ERROR, error, status })
   }
 }
 
@@ -82,7 +82,8 @@ function * getOrCreateUser (action) {
     yield call(clientStorageService.set, constants.JWT, jwt)
     yield put({ type: userActionTypes.GET_OR_CREATE_SUCCESS, user })
   } else {
-    yield put({ type: userActionTypes.GET_OR_CREATE_ERROR, error })
+    const status = fetchError ? fetchError.status : null
+    yield put({ type: userActionTypes.GET_OR_CREATE_ERROR, error, status })
   }
 }
 
@@ -125,6 +126,11 @@ function * setupUser (action) {
     yield put({ type: userActionTypes.SETUP_SUCCESS, user })
   } else {
     yield put({ type: userActionTypes.SETUP_ERROR })
+
+    if (lodashGet(userError, 'status') === 401) {
+      yield call(clientStorageService.remove, constants.JWT)
+      yield call(navigationService.navigate, constants.NAVIGATION_NAMES.home)
+    }
   }
 }
 
