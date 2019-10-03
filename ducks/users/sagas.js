@@ -86,6 +86,18 @@ function * getOrCreateUser (action) {
   }
 }
 
+function * hideUsers (action) {
+  const { recipientId } = action
+  const jwt = yield call(clientStorageService.get, constants.JWT)
+  const response = yield call(userApi.hideUsers, jwt, recipientId)
+  const { error } = response
+  if (error) {
+    yield put({ type: userActionTypes.HIDE_ERROR })
+  } else {
+    yield put({ type: userActionTypes.HIDE_SUCCESS })
+  }
+}
+
 function * setupUser (action) {
   // yield call(clientStorageService.clear)
 
@@ -133,6 +145,7 @@ function * updateUser (action) {
 
 const watchers = [
   takeLatest(userActionTypes.GET_OR_CREATE, getOrCreateUser),
+  takeLatest(userActionTypes.HIDE, hideUsers),
   takeLatest(userActionTypes.SETUP, setupUser),
   takeLatest(userActionTypes.UPDATE, updateUser)
 ]

@@ -106,7 +106,17 @@ class Waiting extends Component {
   }
 
   render () {
-    return <WaitingComponent randomMessage={this.props.randomMessage} {...this.state} />
+    const { denyRequest, startChat, status } = this.props
+
+    return (
+      <WaitingComponent
+        denyRequest={denyRequest}
+        randomMessage={this.props.randomMessage}
+        startChat={startChat}
+        status={status}
+        {...this.state}
+      />
+    )
   }
 }
 
@@ -126,7 +136,10 @@ const enhance = compose(
   withNavigationName(constants.NAVIGATION_NAMES.waiting),
   withUser,
   withNavigation,
-  connect(mapStateToProps, mapDispatchToProps)
+  connect(
+    mapStateToProps,
+    mapDispatchToProps
+  )
 )
 
 export default enhance(Waiting)

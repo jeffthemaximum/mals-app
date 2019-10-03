@@ -19,7 +19,10 @@ const {
 } = devices
 
 const {
-  actions: { setupUser },
+  actions: {
+    hideUsers,
+    setupUser
+  },
   selectors: {
     getUser: userSelector,
     loading: userLoadingSelector
@@ -83,6 +86,7 @@ function withUser (WrappedComponent) {
 
   const mapDispatchToProps = {
     createDevice,
+    hideUsers,
     setupUser
   }
 

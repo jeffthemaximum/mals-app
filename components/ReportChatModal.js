@@ -6,6 +6,7 @@ import React from 'react'
 
 import Button from './Button'
 import constants from '../constants'
+import TwoButtonRow from './TwoButtonRow'
 
 const ReportChatModal = ({
   isVisible,
@@ -42,30 +43,12 @@ const ReportChatModal = ({
                 {constants.REPORT_MODAL_ERROR}
               </Text>
             )}
-            <View style={styles.buttonContainer}>
-              <Button
-                buttonStyles={{
-                  alignSelf: 'stretch',
-                  backgroundColor: constants.BRAND.grey,
-                  borderColor: constants.BRAND.grey,
-                  width: '48%'
-                }}
-                handlePress={handleCloseClick}
-                isLoading={loading}
-                text={'Cancel'}
-              />
-              <Button
-                buttonStyles={{
-                  alignSelf: 'stretch',
-                  borderColor: constants.BRAND.navy,
-                  marginLeft: 12,
-                  width: '48%'
-                }}
-                handlePress={() => handlePress(value)}
-                isLoading={loading}
-                text={'Submit'}
-              />
-            </View>
+            <TwoButtonRow
+              handleAcceptClick={handlePress}
+              handleCancelClick={handleCloseClick}
+              loading={loading}
+              value={value}
+            />
           </View>
         )}
         {reportSuccess && (
@@ -89,10 +72,6 @@ const ReportChatModal = ({
 const { container, content, header, text } = constants.BASE_STYLES.modal
 
 const styles = StyleSheet.create({
-  buttonContainer: {
-    display: 'flex',
-    flexDirection: 'row'
-  },
   container,
   content,
   header,

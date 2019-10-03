@@ -3,11 +3,13 @@ const EULA_COPY = `There is no tolerance for objectionable content or abusive us
 const REPORT_CHAT_COPY = 'We take offensive communication seriously. Reporting will block this user from contacting you ever again. You can optionally use this field to give us more information about what is wrong.'
 const REPORT_MODAL_ERROR = `Error submitting. Please try again or contact ${ADMIN_EMAIL}`
 const REPORT_MODAL_SUCCESS = `Thank you. We'll take necessary action against the improper behvaior. You will no longer be contanted by this user in Say Hey.`
+const REQUEST_CHAT_COPY = (recipientName, distance) => `${recipientName} from ${distance} miles away wants to chat.`
 
 export default {
   ADMIN_EMAIL,
   EULA_COPY,
   REPORT_CHAT_COPY,
   REPORT_MODAL_ERROR,
-  REPORT_MODAL_SUCCESS
+  REPORT_MODAL_SUCCESS,
+  REQUEST_CHAT_COPY
 }

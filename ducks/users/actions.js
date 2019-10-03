@@ -7,6 +7,13 @@ export function getOrCreateUser (data) {
   }
 }
 
+export function hideUsers (recipientId) {
+  return {
+    type: actionTypes.HIDE,
+    recipientId
+  }
+}
+
 export function setupUser (data) {
   return {
     type: actionTypes.SETUP,

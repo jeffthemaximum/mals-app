@@ -39,6 +39,22 @@ export async function fetchUser (jwt) {
   }
 }
 
+export async function hideUsers (jwt, recipientId) {
+  const requestConfig = {
+    headers: generateHeaders({ jwt }),
+    method: 'patch',
+    url: `${API_ROOT}/api/v1/users/${recipientId}/hide`
+  }
+
+  try {
+    const response = await axios.request(requestConfig)
+    return response
+  } catch (e) {
+    const errors = handleApiError(e)
+    return { error: errors }
+  }
+}
+
 export async function updateUser (jwt, data) {
   const requestConfig = {
     headers: generateHeaders({ jwt }),

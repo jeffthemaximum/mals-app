@@ -7,6 +7,7 @@ import moment from 'moment'
 
 import * as messageSerializers from '../services/serializers/messages'
 import { renderAvatar } from './Avatar'
+import ChatRequestModal from '../containers/ChatRequestModal'
 import constants from '../constants'
 import HorizontalRule from './HoritizonalRule'
 
@@ -124,13 +125,19 @@ const WaitingMessage = ({ serializedRandomMessage }) => {
 
 export default class Waiting extends Component {
   render () {
-    const { randomMessage } = this.props
+    const { denyRequest, randomMessage, startChat, status } = this.props
 
     const serializedRandomMessage =
       randomMessage && messageSerializers.deserialize(randomMessage)
 
+    const shouldRenderChatRequestModal =
+      status === constants.RANDOM_CHAT_STATES.requested
+
     return (
       <View style={styles.container}>
+        {shouldRenderChatRequestModal && (
+          <ChatRequestModal denyRequest={denyRequest} startChat={startChat} />
+        )}
         <TopWrapper serializedRandomMessage={serializedRandomMessage} />
         <HorizontalRule lineStyle={{ margin: 10 }} />
         <HumaaanWrapper {...this.props} />

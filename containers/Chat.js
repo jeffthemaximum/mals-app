@@ -5,6 +5,7 @@ import { connect } from 'react-redux'
 import ActionCable from 'action-cable-react-jwt'
 import hoistNonReactStatics from 'hoist-non-react-statics'
 import lodashDebounce from 'lodash/debounce'
+import lodashGet from 'lodash/get'
 import React, { Component } from 'react'
 
 import * as chatSerializers from '../services/serializers/chats'
@@ -60,10 +61,11 @@ class Chat extends Component {
     jwt: null,
     loading: false,
     messagesCable: null,
-    notificationsCable: null
+    notificationsCable: null,
+    status: null
   }
 
-  async componentDidMount () {
+  componentDidMount () {
     const handleFocus = this._handleFocus
     this.didFocusSubscription = this.props.navigation.addListener(
       'didFocus',
@@ -110,6 +112,10 @@ class Chat extends Component {
         createNotification(notification)
       }
       this.stopTyping = lodashDebounce(handleStopTyping, 10000)
+    }
+
+    if (!prevProps.recipient && this.props.recipient) {
+      this.request()
     }
   }
 
@@ -223,6 +229,7 @@ class Chat extends Component {
     this.state.messagesCable && this.state.messagesCable.unsubscribe()
     this.state.notificationsCable && this.state.notificationsCable.unsubscribe()
     this.stopTyping && this.stopTyping.cancel()
+    this.stopChat()
     unsetChat()
     unsetNotifications()
   }
@@ -285,8 +292,31 @@ class Chat extends Component {
     createMessage(messageData)
   }
 
+  denyRequest = () => {
+    const { hideUsers, navigation, recipient } = this.props
+
+    const recipientId = lodashGet(recipient, 'id')
+    if (recipientId) {
+      hideUsers(recipientId)
+    }
+
+    navigation.navigate(constants.NAVIGATION_NAMES.home)
+  }
+
+  request = () => {
+    this.setState({ status: constants.RANDOM_CHAT_STATES.requested })
+  }
+
+  startChat = () => {
+    this.setState({ status: constants.RANDOM_CHAT_STATES.started })
+  }
+
   _startTyping = () => {
     this.startTyping()
+  }
+
+  stopChat = () => {
+    this.setState({ status: null })
   }
 
   _stopTyping = () => {
@@ -294,15 +324,18 @@ class Chat extends Component {
   }
 
   render () {
-    const { messages, notifications, recipient, user } = this.props
+    const { messages, notifications, user } = this.props
+    const { status } = this.state
 
     return (
       <ChatComponent
+        denyRequest={this.denyRequest}
         detectTyping={this._detectTyping}
         handleSendMessage={this._handleSendMessage}
         messages={messages}
         notifications={notifications}
-        recipient={recipient}
+        startChat={this.startChat}
+        status={status}
         user={user}
       />
     )

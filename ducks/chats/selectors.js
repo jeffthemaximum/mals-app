@@ -6,6 +6,7 @@ const {
 } = users
 
 export const chat = state => state.chats.chat
+export const chatDistance = state => lodashGet(chat(state), 'distance')
 export const chatId = state => lodashGet(chat(state), 'id')
 export const error = state => state.chats.error
 export const loading = state => !!state.chats.loading
@@ -19,6 +20,7 @@ export const recipient = state => {
     }
   }
 }
+export const recipientName = state => lodashGet(recipient(state), 'name')
 export const reportError = state => !!state.chats.reportError
 export const reportLoading = state => !!state.chats.reportLoading
 export const reportSuccess = state => !!state.chats.reportSuccess

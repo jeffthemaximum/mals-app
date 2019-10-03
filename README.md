@@ -38,6 +38,7 @@ A chat app where you chat with a local stranger
     - [X] store device ID when creating users on backend
     - [ ] Optional password added for user account in edit profile.
     - [ ] wrap App.js with LocationUpdate component that updates user location every n seconds
+    - [ ] see old chats and keep on chatting, Home renders HomeComponent for first time, returning renders similar to iMessage with button to start new
 - local
     - [X] get location on client, send to server, get nearest chat to location on server. Alternately, get location via IP on server.
 - bugs

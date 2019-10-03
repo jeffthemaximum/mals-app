@@ -38,16 +38,20 @@ let GiftedChatComponent = ({
   />
 )
 
-GiftedChatComponent = withNavigationName(constants.NAVIGATION_NAMES.chat)(GiftedChatComponent)
+GiftedChatComponent = withNavigationName(constants.NAVIGATION_NAMES.chat)(
+  GiftedChatComponent
+)
 
 export default class Chat extends Component {
   render () {
     const {
+      denyRequest,
       detectTyping,
       handleSendMessage,
       messages,
       notifications,
-      recipient,
+      startChat,
+      status,
       user
     } = this.props
 
@@ -65,7 +69,7 @@ export default class Chat extends Component {
       fontFamily: 'ProximaNova-Regular'
     }
 
-    if (recipient) {
+    if (status === constants.RANDOM_CHAT_STATES.started) {
       return (
         <GiftedChatComponent
           detectTyping={detectTyping}
@@ -77,7 +81,13 @@ export default class Chat extends Component {
         />
       )
     } else {
-      return <Waiting />
+      return (
+        <Waiting
+          denyRequest={denyRequest}
+          startChat={startChat}
+          status={status}
+        />
+      )
     }
   }
 }
