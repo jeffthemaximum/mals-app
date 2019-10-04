@@ -26,7 +26,6 @@
     "react-native-device-info": "^2.3.2",
     "react-native-gesture-handler": "^1.3.0",
     "react-native-gifted-chat": "^0.9.11",
-    "react-native-material-textfield": "^0.12.0",
     "react-native-modal": "^11.3.1",
     "react-native-spinkit": "^1.4.1",
     "react-native-svg": "^9.5.1",
