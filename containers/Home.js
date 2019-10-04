@@ -9,12 +9,11 @@ import * as deviceSerializer from '../services/serializers/devices'
 import chats from '../ducks/chats'
 import constants from '../constants'
 import devices from '../ducks/devices'
+import HomeComponent from '../components/Home'
 import location from '../ducks/location'
 import users from '../ducks/users'
-import withUser from './withUser'
 import withNavigationName from './withNavigationName'
-
-import HomeComponent from '../components/Home'
+import withUser from './withUser'
 
 const {
   selectors: { loading: chatLoadingSelector }

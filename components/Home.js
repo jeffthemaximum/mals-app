@@ -10,9 +10,9 @@ import {
   Text,
   View
 } from 'react-native'
-import { TextField } from 'react-native-material-textfield'
-import lodashGet from 'lodash/get'
 import { NavigationEvents } from 'react-navigation'
+import { TextField } from './react-native-material-textfield'
+import lodashGet from 'lodash/get'
 
 import Button from './Button'
 import constants from '../constants'
@@ -33,6 +33,8 @@ const NameInputField = ({ errors, name, onChange }) => {
     }
   }
 
+  console.log({ name })
+
   return (
     <View style={styles.inputContainer}>
       <TextField
@@ -51,10 +53,10 @@ const NameInputField = ({ errors, name, onChange }) => {
         labelTextStyle={{
           fontFamily: 'ProximaNova-Regular'
         }}
-        onChange={onChange}
+        onChangeText={onChange}
         textColor={constants.BRAND.navy}
         tintColor={constants.BRAND.navy}
-        value={name || ''}
+        value={name}
       />
     </View>
   )
@@ -66,7 +68,7 @@ export default class Home extends Component {
 
     this.state = {
       errors: null,
-      name: null
+      name: ''
     }
   }
 
@@ -90,7 +92,7 @@ export default class Home extends Component {
   handleBlur = () => {
     this.setState({
       errors: null,
-      name: null
+      name: ''
     })
   }
 
@@ -113,14 +115,19 @@ export default class Home extends Component {
     }
   }
 
-  onNameChange = event => {
-    this.setState({
-      errors: null,
-      name: event.nativeEvent.text
-    })
+  onNameChange = inputText => {
+    // Only allow alphanumeric chars in names
+    if (/^[a-z0-9]+$/i.test(inputText)) {
+      this.setState({
+        errors: null,
+        name: inputText
+      })
+    }
   }
 
-  validateName = (name = this.state.name) => {
+  validateName = () => {
+    const { name } = this.state
+
     if (name.length === 0) {
       return {
         name: [`can't be blank`]
