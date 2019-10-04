@@ -117,7 +117,7 @@ export default class Home extends Component {
 
   onNameChange = inputText => {
     // Only allow alphanumeric chars in names
-    if (/^[a-z0-9]+$/i.test(inputText)) {
+    if (inputText === '' || /^[a-z0-9]+$/i.test(inputText)) {
       this.setState({
         errors: null,
         name: inputText
