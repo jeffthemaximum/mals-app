@@ -60,7 +60,7 @@ const HomeLink = ({ destination, imageUri, text }) => {
 }
 
 const HomeLinks = () => (
-  <View sstyle={styles.linkContainer}>
+  <View style={styles.linkContainer}>
     <HomeLink
       destination={constants.NAVIGATION_NAMES.chat}
       imageUri={
