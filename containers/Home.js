@@ -10,6 +10,7 @@ import chats from '../ducks/chats'
 import constants from '../constants'
 import devices from '../ducks/devices'
 import HomeComponent from '../components/Home'
+import HomeFirstTimeComponent from '../components/HomeFirstTime'
 import location from '../ducks/location'
 import users from '../ducks/users'
 import withNavigationName from './withNavigationName'
@@ -41,10 +42,7 @@ class Home extends Component {
   }
 
   static navigationOptions = {
-    title: 'Meet a Local Stranger',
-    headerTitleStyle: {
-      fontFamily: 'ProximaNova-Regular'
-    }
+    header: null
   }
 
   componentDidMount () {
@@ -66,14 +64,27 @@ class Home extends Component {
 
   render () {
     const { eulaModalVisibile } = this.state
+    const { firstTimeCreatedUser } = this.props
 
-    return (
-      <HomeComponent
-        {...this.props}
-        eulaModalVisibile={eulaModalVisibile}
-        handleAcceptEula={this.handleAcceptEula}
-      />
-    )
+    console.log({ firstTimeCreatedUser })
+
+    if (firstTimeCreatedUser) {
+      return (
+        <HomeFirstTimeComponent
+          {...this.props}
+          eulaModalVisibile={eulaModalVisibile}
+          handleAcceptEula={this.handleAcceptEula}
+        />
+      )
+    } else {
+      return (
+        <HomeComponent
+          {...this.props}
+          eulaModalVisibile={eulaModalVisibile}
+          handleAcceptEula={this.handleAcceptEula}
+        />
+      )
+    }
   }
 }
 

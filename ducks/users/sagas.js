@@ -77,10 +77,12 @@ function * getOrCreateUser (action) {
   const user = lodashGet(createdUser || fetchedUser, 'user')
   const error = lodashGet(createError || fetchError, 'error')
 
+  const created = !!lodashGet(createdUser, 'user')
+
   if (user) {
     const { jwt } = user
     yield call(clientStorageService.set, constants.JWT, jwt)
-    yield put({ type: userActionTypes.GET_OR_CREATE_SUCCESS, user })
+    yield put({ type: userActionTypes.GET_OR_CREATE_SUCCESS, user, created })
   } else {
     const status = fetchError ? fetchError.status : null
     yield put({ type: userActionTypes.GET_OR_CREATE_ERROR, error, status })
@@ -122,8 +124,8 @@ function * setupUser (action) {
   })
 
   if (userSuccess) {
-    const { user } = userSuccess
-    yield put({ type: userActionTypes.SETUP_SUCCESS, user })
+    const { user, created } = userSuccess
+    yield put({ type: userActionTypes.SETUP_SUCCESS, user, created })
   } else {
     yield put({ type: userActionTypes.SETUP_ERROR })
 
@@ -142,8 +144,7 @@ function * updateUser (action) {
   if (user) {
     const { jwt } = user
     yield call(clientStorageService.set, constants.JWT, jwt)
-    yield put({ type: userActionTypes.UPDATE_SUCCESS, user })
-    yield call(navigationService.navigate, constants.NAVIGATION_NAMES.chat)
+    yield put({ type: userActionTypes.UPDATE_SUCCESS, user, created: false })
   } else {
     yield put({ type: userActionTypes.UPDATE_ERROR, error })
   }

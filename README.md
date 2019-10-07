@@ -46,6 +46,7 @@ A chat app where you chat with a local stranger
     - [X] server stat queue shouldnt be interval / should be when it hits an amount
     - [X] delete JoinChatJob of chat thats deleted
     - [X] keyboard hides input on Home
+    - [ ] location isn't updating
 - testing
     - [ ] E2E https://github.com/wix/Detox
 - dist

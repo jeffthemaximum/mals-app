@@ -3,205 +3,113 @@
 import React, { Component } from 'react'
 import {
   Image,
-  KeyboardAvoidingView,
-  Platform,
   ScrollView,
   StyleSheet,
   Text,
+  TouchableOpacity,
   View
 } from 'react-native'
-import { NavigationEvents } from 'react-navigation'
-import { TextField } from './react-native-material-textfield'
-import lodashGet from 'lodash/get'
 
-import Button from './Button'
 import constants from '../constants'
-import EulaModal from './EulaModal'
-import LoadingSpinner from './LoadingSpinner'
+import FriendlyEncounter from './FriendlyEncounter'
+import navigationService from '../services/navigationService'
 
-const NameInputField = ({ errors, name, onChange }) => {
-  const errorString = () => {
-    const nameError = lodashGet(errors, 'name.0')
-    const defaultError = lodashGet(errors, 'default.0')
-
-    if (nameError) {
-      return `Name ${errors.name[0]}`
-    } else if (defaultError) {
-      return defaultError
+const UserName = ({ user }) => {
+  const _userName = () => {
+    if (!user.name) {
+      return 'Stranger'
+    } else if (user.name.length > 15) {
+      return user.name.substring(0, 14)
     } else {
-      return null
+      return user.name
     }
   }
 
-  console.log({ name })
+  const styles = userName => {
+    let fontSize = 36
+
+    if (userName.length > 12) {
+      fontSize = 16
+    } else if (userName.length > 9) {
+      fontSize = 20
+    } else if (userName.length > 6) {
+      fontSize = 26
+    }
+
+    return { fontSize }
+  }
+
+  const userName = _userName()
+  return <Text style={styles(userName)}>{userName}</Text>
+}
+
+const HomeLink = ({ destination, imageUri, text }) => {
+  const handlePress = () => navigationService.navigate(destination)
 
   return (
-    <View style={styles.inputContainer}>
-      <TextField
-        affixTextStyle={{
-          fontFamily: 'ProximaNova-Regular'
+    <TouchableOpacity onPress={handlePress} style={styles.link}>
+      <Image
+        source={{
+          uri: imageUri
         }}
-        baseColor={constants.BRAND.navy}
-        containerStyle={{
-          borderColor: constants.BRAND.navy,
-          margin: 0
-        }}
-        error={errorString()}
-        errorColor={constants.BRAND.red}
-        fontSize={24}
-        label={'Enter first name...'}
-        labelTextStyle={{
-          fontFamily: 'ProximaNova-Regular'
-        }}
-        onChangeText={onChange}
-        textColor={constants.BRAND.navy}
-        tintColor={constants.BRAND.navy}
-        value={name}
+        style={styles.linkIcon}
       />
-    </View>
+      <Text style={styles.linkText}>{text}</Text>
+    </TouchableOpacity>
   )
 }
 
-export default class Home extends Component {
-  constructor (props) {
-    super(props)
-
-    this.state = {
-      errors: null,
-      name: ''
-    }
-  }
-
-  componentDidMount () {
-    const handleFocus = this.handleFocus
-    handleFocus()
-    this.didFocusSubscription = this.props.navigation.addListener(
-      'didFocus',
-      payload => {
-        handleFocus()
+const HomeLinks = () => (
+  <View sstyle={styles.linkContainer}>
+    <HomeLink
+      destination={constants.NAVIGATION_NAMES.chat}
+      imageUri={
+        'https://meetalocalstranger.s3.amazonaws.com/images/chatSmileNavy.png'
       }
-    )
-  }
+      text={'Chat with a random user'}
+    />
+    <HomeLink
+      imageUri={
+        'https://meetalocalstranger.s3.amazonaws.com/images/avatarNavy.png'
+      }
+      text={'View my profile'}
+    />
+  </View>
+)
 
-  componentDidUpdate (prevProps) {
-    if (!prevProps.error && this.props.error) {
-      this.setState({ errors: this.props.error })
-    }
-  }
+const Greetings = ({ user }) => (
+  <Text style={styles.description}>
+    <Text style={styles.bold}>Hello </Text>
+    <UserName user={user} />
+  </Text>
+)
 
-  handleBlur = () => {
-    this.setState({
-      errors: null,
-      name: ''
-    })
-  }
-
-  handleFocus = () => {
+export default class Home extends Component {
+  render () {
     const { user } = this.props
 
-    this.setState({ name: lodashGet(user, 'name', '') })
-  }
-
-  onFormSubmit = () => {
-    const { updateUser } = this.props
-
-    const errors = this.validateName()
-
-    if (errors) {
-      this.setState({ errors })
-    } else {
-      const { name } = this.state
-      updateUser({ name })
-    }
-  }
-
-  onNameChange = inputText => {
-    // Only allow alphanumeric chars in names
-    if (inputText === '' || /^[a-z0-9]+$/i.test(inputText)) {
-      this.setState({
-        errors: null,
-        name: inputText
-      })
-    }
-  }
-
-  validateName = () => {
-    const { name } = this.state
-
-    if (name.length === 0) {
-      return {
-        name: [`can't be blank`]
-      }
-    }
-  }
-
-  render () {
-    const { eulaModalVisibile, deviceLoading, handleAcceptEula, loading } = this.props
-    const { errors, name } = this.state
-
-    const keyboardVerticalOffset = Platform.OS === 'ios' ? 60 : 0
-
     return (
-      <KeyboardAvoidingView
-        behavior='position'
-        enabled
-        keyboardVerticalOffset={keyboardVerticalOffset}
-        style={styles.container}
-      >
-        <EulaModal
-          loading={deviceLoading}
-          isVisible={eulaModalVisibile}
-          handlePress={handleAcceptEula}
-        />
-        <NavigationEvents onDidBlur={payload => this.handleBlur()} />
+      <View style={styles.container}>
         <ScrollView
           contentContainerStyle={styles.contentContainer}
           style={styles.scrollView}
         >
-          <Image
-            source={{
-              uri:
-                'https://meetalocalstranger.s3.amazonaws.com/images/friendly_encounter.png'
-            }}
-            style={styles.image}
-          />
-          <Text style={styles.description}>
-            <Text style={styles.bold}>Hello </Text>
-            <Text>Stranger</Text>
-          </Text>
-          {!loading ? (
-            <NameInputField
-              errors={errors}
-              name={name}
-              onChange={this.onNameChange}
-            />
-          ) : (
-            <LoadingSpinner />
-          )}
+          <Text style={styles.headerText}>SayHey</Text>
+          <Text style={styles.subheaderText}>Random local chat</Text>
+          <FriendlyEncounter />
+          <Greetings user={user} />
+          <HomeLinks />
         </ScrollView>
-        <Button
-          handlePress={this.onFormSubmit}
-          isLoading={loading}
-          text={`Let's go`}
-        />
-      </KeyboardAvoidingView>
+      </View>
     )
   }
 }
 
 const styles = StyleSheet.create({
-  container: constants.BASE_STYLES.container,
-  buttonStyles: {
-    backgroundColor: constants.BRAND.navy
-  },
-  buttonText: {
-    color: constants.BRAND.white,
-    fontFamily: constants.BASE_STYLES.fonts.boldFontFamily,
-    fontSize: 18
-  },
   bold: {
     fontFamily: constants.BASE_STYLES.fonts.boldFontFamily
   },
+  container: constants.BASE_STYLES.container,
   contentContainer: {
     justifyContent: 'center',
     alignItems: 'center'
@@ -214,22 +122,44 @@ const styles = StyleSheet.create({
     marginTop: 24,
     textAlign: 'center'
   },
-  flowRight: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    alignSelf: 'stretch'
-  },
-  footer: {
-    alignSelf: 'flex-end'
+  headerText: {
+    color: constants.BRAND.navy,
+    fontFamily: constants.BASE_STYLES.fonts.boldFontFamily,
+    fontSize: 48,
+    marginBottom: 16,
+    marginTop: 30
   },
   image: {
     width: 300,
     height: 250
   },
-  inputContainer: {
+  link: {
+    alignItems: 'center',
+    display: 'flex',
+    flexDirection: 'row',
+    marginBottom: 32
+  },
+  linkContainer: {
+    marginTop: 48,
     width: '100%'
+  },
+  linkIcon: {
+    height: 28,
+    marginRight: 10,
+    width: 28
+  },
+  linkText: {
+    color: constants.BRAND.navy,
+    fontFamily: constants.BASE_STYLES.fonts.boldFontFamily,
+    fontSize: 24
   },
   scrollView: {
     width: '100%'
+  },
+  subheaderText: {
+    color: constants.BRAND.navy,
+    fontFamily: constants.BASE_STYLES.fonts.regularFontFamily,
+    fontSize: 24,
+    marginBottom: 80
   }
 })

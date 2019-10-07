@@ -30,6 +30,7 @@ export default function users (state = {}, action) {
     case actionTypes.UPDATE_SUCCESS:
       return {
         ...state,
+        created: action.created,
         error: false,
         loading: false,
         user: action.user

@@ -24,6 +24,7 @@ const {
     setupUser
   },
   selectors: {
+    firstTimeCreatedUser: firstTimeCreatedUserSelector,
     getUser: userSelector,
     loading: userLoadingSelector
   }
@@ -69,6 +70,7 @@ function withUser (WrappedComponent) {
     const deviceError = deviceErrorSelector(state)
     const deviceLoading = deviceLoadingSelector(state)
     const deviceUniqueId = deviceUniqueIdSelector(state)
+    const firstTimeCreatedUser = firstTimeCreatedUserSelector(state)
     const hasAcceptedEula = hasAcceptedEulaSelector(state)
     const user = userSelector(state)
     const userLoading = userLoadingSelector(state)
@@ -78,6 +80,7 @@ function withUser (WrappedComponent) {
       deviceError,
       deviceLoading,
       deviceUniqueId,
+      firstTimeCreatedUser,
       hasAcceptedEula,
       user,
       userLoading
