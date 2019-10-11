@@ -19,7 +19,7 @@ const UserName = ({ user }) => {
     if (!user.name) {
       return 'Stranger'
     } else if (user.name.length > 15) {
-      return user.name.substring(0, 14)
+      return `${user.name.substring(0, 12)}...`
     } else {
       return user.name
     }
@@ -69,6 +69,7 @@ const HomeLinks = () => (
       text={'Chat with a random user'}
     />
     <HomeLink
+      destination={constants.NAVIGATION_NAMES.profile}
       imageUri={
         'https://meetalocalstranger.s3.amazonaws.com/images/avatarNavy.png'
       }

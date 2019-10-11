@@ -1,4 +1,5 @@
 import axios from 'axios'
+import lodashGet from 'lodash/get'
 
 import { handleApiError } from '../../services/errorHandler'
 import { generateHeaders } from '../../services/requestHeaders'
@@ -35,7 +36,7 @@ export async function fetchUser (jwt) {
     return response
   } catch (e) {
     const errors = handleApiError(e)
-    return { error: errors, status: e.response.status }
+    return { error: errors, status: lodashGet(e, 'response.status') }
   }
 }
 

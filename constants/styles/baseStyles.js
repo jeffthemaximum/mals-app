@@ -4,12 +4,48 @@ const BOLD_FONT_FAMILY = 'ProximaNova-Bold'
 const REGULAR_FONT_FAMILY = 'ProximaNova-Regular'
 
 export const BASE_STYLES = {
+  buttons: {
+    inverse: {
+      fullWidth: {
+        button: {
+          backgroundColor: baseVariables.BRAND.white,
+          borderColor: baseVariables.BRAND.navy,
+          borderWidth: 2
+        },
+        text: {
+          color: baseVariables.BRAND.navy
+        }
+      },
+      small: {
+        button: {
+          alignSelf: 'center',
+          backgroundColor: baseVariables.BRAND.white,
+          borderColor: baseVariables.BRAND.navy,
+          borderWidth: 2,
+          height: 30,
+          marginTop: 32,
+          paddingLeft: 12,
+          paddingRight: 12
+        },
+        text: {
+          color: baseVariables.BRAND.navy,
+          flex: 0,
+          fontFamily: REGULAR_FONT_FAMILY,
+          fontSize: 14
+        }
+      }
+    }
+  },
   container: {
-    padding: 30,
-    justifyContent: 'center',
     alignItems: 'center',
+    flex: 1,
     flexDirection: 'column',
-    flex: 1
+    justifyContent: 'center',
+    padding: 30
+  },
+  containerNoCenter: {
+    height: '100%',
+    padding: 30
   },
   fonts: {
     boldFontFamily: BOLD_FONT_FAMILY,

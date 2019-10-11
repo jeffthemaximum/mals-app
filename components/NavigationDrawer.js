@@ -1,6 +1,6 @@
 'use strict'
 
-import { Image, SafeAreaView, StyleSheet, Text, View } from 'react-native'
+import { SafeAreaView, StyleSheet, Text, View } from 'react-native'
 import camelcaseKeys from 'camelcase-keys'
 import lodashGet from 'lodash/get'
 import moment from 'moment'

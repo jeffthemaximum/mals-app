@@ -1,5 +1,6 @@
 import { call, fork, put, race, take, takeLatest } from 'redux-saga/effects'
 import lodashGet from 'lodash/get'
+import snakeCaseKeys from 'snakecase-keys'
 
 import * as clientStorageService from '../../services/clientStorage'
 import * as userActionTypes from './actionTypes'
@@ -137,9 +138,13 @@ function * setupUser (action) {
 }
 
 function * updateUser (action) {
-  const { name } = action
+  const { avatar, avatarFile, avatarUrl, name } = action
   const jwt = yield call(clientStorageService.get, constants.JWT)
-  const response = yield call(userApi.updateUser, jwt, { name })
+  const response = yield call(
+    userApi.updateUser,
+    jwt,
+    snakeCaseKeys({ avatar, avatarFile, avatarUrl, name })
+  )
   const { data: user, error } = response
   if (user) {
     const { jwt } = user

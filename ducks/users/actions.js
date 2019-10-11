@@ -14,6 +14,15 @@ export function hideUsers (recipientId) {
   }
 }
 
+export function resetAvatar ({ file, url, user }) {
+  return {
+    type: actionTypes.RESET_AVATAR,
+    file,
+    url,
+    user
+  }
+}
+
 export function setupUser (data) {
   return {
     type: actionTypes.SETUP,
@@ -21,9 +30,12 @@ export function setupUser (data) {
   }
 }
 
-export function updateUser ({ name }) {
+export function updateUser ({ avatar, avatarFile, avatarUrl, name }) {
   return {
     type: actionTypes.UPDATE,
+    avatar,
+    avatarFile,
+    avatarUrl,
     name
   }
 }

@@ -6,13 +6,19 @@ import Button from 'apsl-react-native-button'
 
 import constants from '../constants'
 
-const CustomButton = ({ buttonStyles = {}, isLoading, handlePress, text }) => {
+const CustomButton = ({
+  buttonStyles = {},
+  isLoading,
+  handlePress,
+  text,
+  textStyles = {}
+}) => {
   return (
     <Button
       isLoading={isLoading}
       onPress={handlePress}
       style={[styles.buttonStyles, buttonStyles]}
-      textStyle={styles.buttonText}
+      textStyle={[styles.buttonText, textStyles]}
     >
       {text}
     </Button>

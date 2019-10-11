@@ -1,8 +1,9 @@
 const NAVIGATION_NAMES = {
   chat: 'Chat',
   home: 'Home',
-  splash: 'Splash',
   quit: 'Quit',
+  profile: 'Profile',
+  splash: 'Splash',
   waiting: 'Waiting'
 }
 

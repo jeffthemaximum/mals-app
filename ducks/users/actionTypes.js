@@ -2,6 +2,7 @@ export const CREATE = 'users/CREATE'
 export const FETCH = 'users/FETCH'
 export const GET_OR_CREATE = 'users/GET_OR_CREATE'
 export const HIDE = 'users/HIDE'
+export const RESET_AVATAR = 'users/RESET_AVATAR'
 export const SETUP = 'users/SETUP'
 export const UPDATE = 'users/UPDATE'
 

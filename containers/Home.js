@@ -66,8 +66,6 @@ class Home extends Component {
     const { eulaModalVisibile } = this.state
     const { firstTimeCreatedUser } = this.props
 
-    console.log({ firstTimeCreatedUser })
-
     if (firstTimeCreatedUser) {
       return (
         <HomeFirstTimeComponent

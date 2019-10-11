@@ -506,8 +506,6 @@ export default class TextField extends PureComponent {
       style: titleTextStyle
     }
 
-    console.log({ value })
-
     return (
       <View {...containerProps}>
         <Animated.View {...inputContainerProps}>
