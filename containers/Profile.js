@@ -2,6 +2,7 @@
 
 import { compose } from 'redux'
 import { connect } from 'react-redux'
+import { showMessage } from "react-native-flash-message"
 import camelcaseKeys from 'camelcase-keys'
 import hoistNonReactStatics from 'hoist-non-react-statics'
 import React, { Component } from 'react'
@@ -62,6 +63,14 @@ class Profile extends Component {
     if (prevUpdatedAt !== updatedAt) {
       this.setState({ dirty: false })
       this.handleFocus()
+      showMessage({
+        backgroundColor: constants.BRAND.teal,
+        message: 'Successfully updated user.',
+        textStyle: {
+          fontFamily: constants.BASE_STYLES.fonts.regularFontFamily
+        },
+        type: 'default'
+      })
     }
   }
 

@@ -11,6 +11,7 @@ import createSagaMiddleware from 'redux-saga'
 import { statsMiddleware } from './services/reduxMiddleware/statsMiddleware'
 import Chat from './containers/Chat'
 import constants from './constants'
+import FlashMessage from 'react-native-flash-message'
 import Home from './containers/Home'
 import NavigationDrawer from './containers/NavigationDrawer'
 import NavigationService from './services/navigationService'
@@ -77,6 +78,7 @@ export default class App extends Component<{}> {
             NavigationService.setTopLevelNavigator(navigatorRef)
           }}
         />
+        <FlashMessage position='top' />
       </Provider>
     )
   }
