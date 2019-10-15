@@ -24,9 +24,6 @@ const {
   actions: { updateDevice }
 } = devices
 
-const {
-  actions: { setLocationError, setLocation }
-} = location
 
 const {
   actions: { updateUser },
@@ -97,8 +94,6 @@ const mapStateToProps = state => {
 }
 
 const mapDispatchToProps = {
-  setLocation,
-  setLocationError,
   updateDevice,
   updateUser
 }

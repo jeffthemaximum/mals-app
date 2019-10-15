@@ -6,11 +6,9 @@ import {
   Platform,
   ScrollView,
   StyleSheet,
-  Text,
-  View
+  Text
 } from 'react-native'
 import { NavigationEvents } from 'react-navigation'
-import { TextField } from './react-native-material-textfield'
 import lodashGet from 'lodash/get'
 
 import Button from './Button'
@@ -18,47 +16,7 @@ import constants from '../constants'
 import EulaModal from './EulaModal'
 import FriendlyEncounter from './FriendlyEncounter'
 import LoadingSpinner from './LoadingSpinner'
-
-const NameInputField = ({ errors, name, onChange }) => {
-  const errorString = () => {
-    const nameError = lodashGet(errors, 'name.0')
-    const defaultError = lodashGet(errors, 'default.0')
-
-    if (nameError) {
-      return `Name ${errors.name[0]}`
-    } else if (defaultError) {
-      return defaultError
-    } else {
-      return null
-    }
-  }
-
-  return (
-    <View style={styles.inputContainer}>
-      <TextField
-        affixTextStyle={{
-          fontFamily: 'ProximaNova-Regular'
-        }}
-        baseColor={constants.BRAND.navy}
-        containerStyle={{
-          borderColor: constants.BRAND.navy,
-          margin: 0
-        }}
-        error={errorString()}
-        errorColor={constants.BRAND.red}
-        fontSize={24}
-        label={'Enter first name...'}
-        labelTextStyle={{
-          fontFamily: 'ProximaNova-Regular'
-        }}
-        onChangeText={onChange}
-        textColor={constants.BRAND.navy}
-        tintColor={constants.BRAND.navy}
-        value={name}
-      />
-    </View>
-  )
-}
+import NameInputField from './NameInputField'
 
 export default class Home extends Component {
   constructor (props) {
@@ -163,7 +121,12 @@ export default class Home extends Component {
           </Text>
           {!loading ? (
             <NameInputField
+              containerStyles={{
+                width: '100%'
+              }}
               errors={errors}
+              fontSize={24}
+              label={'Enter first name...'}
               name={name}
               onChange={this.onNameChange}
             />
@@ -213,9 +176,6 @@ const styles = StyleSheet.create({
   },
   footer: {
     alignSelf: 'flex-end'
-  },
-  inputContainer: {
-    width: '100%'
   },
   scrollView: {
     width: '100%'

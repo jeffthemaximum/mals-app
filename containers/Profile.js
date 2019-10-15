@@ -7,11 +7,17 @@ import hoistNonReactStatics from 'hoist-non-react-statics'
 import React, { Component } from 'react'
 
 import constants from '../constants'
+import location from '../ducks/location'
 import ProfileComponent from '../components/Profile'
 import users from '../ducks/users'
 import { withNavigation } from 'react-navigation'
 import withNavigationName from './withNavigationName'
 import withUser from './withUser'
+
+const {
+  actions: { pointToWords },
+  selectors: { location: locationSelector, locationName: locationNameSelector }
+} = location
 
 const {
   actions: { resetAvatar, updateUser },
@@ -21,6 +27,8 @@ const {
 class Profile extends Component {
   state = {
     dirty: false,
+    errors: null,
+    name: '',
     originalAvatarFile: null,
     originalAvatarUrl: null
   }
@@ -44,8 +52,12 @@ class Profile extends Component {
   }
 
   componentDidUpdate (prevProps) {
-    const { user: { updated_at: prevUpdatedAt } } = prevProps
-    const { user: { updated_at: updatedAt } } = this.props
+    const {
+      user: { updated_at: prevUpdatedAt }
+    } = prevProps
+    const {
+      user: { updated_at: updatedAt }
+    } = this.props
 
     if (prevUpdatedAt !== updatedAt) {
       this.setState({ dirty: false })
@@ -77,22 +89,42 @@ class Profile extends Component {
   }
 
   handleFocus = () => {
-    const { user } = this.props
+    const { location, locationName, pointToWords, user } = this.props
 
     if (user) {
       this.setState({
+        name: user.name,
         originalAvatarFile: user.avatar_file,
         originalAvatarUrl: user.avatar_url
       })
     }
+
+    if (location && !locationName) {
+      pointToWords(location)
+    }
+  }
+
+  handleNameChange = inputText => {
+    // Only allow alphanumeric chars in names
+    if (inputText === '' || /^[a-z0-9]+$/i.test(inputText)) {
+      this.setState({
+        dirty: true,
+        errors: null,
+        name: inputText
+      })
+    }
+  }
+
+  setRef = ref => {
+    this.ref = ref
   }
 
   saveProfile = () => {
     const { updateUser, user } = this.props
-    const { originalAvatarFile, originalAvatarUrl } = this.state
+    const { name, originalAvatarFile, originalAvatarUrl } = this.state
     const { avatarFile, avatarUrl } = camelcaseKeys(user)
 
-    let updateFields = {}
+    let updateFields = { name }
     if (avatarFile !== originalAvatarFile) {
       updateFields.avatarFile = avatarFile
     }
@@ -101,19 +133,37 @@ class Profile extends Component {
     }
 
     updateUser(updateFields)
+    this.ref && this.ref.blur()
+  }
+
+  validateName = () => {
+    const { name } = this.state
+
+    if (name.length === 0) {
+      return {
+        name: [`can't be blank`]
+      }
+    }
   }
 
   render () {
-    const { dirty } = this.state
-    const { loading, user } = this.props
+    const { dirty, errors, name } = this.state
+    const { loading, locationName, user } = this.props
+
+    console.log({ locationName })
 
     return (
       <ProfileComponent
         dirty={dirty}
+        errors={errors}
         getNewAvatar={this.getNewAvatar}
         goBack={this.goBack}
+        handleNameChange={this.handleNameChange}
         loading={loading}
+        locationName={locationName}
+        name={name}
         saveProfile={this.saveProfile}
+        setRef={this.setRef}
         user={user}
       />
     )
@@ -122,10 +172,17 @@ class Profile extends Component {
 
 const mapStateToProps = state => {
   const loading = loadingSelector(state)
-  return { loading }
+  const location = locationSelector(state)
+  const locationName = locationNameSelector(state)
+
+  return {
+    loading,
+    location,
+    locationName
+  }
 }
 
-const mapDispatchToProps = { resetAvatar, updateUser }
+const mapDispatchToProps = { pointToWords, resetAvatar, updateUser }
 
 const enhance = compose(
   withUser,

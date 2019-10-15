@@ -138,12 +138,31 @@ function * setupUser (action) {
 }
 
 function * updateUser (action) {
-  const { avatar, avatarFile, avatarUrl, name } = action
+  const { avatar, avatarFile, avatarUrl, location: shouldUpdateLocation, name } = action
+
+  let data = snakeCaseKeys({ avatar, avatarFile, avatarUrl, name })
+
+  if (shouldUpdateLocation) {
+    yield fork(locationSagas.getLocation)
+    // eslint-disable-next-line no-unused-vars
+    const { locationError, locationSuccess } = yield race({
+      locationError: take(locationActionTypes.GET_ERROR),
+      locationSuccess: take(locationActionTypes.GET_SUCCESS)
+    })
+
+    if (locationSuccess) {
+      data = {
+        ...data,
+        ...locationSerializer.serialize(locationSuccess.location)
+      }
+    }
+  }
+
   const jwt = yield call(clientStorageService.get, constants.JWT)
   const response = yield call(
     userApi.updateUser,
     jwt,
-    snakeCaseKeys({ avatar, avatarFile, avatarUrl, name })
+    data
   )
   const { data: user, error } = response
   if (user) {

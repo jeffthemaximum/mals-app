@@ -21,7 +21,8 @@ const {
 const {
   actions: {
     hideUsers,
-    setupUser
+    setupUser,
+    updateUser
   },
   selectors: {
     firstTimeCreatedUser: firstTimeCreatedUserSelector,
@@ -47,11 +48,13 @@ function withUser (WrappedComponent) {
     }
 
     handleFocus = () => {
-      const { device, setupUser, user, userLoading } = this.props
+      const { device, setupUser, updateUser, user, userLoading } = this.props
 
       if (!user && !userLoading) {
         setupUser(device)
       }
+
+      updateUser({ location: true })
     }
 
     render () {
@@ -90,7 +93,8 @@ function withUser (WrappedComponent) {
   const mapDispatchToProps = {
     createDevice,
     hideUsers,
-    setupUser
+    setupUser,
+    updateUser
   }
 
   return connect(

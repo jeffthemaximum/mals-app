@@ -7,7 +7,13 @@ export default function location (state = {}, action) {
         ...state,
         error: action.error
       }
+    case actionTypes.POINT_TO_WORDS_SUCCESS:
+      return {
+        ...state,
+        name: action.name
+      }
     case actionTypes.SET:
+    case actionTypes.GET_SUCCESS:
       return {
         ...state,
         location: action.location

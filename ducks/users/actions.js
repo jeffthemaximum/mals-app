@@ -30,12 +30,13 @@ export function setupUser (data) {
   }
 }
 
-export function updateUser ({ avatar, avatarFile, avatarUrl, name }) {
+export function updateUser ({ avatar, avatarFile, avatarUrl, location, name }) {
   return {
     type: actionTypes.UPDATE,
     avatar,
     avatarFile,
     avatarUrl,
+    location,
     name
   }
 }
