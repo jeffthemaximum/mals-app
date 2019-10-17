@@ -54,13 +54,32 @@ class Profile extends Component {
 
   componentDidUpdate (prevProps) {
     const {
-      user: { updated_at: prevUpdatedAt }
+      user: {
+        avatar_file: prevAvatarFile,
+        prevName,
+        updated_at: prevUpdatedAt
+      }
     } = prevProps
     const {
-      user: { updated_at: updatedAt }
+      user: {
+        avatar_file: avatarFile,
+        name,
+        updated_at: updatedAt
+      }
     } = this.props
 
-    if (prevUpdatedAt !== updatedAt) {
+    const didUpdate = (
+      (
+        prevName !== name &&
+        prevUpdatedAt !== updatedAt
+      ) ||
+      (
+        prevAvatarFile !== avatarFile &&
+        prevUpdatedAt !== updatedAt
+      )
+    )
+
+    if (didUpdate) {
       this.setState({ dirty: false })
       this.handleFocus()
       showMessage({

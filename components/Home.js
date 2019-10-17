@@ -2,8 +2,8 @@
 
 import React, { Component } from 'react'
 import {
+  Dimensions,
   Image,
-  ScrollView,
   StyleSheet,
   Text,
   TouchableOpacity,
@@ -88,22 +88,33 @@ const Greetings = ({ user }) => (
 export default class Home extends Component {
   render () {
     const { user } = this.props
+    const { height, width } = Dimensions.get('window')
+    const imageStyles = {
+      height: height * 0.30788,
+      width: width * 0.8
+    }
 
     return (
       <View style={styles.container}>
-        <ScrollView
+        <View
           contentContainerStyle={styles.contentContainer}
           style={styles.scrollView}
         >
           <Text style={styles.headerText}>SayHey</Text>
           <Text style={styles.subheaderText}>Random local chat</Text>
-          <FriendlyEncounter />
+          <FriendlyEncounter imageStyles={imageStyles} />
           <Greetings user={user} />
           <HomeLinks />
-        </ScrollView>
+        </View>
       </View>
     )
   }
+}
+
+let subheaderTextMarginBottom = 80
+const { height } = Dimensions.get('window')
+if (height < 700) {
+  subheaderTextMarginBottom = 48
 }
 
 const styles = StyleSheet.create({
@@ -128,7 +139,8 @@ const styles = StyleSheet.create({
     fontFamily: constants.BASE_STYLES.fonts.boldFontFamily,
     fontSize: 48,
     marginBottom: 16,
-    marginTop: 30
+    marginTop: 30,
+    textAlign: 'center'
   },
   image: {
     width: 300,
@@ -141,8 +153,9 @@ const styles = StyleSheet.create({
     marginBottom: 32
   },
   linkContainer: {
-    marginTop: 48,
-    width: '100%'
+    bottom: 0,
+    left: 0,
+    position: 'absolute'
   },
   linkIcon: {
     height: 28,
@@ -155,12 +168,14 @@ const styles = StyleSheet.create({
     fontSize: 24
   },
   scrollView: {
+    height: '100%',
     width: '100%'
   },
   subheaderText: {
     color: constants.BRAND.navy,
     fontFamily: constants.BASE_STYLES.fonts.regularFontFamily,
     fontSize: 24,
-    marginBottom: 80
+    marginBottom: subheaderTextMarginBottom,
+    textAlign: 'center'
   }
 })
