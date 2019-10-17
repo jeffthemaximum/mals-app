@@ -1,6 +1,7 @@
 const RANDOM_CHAT_STATES = {
   requested: 'requested',
-  started: 'started'
+  started: 'started',
+  viewingProfile: 'viewingProfile'
 }
 
 export default {

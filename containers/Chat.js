@@ -21,8 +21,12 @@ import notifications from '../ducks/notifications'
 import withUser from './withUser'
 
 const {
-  actions: { createChat, setChat, unsetChat },
-  selectors: { chat: chatSelector, recipient: recipientSelector }
+  actions: { createChat, setChat, setChatStatus, unsetChat },
+  selectors: {
+    chat: chatSelector,
+    chatStatus: chatStatusSelector,
+    recipient: recipientSelector
+  }
 } = chats
 
 const {
@@ -61,8 +65,7 @@ class Chat extends Component {
     jwt: null,
     loading: false,
     messagesCable: null,
-    notificationsCable: null,
-    status: null
+    notificationsCable: null
   }
 
   componentDidMount () {
@@ -116,6 +119,15 @@ class Chat extends Component {
 
     if (!prevProps.recipient && this.props.recipient) {
       this.request()
+    }
+
+    // happens when users denies chat via ProfileOther container
+    if (
+      prevProps.chatStatus === constants.RANDOM_CHAT_STATES.viewingProfile &&
+      this.props.chatStatus === null
+    ) {
+      this._handleBlur()
+      this.props.navigation.navigate(constants.NAVIGATION_NAMES.home)
     }
   }
 
@@ -222,24 +234,34 @@ class Chat extends Component {
   }
 
   _handleBlur = () => {
-    const { unsetChat, unsetNotifications } = this.props
+    const { chatStatus, unsetChat, unsetNotifications } = this.props
 
-    this.startTyping && this.startTyping.cancel()
-    this.state.chatsCable && this.state.chatsCable.unsubscribe()
-    this.state.messagesCable && this.state.messagesCable.unsubscribe()
-    this.state.notificationsCable && this.state.notificationsCable.unsubscribe()
-    this.stopTyping && this.stopTyping.cancel()
-    this.stopChat()
-    unsetChat()
-    unsetNotifications()
+    const viewingProfile =
+      chatStatus === constants.RANDOM_CHAT_STATES.viewingProfile
+
+    if (!viewingProfile) {
+      this.startTyping && this.startTyping.cancel()
+      this.state.chatsCable && this.state.chatsCable.unsubscribe()
+      this.state.messagesCable && this.state.messagesCable.unsubscribe()
+      this.state.notificationsCable &&
+        this.state.notificationsCable.unsubscribe()
+      this.stopTyping && this.stopTyping.cancel()
+      this.stopChat()
+      unsetChat()
+      unsetNotifications()
+    }
   }
 
   _handleFocus = async () => {
-    const jwt = await clientStorage.get(constants.JWT)
-    const cable = ActionCable.createConsumer(constants.API_WS_ROOT, jwt)
-    this.setState({ cable }, () => {
-      this._connectToChatsChannel()
-    })
+    const { chat } = this.props
+
+    if (!chat) {
+      const jwt = await clientStorage.get(constants.JWT)
+      const cable = ActionCable.createConsumer(constants.API_WS_ROOT, jwt)
+      this.setState({ cable }, () => {
+        this._connectToChatsChannel()
+      })
+    }
   }
 
   _handleReceivedChat = chat => {
@@ -292,23 +314,14 @@ class Chat extends Component {
     createMessage(messageData)
   }
 
-  denyRequest = () => {
-    const { hideUsers, navigation, recipient } = this.props
-
-    const recipientId = lodashGet(recipient, 'id')
-    if (recipientId) {
-      hideUsers(recipientId)
-    }
-
-    navigation.navigate(constants.NAVIGATION_NAMES.home)
-  }
-
   request = () => {
-    this.setState({ status: constants.RANDOM_CHAT_STATES.requested })
+    const { setChatStatus } = this.props
+    setChatStatus(constants.RANDOM_CHAT_STATES.requested)
   }
 
   startChat = () => {
-    this.setState({ status: constants.RANDOM_CHAT_STATES.started })
+    const { setChatStatus } = this.props
+    setChatStatus(constants.RANDOM_CHAT_STATES.started)
   }
 
   _startTyping = () => {
@@ -316,27 +329,34 @@ class Chat extends Component {
   }
 
   stopChat = () => {
-    this.setState({ status: null })
+    const { setChatStatus } = this.props
+    setChatStatus(null)
   }
 
   _stopTyping = () => {
     this.stopTyping()
   }
 
+  viewProfile = () => {
+    const { navigation, setChatStatus } = this.props
+
+    setChatStatus(constants.RANDOM_CHAT_STATES.viewingProfile)
+    navigation.navigate(constants.NAVIGATION_NAMES.profileOther)
+  }
+
   render () {
-    const { messages, notifications, user } = this.props
-    const { status } = this.state
+    const { chatStatus, messages, notifications, user } = this.props
 
     return (
       <ChatComponent
-        denyRequest={this.denyRequest}
         detectTyping={this._detectTyping}
         handleSendMessage={this._handleSendMessage}
         messages={messages}
         notifications={notifications}
         startChat={this.startChat}
-        status={status}
+        status={chatStatus}
         user={user}
+        viewProfile={this.viewProfile}
       />
     )
   }
@@ -344,6 +364,7 @@ class Chat extends Component {
 
 const mapStateToProps = state => {
   const chat = chatSelector(state)
+  const chatStatus = chatStatusSelector(state)
   const messages = messagesSelector(state)
   const notifications = {
     typing: typingNotificationSelector(state),
@@ -353,6 +374,7 @@ const mapStateToProps = state => {
 
   return {
     chat,
+    chatStatus,
     messages,
     notifications,
     recipient
@@ -365,6 +387,7 @@ const mapDispatchToProps = {
   createNotification,
   readMessage,
   setChat,
+  setChatStatus,
   setMessage,
   setMessages,
   setNotification,

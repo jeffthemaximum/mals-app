@@ -7,6 +7,13 @@ export function pointToWords (data) {
   }
 }
 
+export function recipientPointToWords (data) {
+  return {
+    type: actionTypes.RECIPIENT_POINT_TO_WORDS,
+    data
+  }
+}
+
 export function setLocation (location) {
   return {
     type: actionTypes.SET,

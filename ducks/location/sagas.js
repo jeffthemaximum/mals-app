@@ -24,9 +24,21 @@ function * pointToWords (action) {
   }
 }
 
+function * recipientPointToWords (action) {
+  const { data } = action
+  const response = yield call(reverseGeocodingService.pointToWords, data)
+  const { name, error } = response
+  if (name) {
+    yield put({ type: locationActionTypes.RECIPIENT_POINT_TO_WORDS_SUCCESS, name, recipient: action.data.recipient })
+  } else {
+    yield put({ type: locationActionTypes.RECIPIENT_POINT_TO_WORDS_ERROR, error })
+  }
+}
+
 const watchers = [
   takeLatest(locationActionTypes.GET, getLocation),
-  takeLatest(locationActionTypes.POINT_TO_WORDS, pointToWords)
+  takeLatest(locationActionTypes.POINT_TO_WORDS, pointToWords),
+  takeLatest(locationActionTypes.RECIPIENT_POINT_TO_WORDS, recipientPointToWords)
 ]
 
 export { getLocation, watchers }

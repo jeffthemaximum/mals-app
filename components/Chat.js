@@ -45,14 +45,14 @@ GiftedChatComponent = withNavigationName(constants.NAVIGATION_NAMES.chat)(
 export default class Chat extends Component {
   render () {
     const {
-      denyRequest,
       detectTyping,
       handleSendMessage,
       messages,
       notifications,
       startChat,
       status,
-      user
+      user,
+      viewProfile
     } = this.props
 
     let userData = {}
@@ -83,9 +83,9 @@ export default class Chat extends Component {
     } else {
       return (
         <Waiting
-          denyRequest={denyRequest}
           startChat={startChat}
           status={status}
+          viewProfile={viewProfile}
         />
       )
     }

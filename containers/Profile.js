@@ -2,7 +2,8 @@
 
 import { compose } from 'redux'
 import { connect } from 'react-redux'
-import { showMessage } from "react-native-flash-message"
+import { showMessage } from 'react-native-flash-message'
+import { withNavigation } from 'react-navigation'
 import camelcaseKeys from 'camelcase-keys'
 import hoistNonReactStatics from 'hoist-non-react-statics'
 import React, { Component } from 'react'
@@ -11,7 +12,6 @@ import constants from '../constants'
 import location from '../ducks/location'
 import ProfileComponent from '../components/Profile'
 import users from '../ducks/users'
-import { withNavigation } from 'react-navigation'
 import withNavigationName from './withNavigationName'
 import withUser from './withUser'
 
@@ -159,8 +159,6 @@ class Profile extends Component {
     const { dirty, errors, name } = this.state
     const { loading, locationName, user } = this.props
 
-    console.log({ locationName })
-
     return (
       <ProfileComponent
         dirty={dirty}
@@ -168,6 +166,7 @@ class Profile extends Component {
         getNewAvatar={this.getNewAvatar}
         goBack={this.goBack}
         handleNameChange={this.handleNameChange}
+        isSelf
         loading={loading}
         locationName={locationName}
         name={name}

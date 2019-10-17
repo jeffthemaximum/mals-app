@@ -16,6 +16,7 @@ import Home from './containers/Home'
 import NavigationDrawer from './containers/NavigationDrawer'
 import NavigationService from './services/navigationService'
 import Profile from './containers/Profile'
+import ProfileOther from './containers/ProfileOther'
 import reducers from './ducks/reducers'
 import rootSaga from './ducks/sagas'
 
@@ -27,6 +28,9 @@ const homeStackScreen = createStackNavigator({
   },
   [constants.NAVIGATION_NAMES.profile]: {
     screen: Profile
+  },
+  [constants.NAVIGATION_NAMES.profileOther]: {
+    screen: ProfileOther
   }
 })
 

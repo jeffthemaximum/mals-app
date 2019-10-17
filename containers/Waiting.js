@@ -106,14 +106,15 @@ class Waiting extends Component {
   }
 
   render () {
-    const { denyRequest, startChat, status } = this.props
+    const { navigationName, startChat, status, viewProfile } = this.props
 
     return (
       <WaitingComponent
-        denyRequest={denyRequest}
+        navigationName={navigationName}
         randomMessage={this.props.randomMessage}
         startChat={startChat}
         status={status}
+        viewProfile={viewProfile}
         {...this.state}
       />
     )

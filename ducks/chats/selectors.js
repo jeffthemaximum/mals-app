@@ -8,6 +8,7 @@ const {
 export const chat = state => state.chats.chat
 export const chatDistance = state => lodashGet(chat(state), 'distance')
 export const chatId = state => lodashGet(chat(state), 'id')
+export const chatStatus = state => state.chats.status
 export const error = state => state.chats.error
 export const loading = state => !!state.chats.loading
 export const recipient = state => {

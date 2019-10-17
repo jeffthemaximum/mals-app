@@ -140,35 +140,72 @@ const Location = ({ locationName }) => (
   </View>
 )
 
+const ChatActionButtons = ({ denyRequest, startChat }) => {
+  return (
+    <View style={[styles.actionButtonsContainer, { marginBottom: 48 }]}>
+      <Button
+        buttonStyles={constants.BASE_STYLES.buttons.inverse.fullWidth.button}
+        handlePress={denyRequest}
+        text={'Deny chat request'}
+        textStyles={constants.BASE_STYLES.buttons.inverse.fullWidth.text}
+      />
+      <Button handlePress={startChat} text={'Accept chat request'} />
+    </View>
+  )
+}
+
 const Profile = ({
   dirty,
+  denyRequest,
   errors,
   getNewAvatar,
   goBack,
   handleNameChange,
+  isSelf,
   loading,
   locationName,
   name,
   saveProfile,
   setRef,
+  startChat,
   user
-}) => (
-  <View style={styles.container}>
-    <View style={styles.centeredView}>
-      <UserName user={user} />
-      <Avatar user={user} />
-      <NewAvatarButton getNewAvatar={getNewAvatar} loading={loading} />
-      <ActionButtons dirty={dirty} goBack={goBack} saveProfile={saveProfile} />
-      <Name
-        errors={errors}
-        handleNameChange={handleNameChange}
-        name={name}
-        setRef={setRef}
-      />
-      {locationName && <Location locationName={locationName} />}
+}) => {
+  let containerStyles = {}
+  if (!isSelf) {
+    containerStyles.marginTop = 48
+  }
+
+  return (
+    <View style={[styles.container, containerStyles]}>
+      <View style={styles.centeredView}>
+        { user && <UserName user={user} /> }
+        { user && <Avatar user={user} /> }
+        {isSelf && (
+          <NewAvatarButton getNewAvatar={getNewAvatar} loading={loading} />
+        )}
+        {isSelf && (
+          <Name
+            errors={errors}
+            handleNameChange={handleNameChange}
+            name={name}
+            setRef={setRef}
+          />
+        )}
+        {locationName && <Location locationName={locationName} />}
+        {isSelf && (
+          <ActionButtons
+            dirty={dirty}
+            goBack={goBack}
+            saveProfile={saveProfile}
+          />
+        )}
+        {!isSelf && (
+          <ChatActionButtons denyRequest={denyRequest} startChat={startChat} />
+        )}
+      </View>
     </View>
-  </View>
-)
+  )
+}
 
 const styles = StyleSheet.create({
   actionButtonsContainer: {

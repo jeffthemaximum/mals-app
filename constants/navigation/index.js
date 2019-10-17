@@ -3,6 +3,7 @@ const NAVIGATION_NAMES = {
   home: 'Home',
   quit: 'Quit',
   profile: 'Profile',
+  profileOther: 'ProfileOther',
   splash: 'Splash',
   waiting: 'Waiting'
 }

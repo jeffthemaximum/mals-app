@@ -11,8 +11,6 @@ export const statsMiddleware = () => next => action => {
     }
   }
 
-  console.log({ type })
-
   statService.log(type, { count: 1 })
 
   return next(action)

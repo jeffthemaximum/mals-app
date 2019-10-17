@@ -125,18 +125,26 @@ const WaitingMessage = ({ serializedRandomMessage }) => {
 
 export default class Waiting extends Component {
   render () {
-    const { denyRequest, randomMessage, startChat, status } = this.props
+    const {
+      navigationName,
+      randomMessage,
+      startChat,
+      status,
+      viewProfile
+    } = this.props
 
     const serializedRandomMessage =
       randomMessage && messageSerializers.deserialize(randomMessage)
 
     const shouldRenderChatRequestModal =
+      navigationName &&
+      navigationName === constants.NAVIGATION_NAMES.waiting &&
       status === constants.RANDOM_CHAT_STATES.requested
 
     return (
       <View style={styles.container}>
         {shouldRenderChatRequestModal && (
-          <ChatRequestModal denyRequest={denyRequest} startChat={startChat} />
+          <ChatRequestModal startChat={startChat} viewProfile={viewProfile} />
         )}
         <TopWrapper serializedRandomMessage={serializedRandomMessage} />
         <HorizontalRule lineStyle={{ margin: 10 }} />

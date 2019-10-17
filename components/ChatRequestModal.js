@@ -7,20 +7,27 @@ import React from 'react'
 import constants from '../constants'
 import TwoButtonRow from './TwoButtonRow'
 
-const ChatRequestModal = ({ chatDistance, denyRequest, handlePress, isVisible, recipientName }) => {
+const ChatRequestModal = ({
+  chatDistance,
+  denyRequest,
+  handlePress,
+  isVisible,
+  recipientName,
+  viewProfile
+}) => {
   return (
     <View style={styles.container}>
-      <Modal
-        isVisible={isVisible}
-      >
+      <Modal isVisible={isVisible}>
         <View style={styles.content}>
-          <Text style={styles.header}>New chat</Text>
-          <Text style={styles.text}>{constants.REQUEST_CHAT_COPY(recipientName, chatDistance)}</Text>
+          <Text style={styles.header}>New chat request</Text>
+          <Text style={styles.text}>
+            {constants.REQUEST_CHAT_COPY(recipientName, chatDistance)}
+          </Text>
           <TwoButtonRow
             acceptText={'Accept'}
-            cancelText={'Deny'}
+            cancelText={'View profile'}
             handleAcceptClick={handlePress}
-            handleCancelClick={denyRequest}
+            handleCancelClick={viewProfile}
           />
         </View>
       </Modal>

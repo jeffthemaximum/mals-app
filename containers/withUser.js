@@ -20,7 +20,6 @@ const {
 
 const {
   actions: {
-    hideUsers,
     setupUser,
     updateUser
   },
@@ -92,7 +91,6 @@ function withUser (WrappedComponent) {
 
   const mapDispatchToProps = {
     createDevice,
-    hideUsers,
     setupUser,
     updateUser
   }

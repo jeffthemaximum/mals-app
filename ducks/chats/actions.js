@@ -27,6 +27,13 @@ export function setChat (chat) {
   }
 }
 
+export function setChatStatus (status) {
+  return {
+    type: actionTypes.SET_STATUS,
+    status
+  }
+}
+
 export function unsetChat () {
   return {
     type: actionTypes.UNSET

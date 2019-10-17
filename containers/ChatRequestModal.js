@@ -20,16 +20,16 @@ class ChatRequestModal extends Component {
   }
 
   render () {
-    const { chatDistance, denyRequest, recipientName, startChat } = this.props
+    const { chatDistance, recipientName, startChat, viewProfile } = this.props
     const { isVisible } = this.state
 
     return (
       <ChatRequestModalComponent
         chatDistance={chatDistance}
-        denyRequest={denyRequest}
         handlePress={startChat}
         isVisible={isVisible}
         recipientName={recipientName}
+        viewProfile={viewProfile}
       />
     )
   }
