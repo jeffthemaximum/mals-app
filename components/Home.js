@@ -62,11 +62,18 @@ const HomeLink = ({ destination, imageUri, text }) => {
 const HomeLinks = () => (
   <View style={styles.linkContainer}>
     <HomeLink
+      destination={constants.NAVIGATION_NAMES.messages}
+      imageUri={
+        'https://meetalocalstranger.s3.amazonaws.com/images/chatNavy.png'
+      }
+      text={'Chat'}
+    />
+    <HomeLink
       destination={constants.NAVIGATION_NAMES.chat}
       imageUri={
         'https://meetalocalstranger.s3.amazonaws.com/images/chatSmileNavy.png'
       }
-      text={'Chat with a random user'}
+      text={'Find a local friend'}
     />
     <HomeLink
       destination={constants.NAVIGATION_NAMES.profile}

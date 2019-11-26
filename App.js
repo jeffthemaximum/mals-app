@@ -13,6 +13,7 @@ import Chat from './containers/Chat'
 import constants from './constants'
 import FlashMessage from 'react-native-flash-message'
 import Home from './containers/Home'
+import Messages from './containers/Messages'
 import NavigationDrawer from './containers/NavigationDrawer'
 import NavigationService from './services/navigationService'
 import Profile from './containers/Profile'
@@ -25,6 +26,9 @@ const sagaMiddleware = createSagaMiddleware()
 const homeStackScreen = createStackNavigator({
   [constants.NAVIGATION_NAMES.home]: {
     screen: Home
+  },
+  [constants.NAVIGATION_NAMES.messages]: {
+    screen: Messages
   },
   [constants.NAVIGATION_NAMES.profile]: {
     screen: Profile

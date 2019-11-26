@@ -6,6 +6,12 @@ export function createChat () {
   }
 }
 
+export function getChats () {
+  return {
+    type: actionTypes.GET_CHATS
+  }
+}
+
 export function reportChat (chatId, content) {
   return {
     type: actionTypes.REPORT,
