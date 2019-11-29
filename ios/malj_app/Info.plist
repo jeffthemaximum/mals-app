@@ -17,7 +17,7 @@
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
 	<key>CFBundleShortVersionString</key>
-	<string>1.23</string>
+	<string>1.25</string>
 	<key>CFBundleSignature</key>
 	<string>????</string>
 	<key>CFBundleVersion</key>
@@ -37,8 +37,6 @@
 			</dict>
 		</dict>
 	</dict>
-	<key>NSLocationWhenInUseUsageDescription</key>
-	<string></string>
 	<key>UIAppFonts</key>
 	<array>
 		<string>ProximaNova-Bold.ttf</string>
@@ -62,6 +60,8 @@
   <key>NSLocationAlwaysUsageDescription</key>
   <string>Your location is used to connect you with interesting nearby users.</string>
   <key>NSLocationWhenInUseUsageDescription</key>
+  <string>Your location is used to connect you with interesting nearby users.</string>
+  <key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
   <string>Your location is used to connect you with interesting nearby users.</string>
 </dict>
 </plist>
