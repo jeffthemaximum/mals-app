@@ -138,6 +138,7 @@ android {
 }
 
 dependencies {
+    implementation project(':react-native-splash-screen')
     implementation project(':bugsnag-react-native')
     implementation project(':react-native-spinkit')
     implementation project(':react-native-device-info')

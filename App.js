@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React, { Component, useEffect } from 'react'
 import {
   createAppContainer,
   createDrawerNavigator,
@@ -7,6 +7,7 @@ import {
 import { createStore, applyMiddleware } from 'redux'
 import { Provider } from 'react-redux'
 import createSagaMiddleware from 'redux-saga'
+import SplashScreen from 'react-native-splash-screen'
 
 import { statsMiddleware } from './services/reduxMiddleware/statsMiddleware'
 import Chat from './containers/Chat'
@@ -74,6 +75,10 @@ const Navigation = createAppContainer(MainNavigator)
 sagaMiddleware.run(rootSaga)
 
 export default class App extends Component<{}> {
+  componentDidMount () {
+    SplashScreen.hide()
+  }
+
   render () {
     return (
       <Provider store={store}>
