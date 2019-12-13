@@ -1,7 +1,14 @@
 'use strict'
 
 import React from 'react'
-import { Image, ScrollView, StyleSheet, Text, View } from 'react-native'
+import {
+  Image,
+  ScrollView,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View
+} from 'react-native'
 import camelcaseKeys from 'camelcase-keys'
 import lodashGet from 'lodash/get'
 import moment from 'moment-timezone'
@@ -22,11 +29,17 @@ const LastMessageDate = ({ chat }) => {
       timezone = userTimeZone
     }
     const today = moment().tz(timezone)
-    const lastMessageSentToday = moment(lastMessageDate).tz(timezone).isSame(today, 'day')
+    const lastMessageSentToday = moment(lastMessageDate)
+      .tz(timezone)
+      .isSame(today, 'day')
     if (lastMessageSentToday) {
-      date = `${moment(lastMessageDate).tz(timezone).format('hh:mm A')}`
+      date = `${moment(lastMessageDate)
+        .tz(timezone)
+        .format('hh:mm A')}`
     } else {
-      date = `${moment(lastMessageDate).tz(timezone).format('dddd')}`
+      date = `${moment(lastMessageDate)
+        .tz(timezone)
+        .format('dddd')}`
     }
   }
 
@@ -35,7 +48,8 @@ const LastMessageDate = ({ chat }) => {
       <Text style={styles.lastMessageDateText}>{date}</Text>
       <Image
         source={{
-          uri: 'https://meetalocalstranger.s3.amazonaws.com/images/caretRightBlack.png'
+          uri:
+            'https://meetalocalstranger.s3.amazonaws.com/images/caretRightBlack.png'
         }}
         style={{
           height: 14,
@@ -43,7 +57,6 @@ const LastMessageDate = ({ chat }) => {
         }}
       />
     </View>
-
   )
 }
 
@@ -63,7 +76,8 @@ const lastMessageText = ({ chat }) => {
   }
 }
 
-const recipient = ({ chat, user }) => chat.users.find(_user => _user.id !== user.id)
+const recipient = ({ chat, user }) =>
+  chat.users.find(_user => _user.id !== user.id)
 
 const recipientUserName = ({ chat, user }) => {
   const _recipient = recipient({ chat, user })
@@ -98,7 +112,7 @@ const renderRecipientAvatar = ({ chat, user }) => {
 }
 
 const ChatListItem = ({ chat, user }) => (
-  <View style={styles.chatListItemContainer}>
+  <TouchableOpacity style={styles.chatListItemContainer}>
     <View style={styles.recipientAvatarContainer}>
       {renderRecipientAvatar({ chat, user })}
     </View>
@@ -110,12 +124,10 @@ const ChatListItem = ({ chat, user }) => (
         <LastMessageDate chat={chat} />
       </View>
       <View style={styles.messageTextContainer}>
-        <Text style={styles.messageText}>
-          {lastMessageText({ chat })}
-        </Text>
+        <Text style={styles.messageText}>{lastMessageText({ chat })}</Text>
       </View>
     </View>
-  </View>
+  </TouchableOpacity>
 )
 
 const ChatsList = ({ chats, user }) => (

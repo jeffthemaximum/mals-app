@@ -11,7 +11,6 @@ import constants from '../constants'
 import devices from '../ducks/devices'
 import HomeComponent from '../components/Home'
 import HomeFirstTimeComponent from '../components/HomeFirstTime'
-import location from '../ducks/location'
 import users from '../ducks/users'
 import withNavigationName from './withNavigationName'
 import withUser from './withUser'
@@ -29,7 +28,8 @@ const {
   actions: { updateUser },
   selectors: {
     error: errorSelector,
-    loading: userLoadingSelector
+    loading: userLoadingSelector,
+    userChatsCount: userChatsCountSelector
   }
 } = users
 
@@ -61,7 +61,7 @@ class Home extends Component {
 
   render () {
     const { eulaModalVisibile } = this.state
-    const { firstTimeCreatedUser } = this.props
+    const { firstTimeCreatedUser, userChatsCount } = this.props
 
     if (firstTimeCreatedUser) {
       return (
@@ -77,6 +77,7 @@ class Home extends Component {
           {...this.props}
           eulaModalVisibile={eulaModalVisibile}
           handleAcceptEula={this.handleAcceptEula}
+          shouldRenderChat={userChatsCount > 0}
         />
       )
     }
@@ -86,10 +87,12 @@ class Home extends Component {
 const mapStateToProps = state => {
   const error = errorSelector(state)
   const loading = userLoadingSelector(state) || chatLoadingSelector(state)
+  const userChatsCount = userChatsCountSelector(state)
 
   return {
     error,
-    loading
+    loading,
+    userChatsCount
   }
 }
 

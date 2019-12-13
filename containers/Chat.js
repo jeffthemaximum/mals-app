@@ -5,7 +5,6 @@ import { connect } from 'react-redux'
 import ActionCable from 'action-cable-react-jwt'
 import hoistNonReactStatics from 'hoist-non-react-statics'
 import lodashDebounce from 'lodash/debounce'
-import lodashGet from 'lodash/get'
 import React, { Component } from 'react'
 
 import * as chatSerializers from '../services/serializers/chats'
