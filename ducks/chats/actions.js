@@ -1,5 +1,12 @@
 import * as actionTypes from './actionTypes'
 
+export function blockChat (chatId) {
+  return {
+    type: actionTypes.BLOCK,
+    chatId
+  }
+}
+
 export function createChat () {
   return {
     type: actionTypes.CREATE

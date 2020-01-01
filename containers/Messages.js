@@ -7,18 +7,25 @@ import { withNavigation } from 'react-navigation'
 
 import chats from '../ducks/chats'
 import constants from '../constants'
+import messages from '../ducks/messages'
 import MessagesComponent from '../components/Messages'
 import withNavigationName from './withNavigationName'
 import withUser from './withUser'
 
 const {
-  actions: { getChats },
+  actions: { getChats, setChat, setChatStatus },
   selectors: {
     chats: chatsSelector,
     error: errorSelector,
     loading: loadingSelector
   }
 } = chats
+
+const {
+  actions: {
+    setMessages
+  }
+} = messages
 
 class Messages extends Component {
   componentDidMount () {
@@ -50,15 +57,28 @@ class Messages extends Component {
     getChats()
   }
 
+  handleChatPress = (chat) => {
+    const {
+      navigation: { navigate },
+      setChat,
+      setChatStatus,
+      setMessages
+    } = this.props
+
+    setChat(chat)
+    setMessages(chat.messages)
+    setChatStatus(constants.RANDOM_CHAT_STATES.started)
+    navigate(constants.NAVIGATION_NAMES.pastChat)
+  }
+
   render () {
     const { chats, error, loading, user } = this.props
-
-    console.log({ chats })
 
     return (
       <MessagesComponent
         chats={chats}
         error={error}
+        handleChatPress={this.handleChatPress}
         loading={loading}
         user={user}
       />
@@ -78,7 +98,7 @@ const mapStateToProps = state => {
   }
 }
 
-const mapDispatchToProps = { getChats }
+const mapDispatchToProps = { getChats, setChat, setChatStatus, setMessages }
 
 const enhance = compose(
   withNavigationName(constants.NAVIGATION_NAMES.messages),

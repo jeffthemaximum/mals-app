@@ -16,6 +16,7 @@ import Home from './containers/Home'
 import Messages from './containers/Messages'
 import NavigationDrawer from './containers/NavigationDrawer'
 import NavigationService from './services/navigationService'
+import PastChat from './containers/PastChat'
 import Profile from './containers/Profile'
 import ProfileOther from './containers/ProfileOther'
 import reducers from './ducks/reducers'
@@ -44,6 +45,12 @@ const chatStackScreen = createStackNavigator({
   }
 })
 
+const pastChatStackScreen = createStackNavigator({
+  [constants.NAVIGATION_NAMES.pastChat]: {
+    screen: PastChat
+  }
+})
+
 const MainNavigator = createDrawerNavigator(
   {
     [constants.NAVIGATION_NAMES.quit]: {
@@ -54,6 +61,14 @@ const MainNavigator = createDrawerNavigator(
     },
     [constants.NAVIGATION_NAMES.chat]: {
       screen: chatStackScreen,
+      navigationOptions: ({ navigation }) => {
+        return {
+          drawerLabel: () => null
+        }
+      }
+    },
+    [constants.NAVIGATION_NAMES.pastChat]: {
+      screen: pastChatStackScreen,
       navigationOptions: ({ navigation }) => {
         return {
           drawerLabel: () => null

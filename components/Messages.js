@@ -21,7 +21,7 @@ import LoadingSpinner from './LoadingSpinner'
 const LastMessageDate = ({ chat }) => {
   let date = ''
   if (chat.messages && chat.messages.length !== 0) {
-    const lastMessageDate = chat.messages[chat.messages.length - 1].createdAt
+    const lastMessageDate = chat.messages[0].createdAt
 
     let timezone = 'UTC'
     const userTimeZone = lodashGet(deviceInfoService.getInfo(), 'timezone')
@@ -67,7 +67,7 @@ const lastMessageText = ({ chat }) => {
     return ''
   }
 
-  const lastMessageText = chat.messages[chat.messages.length - 1].text
+  const lastMessageText = chat.messages[0].text
 
   if (lastMessageText.length > maxLength) {
     return `${lastMessageText.substring(0, maxLength)}...`
@@ -82,10 +82,10 @@ const recipient = ({ chat, user }) =>
 const recipientUserName = ({ chat, user }) => {
   const _recipient = recipient({ chat, user })
   if (_recipient) {
-    return user.name
+    return _recipient.name
   }
 
-  return _recipient.name || user.name
+  return user.name
 }
 
 const renderRecipientAvatar = ({ chat, user }) => {
@@ -111,8 +111,11 @@ const renderRecipientAvatar = ({ chat, user }) => {
   return renderAvatar(avatarProps)
 }
 
-const ChatListItem = ({ chat, user }) => (
-  <TouchableOpacity style={styles.chatListItemContainer}>
+const ChatListItem = ({ chat, handleChatPress, user }) => (
+  <TouchableOpacity
+    onPress={() => handleChatPress(chat)}
+    style={styles.chatListItemContainer}
+  >
     <View style={styles.recipientAvatarContainer}>
       {renderRecipientAvatar({ chat, user })}
     </View>
@@ -130,11 +133,22 @@ const ChatListItem = ({ chat, user }) => (
   </TouchableOpacity>
 )
 
-const ChatsList = ({ chats, user }) => (
+const ChatsList = ({ chats, handleChatPress, user }) => (
   <View>
     {chats.map((chat, i) => (
-      <ChatListItem chat={chat} key={i} user={user} />
+      <ChatListItem
+        chat={chat}
+        handleChatPress={handleChatPress}
+        key={i}
+        user={user}
+      />
     ))}
+  </View>
+)
+
+const ErrorItem = () => (
+  <View style={styles.chatListItemContainer}>
+    <Text>Error. Click back error to return home.</Text>
   </View>
 )
 
@@ -157,12 +171,18 @@ const Header = () => (
 
 const Loading = () => <LoadingSpinner />
 
-const Messages = ({ chats, error, loading, user }) => (
+const Messages = ({ chats, error, handleChatPress, loading, user }) => (
   <ScrollView>
     <Header />
-    {error && <Text>error</Text>}
-    {loading && <Loading />}
-    {chats && <ChatsList chats={chats} user={user} />}
+    {(() => {
+      if (error) {
+        return <ErrorItem />
+      } else if (loading && !chats) {
+        return <Loading />
+      } else if (chats) {
+        return <ChatsList chats={chats} handleChatPress={handleChatPress} user={user} />
+      }
+    })()}
   </ScrollView>
 )
 

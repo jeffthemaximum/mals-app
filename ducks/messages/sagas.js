@@ -1,4 +1,4 @@
-import { call, put, takeLatest } from 'redux-saga/effects'
+import { call, put, takeEvery, takeLatest } from 'redux-saga/effects'
 
 import * as messageActionTypes from './actionTypes'
 import * as messageApi from './api'
@@ -42,7 +42,7 @@ function * readMessage (action) {
 const watchers = [
   takeLatest(messageActionTypes.CREATE, createMessage),
   takeLatest(messageActionTypes.GET_RANDOM, getRandomMessage),
-  takeLatest(messageActionTypes.READ, readMessage)
+  takeEvery(messageActionTypes.READ, readMessage)
 ]
 
 export { createMessage, watchers }

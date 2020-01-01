@@ -8,6 +8,7 @@ A chat app where you chat with a local stranger
     - [X] `user is typing` logic with text just above footer
     - [X] when user 1 leaves chat, alert user 2 with `user has left` red text just above footer (see: https://medium.com/@a.carreras.c/using-action-cable-for-private-messaging-presence-indicators-on-react-rails-app-526b3e34c14d)
     - ~~show time in the text bubble for sent/received~~
+    - [ ] add recipient avatar to header with empty or green dot to show presence
 - avatar
     - [X] random avatar for a user from https://getavataaars.com/
     - [X] optimize avatar to download and precache svg file on rails server, save that to db.
@@ -50,6 +51,7 @@ A chat app where you chat with a local stranger
     - [X] delete JoinChatJob of chat thats deleted
     - [X] keyboard hides input on Home
     - [X] location isn't updating
+    - [ ] if user1 on Messages, and user2 sends message to chat, when user1 enters chat, user1 wont see that new message
 - testing
     - [ ] E2E https://github.com/wix/Detox
 - dist

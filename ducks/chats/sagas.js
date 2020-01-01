@@ -6,6 +6,18 @@ import * as chatSerializers from '../../services/serializers/chats'
 import * as clientStorageService from '../../services/clientStorage'
 import constants from '../../constants'
 
+function * blockChat (action) {
+  const { chatId } = action
+  const jwt = yield call(clientStorageService.get, constants.JWT)
+  const response = yield call(chatApi.blockChat, jwt, { chatId })
+  const { error } = response
+  if (error) {
+    yield put({ type: chatActionTypes.BLOCK_ERROR, error })
+  } else {
+    yield put({ type: chatActionTypes.BLOCK_SUCCESS })
+  }
+}
+
 function * createChat (action) {
   const jwt = yield call(clientStorageService.get, constants.JWT)
   const response = yield call(chatApi.createChat, jwt)
@@ -43,6 +55,7 @@ function * reportChat (action) {
 }
 
 const watchers = [
+  takeLatest(chatActionTypes.BLOCK, blockChat),
   takeLatest(chatActionTypes.CREATE, createChat),
   takeLatest(chatActionTypes.GET_CHATS, getChats),
   takeLatest(chatActionTypes.REPORT, reportChat)
