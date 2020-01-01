@@ -2,8 +2,21 @@ import { call, put, takeLatest } from 'redux-saga/effects'
 
 import * as chatActionTypes from './actionTypes'
 import * as chatApi from './api'
+import * as chatSerializers from '../../services/serializers/chats'
 import * as clientStorageService from '../../services/clientStorage'
 import constants from '../../constants'
+
+function * blockChat (action) {
+  const { chatId } = action
+  const jwt = yield call(clientStorageService.get, constants.JWT)
+  const response = yield call(chatApi.blockChat, jwt, { chatId })
+  const { error } = response
+  if (error) {
+    yield put({ type: chatActionTypes.BLOCK_ERROR, error })
+  } else {
+    yield put({ type: chatActionTypes.BLOCK_SUCCESS })
+  }
+}
 
 function * createChat (action) {
   const jwt = yield call(clientStorageService.get, constants.JWT)
@@ -13,6 +26,19 @@ function * createChat (action) {
     yield put({ type: chatActionTypes.CREATE_ERROR, error })
   } else {
     yield put({ type: chatActionTypes.CREATE_SUCCESS })
+  }
+}
+
+function * getChats (action) {
+  const jwt = yield call(clientStorageService.get, constants.JWT)
+  const response = yield call(chatApi.getChats, jwt)
+  const { error } = response
+  if (error) {
+    yield put({ type: chatActionTypes.GET_CHATS_ERROR, error })
+  } else {
+    const { data: chats } = response
+    const deserializedChats = chats.map(chat => chatSerializers.deserialize(chat))
+    yield put({ type: chatActionTypes.GET_CHATS_SUCCESS, chats: deserializedChats })
   }
 }
 
@@ -29,7 +55,9 @@ function * reportChat (action) {
 }
 
 const watchers = [
+  takeLatest(chatActionTypes.BLOCK, blockChat),
   takeLatest(chatActionTypes.CREATE, createChat),
+  takeLatest(chatActionTypes.GET_CHATS, getChats),
   takeLatest(chatActionTypes.REPORT, reportChat)
 ]
 

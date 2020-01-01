@@ -5,7 +5,6 @@ import { connect } from 'react-redux'
 import ActionCable from 'action-cable-react-jwt'
 import hoistNonReactStatics from 'hoist-non-react-statics'
 import lodashDebounce from 'lodash/debounce'
-import lodashGet from 'lodash/get'
 import React, { Component } from 'react'
 
 import * as chatSerializers from '../services/serializers/chats'
@@ -50,7 +49,7 @@ const {
 
 class Chat extends Component {
   static navigationOptions = ({ navigation }) => ({
-    title: 'Meet a Local Stranger',
+    title: 'SayHey',
     headerLeft: ({ tintColor }) => (
       <Header navigation={navigation} tintColor={tintColor} />
     ),
@@ -87,7 +86,9 @@ class Chat extends Component {
   }
 
   componentDidUpdate (prevProps) {
-    if (!prevProps.chat && this.props.chat) {
+    const { isFocused } = this.props.navigation
+
+    if (isFocused() && !prevProps.chat && this.props.chat) {
       const { chat, createNotification, user } = this.props
 
       this._connectToMessagesChannel()
@@ -117,7 +118,7 @@ class Chat extends Component {
       this.stopTyping = lodashDebounce(handleStopTyping, 10000)
     }
 
-    if (!prevProps.recipient && this.props.recipient) {
+    if (isFocused() && !prevProps.recipient && this.props.recipient) {
       this.request()
     }
 
@@ -253,9 +254,9 @@ class Chat extends Component {
   }
 
   _handleFocus = async () => {
-    const { chat } = this.props
+    const { chat, navigation: { isFocused } } = this.props
 
-    if (!chat) {
+    if (!chat && isFocused()) {
       const jwt = await clientStorage.get(constants.JWT)
       const cable = ActionCable.createConsumer(constants.API_WS_ROOT, jwt)
       this.setState({ cable }, () => {
@@ -273,6 +274,19 @@ class Chat extends Component {
 
     setChat(chat)
     setMessages(messages)
+    this.markAllRead(messages)
+  }
+
+  markAllRead = (messages) => {
+    const { readMessage, user } = this.props
+
+    for (let message of messages) {
+      const isOwnMessage = message.user.id === user.id
+
+      if (!isOwnMessage && !message.received) {
+        readMessage(message.id)
+      }
+    }
   }
 
   _handleReceivedMessage = message => {
@@ -396,12 +410,6 @@ const mapDispatchToProps = {
   updateMessage
 }
 
-const enhance = compose(
-  withUser,
-  connect(
-    mapStateToProps,
-    mapDispatchToProps
-  )
-)
+const enhance = compose(withUser, connect(mapStateToProps, mapDispatchToProps))
 
 export default hoistNonReactStatics(enhance(Chat), Chat)

@@ -13,8 +13,10 @@ import Chat from './containers/Chat'
 import constants from './constants'
 import FlashMessage from 'react-native-flash-message'
 import Home from './containers/Home'
+import Messages from './containers/Messages'
 import NavigationDrawer from './containers/NavigationDrawer'
 import NavigationService from './services/navigationService'
+import PastChat from './containers/PastChat'
 import Profile from './containers/Profile'
 import ProfileOther from './containers/ProfileOther'
 import reducers from './ducks/reducers'
@@ -25,6 +27,9 @@ const sagaMiddleware = createSagaMiddleware()
 const homeStackScreen = createStackNavigator({
   [constants.NAVIGATION_NAMES.home]: {
     screen: Home
+  },
+  [constants.NAVIGATION_NAMES.messages]: {
+    screen: Messages
   },
   [constants.NAVIGATION_NAMES.profile]: {
     screen: Profile
@@ -40,6 +45,12 @@ const chatStackScreen = createStackNavigator({
   }
 })
 
+const pastChatStackScreen = createStackNavigator({
+  [constants.NAVIGATION_NAMES.pastChat]: {
+    screen: PastChat
+  }
+})
+
 const MainNavigator = createDrawerNavigator(
   {
     [constants.NAVIGATION_NAMES.quit]: {
@@ -50,6 +61,14 @@ const MainNavigator = createDrawerNavigator(
     },
     [constants.NAVIGATION_NAMES.chat]: {
       screen: chatStackScreen,
+      navigationOptions: ({ navigation }) => {
+        return {
+          drawerLabel: () => null
+        }
+      }
+    },
+    [constants.NAVIGATION_NAMES.pastChat]: {
+      screen: pastChatStackScreen,
       navigationOptions: ({ navigation }) => {
         return {
           drawerLabel: () => null

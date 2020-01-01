@@ -1,16 +1,10 @@
 import * as actionTypes from './actionTypes'
-import lodashGet from 'lodash/get'
+import * as initialAdminMessageService from '../../services/initialAdminMessageService'
 
 const isDuplicateInitialAdminMessage = (messages, message) => {
-  const isInitialAdminMessage = (message) => (
-    lodashGet(message, 'user.isAdmin') === true &&
-    lodashGet(message, 'text') &&
-    lodashGet(message, 'text').startsWith('You\'re chatting with a user who\'s')
-  )
-
   return (
-    isInitialAdminMessage(message) &&
-    messages.find(message => isInitialAdminMessage(message))
+    initialAdminMessageService.isInitialAdminMessage(message) &&
+    messages.find(message => initialAdminMessageService.isInitialAdminMessage(message))
   )
 }
 

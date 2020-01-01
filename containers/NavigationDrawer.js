@@ -13,7 +13,8 @@ import withNavigationName from './withNavigationName'
 import withUser from './withUser'
 
 const {
-  selectors: { chat: chatSelector }
+  actions: { blockChat },
+  selectors: { chat: chatSelector, recipientName: recipientNameSelector }
 } = chats
 
 class NavigationDrawer extends Component {
@@ -22,23 +23,37 @@ class NavigationDrawer extends Component {
   }
 
   handleLeave = () => {
-    const { navigation } = this.props
+    const { blockChat, chat, navigation, navigationName, recipientName } = this.props
 
-    Alert.alert(
-      'Leave chat',
-      'Are you sure? You can never get back to this chat if you leave.',
-      [
-        {
-          text: 'Cancel'
-        },
-        {
-          text: 'Yep',
-          onPress: () => {
-            navigation.navigate(constants.NAVIGATION_NAMES.home)
+    const routesToAlert = [
+      constants.NAVIGATION_NAMES.chat
+    ]
+    const shouldAlert = routesToAlert.includes(navigationName)
+    const leave = () => navigation.navigate(constants.NAVIGATION_NAMES.home)
+
+    if (shouldAlert) {
+      Alert.alert(
+        'Leave chat',
+        `Do you want to save your chat with ${recipientName} so you can talk again?`,
+        [
+          {
+            text: 'Nope',
+            onPress: () => {
+              blockChat(chat.id)
+              leave()
+            }
+          },
+          {
+            text: 'Yep',
+            onPress: () => {
+              leave()
+            }
           }
-        }
-      ]
-    )
+        ]
+      )
+    } else {
+      leave()
+    }
   }
 
   handleReportChatCta = () => {
@@ -50,6 +65,7 @@ class NavigationDrawer extends Component {
 
     const routesWhereReportingIsActive = [
       constants.NAVIGATION_NAMES.chat,
+      constants.NAVIGATION_NAMES.pastChat,
       constants.NAVIGATION_NAMES.waiting
     ]
 
@@ -59,7 +75,10 @@ class NavigationDrawer extends Component {
   shouldRenderReportCta = () => {
     const { navigationName } = this.props
 
-    const routesWhereReportingIsActive = [constants.NAVIGATION_NAMES.chat]
+    const routesWhereReportingIsActive = [
+      constants.NAVIGATION_NAMES.chat,
+      constants.NAVIGATION_NAMES.pastChat
+    ]
 
     return routesWhereReportingIsActive.includes(navigationName)
   }
@@ -88,21 +107,20 @@ class NavigationDrawer extends Component {
 
 const mapStateToProps = state => {
   const chat = chatSelector(state)
+  const recipientName = recipientNameSelector(state)
 
   return {
-    chat
+    chat,
+    recipientName
   }
 }
 
-const mapDispatchToProps = {}
+const mapDispatchToProps = { blockChat }
 
 const enhance = compose(
   withNavigationName(),
   withUser,
-  connect(
-    mapStateToProps,
-    mapDispatchToProps
-  )
+  connect(mapStateToProps, mapDispatchToProps)
 )
 
 export default hoistNonReactStatics(enhance(NavigationDrawer), NavigationDrawer)

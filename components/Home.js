@@ -59,14 +59,23 @@ const HomeLink = ({ destination, imageUri, text }) => {
   )
 }
 
-const HomeLinks = () => (
+const HomeLinks = ({ shouldRenderChat }) => (
   <View style={styles.linkContainer}>
+    { shouldRenderChat && (
+      <HomeLink
+        destination={constants.NAVIGATION_NAMES.messages}
+        imageUri={
+          'https://meetalocalstranger.s3.amazonaws.com/images/chatNavy.png'
+        }
+        text={'Chat'}
+      />
+    )}
     <HomeLink
       destination={constants.NAVIGATION_NAMES.chat}
       imageUri={
         'https://meetalocalstranger.s3.amazonaws.com/images/chatSmileNavy.png'
       }
-      text={'Chat with a random user'}
+      text={'Find a local friend'}
     />
     <HomeLink
       destination={constants.NAVIGATION_NAMES.profile}
@@ -87,7 +96,7 @@ const Greetings = ({ user }) => (
 
 export default class Home extends Component {
   render () {
-    const { user } = this.props
+    const { shouldRenderChat, user } = this.props
     const { height, width } = Dimensions.get('window')
     const imageStyles = {
       height: height * 0.30788,
@@ -104,7 +113,7 @@ export default class Home extends Component {
           <Text style={styles.subheaderText}>Random local chat</Text>
           <FriendlyEncounter imageStyles={imageStyles} />
           <Greetings user={user} />
-          <HomeLinks />
+          <HomeLinks shouldRenderChat={shouldRenderChat} />
         </View>
       </View>
     )

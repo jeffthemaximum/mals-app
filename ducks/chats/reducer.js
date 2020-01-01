@@ -21,6 +21,25 @@ export default function chats (state = {}, action) {
         error: null,
         loading: true // loading is true until we set chat
       }
+    case actionTypes.GET_CHATS:
+      return {
+        ...state,
+        error: null,
+        loading: true
+      }
+    case actionTypes.GET_CHATS_ERROR:
+      return {
+        ...state,
+        error: action.error,
+        loading: false
+      }
+    case actionTypes.GET_CHATS_SUCCESS:
+      return {
+        ...state,
+        chats: action.chats,
+        error: null,
+        loading: false
+      }
     case actionTypes.REPORT:
       return {
         ...state,

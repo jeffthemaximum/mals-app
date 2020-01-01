@@ -8,6 +8,7 @@ A chat app where you chat with a local stranger
     - [X] `user is typing` logic with text just above footer
     - [X] when user 1 leaves chat, alert user 2 with `user has left` red text just above footer (see: https://medium.com/@a.carreras.c/using-action-cable-for-private-messaging-presence-indicators-on-react-rails-app-526b3e34c14d)
     - ~~show time in the text bubble for sent/received~~
+    - [ ] add recipient avatar to header with empty or green dot to show presence
 - avatar
     - [X] random avatar for a user from https://getavataaars.com/
     - [X] optimize avatar to download and precache svg file on rails server, save that to db.
@@ -23,6 +24,7 @@ A chat app where you chat with a local stranger
     - [ ] handle chat create error
     - [ ] handle message create error
     - [ ] handle getJWT error in sagas (make this its own saga)
+    - [ ] generic error screen with button to reload.
 - redux
     - [X] api call for chats and messages thru redux/sagas
 - stathat
@@ -37,8 +39,10 @@ A chat app where you chat with a local stranger
     - [X] if user waits more than n seconds, alert me, I join chat
     - [X] store device ID when creating users on backend
     - [ ] Optional password added for user account in edit profile.
-    - [ ] wrap App.js with LocationUpdate component that updates user location every n seconds
-    - [ ] see old chats and keep on chatting, Home renders HomeComponent for first time, returning renders similar to iMessage with button to start new
+    - [X] withUser updates location on each page it loads.
+    - [ ] see old chats and keep on chatting, Home renders HomeComponent for first time, returning renders similar to iMessage with button to
+    start new
+    - [ ] if you wait n seconds to chat, give option to chat with trivia bot
 - local
     - [X] get location on client, send to server, get nearest chat to location on server. Alternately, get location via IP on server.
 - bugs
@@ -46,7 +50,8 @@ A chat app where you chat with a local stranger
     - [X] server stat queue shouldnt be interval / should be when it hits an amount
     - [X] delete JoinChatJob of chat thats deleted
     - [X] keyboard hides input on Home
-    - [ ] location isn't updating
+    - [X] location isn't updating
+    - [ ] if user1 on Messages, and user2 sends message to chat, when user1 enters chat, user1 wont see that new message
 - testing
     - [ ] E2E https://github.com/wix/Detox
 - dist
@@ -56,5 +61,5 @@ A chat app where you chat with a local stranger
 - apple feedback
     - [X] EULA acceptance on first app open on device
     - [X] users create accounts anc can sign back into accounts. No password needed from device.
-    - [ ] edit profile functionality to update name, get new random avatar.
-    - [ ] users can deny a chat request.
+    - [X] edit profile functionality to update name, get new random avatar.
+    - [X] users can deny a chat request.
