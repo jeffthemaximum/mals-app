@@ -7,18 +7,18 @@ export const deserialize = (chat) => {
 
   // when returning to a chat, we sometimes have duplicate initial admin messages
   // so we don't display them
-  let initialAdminMessageCount = 0
+  let initialAdminMessage
   for (let len = chat.messages.length, i = len - 1; i >= 0; i--) {
     const message = chat.messages[i]
     if (initialAdminMessageService.isInitialAdminMessage(message)) {
-      initialAdminMessageCount += 1
-    } else {
+      initialAdminMessage = message
       break
     }
   }
 
-  if (initialAdminMessageCount > 1) {
-    chat.messages.splice(chat.messages.length - initialAdminMessageCount + 1, chat.messages.length)
+  if (initialAdminMessage) {
+    chat.messages = chat.messages.filter(message => !initialAdminMessageService.isInitialAdminMessage(message))
+    chat.messages.push(initialAdminMessage)
   }
 
   return chat
