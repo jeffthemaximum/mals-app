@@ -3,6 +3,7 @@ package com.malj_app;
 import android.app.Application;
 
 import com.facebook.react.ReactApplication;
+import org.devio.rn.splashscreen.SplashScreenReactPackage;
 import com.bugsnag.BugsnagReactNative;
 import com.react.rnspinkit.RNSpinkitPackage;
 import com.react.rnspinkit.RNSpinkitPackage;
@@ -30,6 +31,7 @@ public class MainApplication extends Application implements ReactApplication {
     protected List<ReactPackage> getPackages() {
       return Arrays.<ReactPackage>asList(
           new MainReactPackage(),
+            new SplashScreenReactPackage(),
             BugsnagReactNative.getPackage(),
             new RNSpinkitPackage(),
             new RNSpinkitPackage(),
